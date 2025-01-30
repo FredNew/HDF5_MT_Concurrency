@@ -56,6 +56,11 @@ static herr_t H5D__read_api_common(size_t count, hid_t dset_id[], hid_t mem_type
 static herr_t H5D__write_api_common(size_t count, hid_t dset_id[], hid_t mem_type_id[], hid_t mem_space_id[],
                                     hid_t file_space_id[], hid_t dxpl_id, const void *buf[], void **token_ptr,
                                     H5VL_object_t **_vol_obj_ptr);
+
+static herr_t H5D__write_LZ4_threads(hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
+                                     hid_t* dxpl_id,const void **buf, hsize_t threads_count);
+
+
 static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], void **token_ptr,
                                          H5VL_object_t **_vol_obj_ptr);
 
@@ -1369,10 +1374,27 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t
     herr_t ret_value = SUCCEED;
     FUNC_ENTER_API(FAIL)
 
-    if(
+    if (!H5Zfilter_avail(32004))
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
+
+    if(H5D__write_LZ4_threads(&dset_id, &mem_type_id, &mem_space_id, &file_space_id, &dxpl_id, &buf, threads_count) < 0)
+        HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
+
+done:
+    FUNC_LEAVE_API(ret_value)
 }
 
+static herr_t
+H5D__write_LZ4_threads(hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id, hid_t* dxpl_id,
+         const void **buf, hsize_t threads_count){
+    herr_t ret_value = SUCCEED;
 
+FUNC_ENTER_PACKAGE
+
+
+done:
+    FUNC_LEAVE_NOAPI(ret_value);
+}
 
 
 /*-------------------------------------------------------------------------

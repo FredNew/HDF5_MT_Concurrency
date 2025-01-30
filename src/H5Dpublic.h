@@ -1097,6 +1097,12 @@ H5_DLL herr_t H5Dread_multi_async(size_t count, hid_t dset_id[], hid_t mem_type_
 H5_DLL herr_t H5Dwrite(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
                        hid_t dxpl_id, const void *buf);
 
+
+
+H5_DLL herr_t H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
+                       hid_t dxpl_id, const void *buf, hsize_t threads_count);
+
+
 /**
  * --------------------------------------------------------------------------
  * \ingroup H5D
