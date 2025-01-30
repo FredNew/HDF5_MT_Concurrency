@@ -1403,7 +1403,7 @@ FUNC_ENTER_PACKAGE
     q->head = NULL;
     q->tail == NULL;
 
-    hid_t dcpl;
+    hid_t dcpl, fspace;
 
     if ((dcpl = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
         HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
@@ -1412,6 +1412,21 @@ FUNC_ENTER_PACKAGE
 
     if (H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+
+    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
+        HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
+
+    hssize_t dset_size;
+    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0)
+        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
+
+    int rank;
+    if ((rank = H5Sget_simple_extent_ndims(fspace)) < 0)
+        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dataspace rank.");
+
+    hsize_t dims[rank];
+    if ((H5Sget_simple_extent_dims(fspace, dims, NULL)) < 0)
+        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
 
     app_args a_args;
 
