@@ -60,7 +60,7 @@ static herr_t H5D__write_api_common(size_t count, hid_t dset_id[], hid_t mem_typ
                                     hid_t file_space_id[], hid_t dxpl_id, const void *buf[], void **token_ptr,
                                     H5VL_object_t **_vol_obj_ptr);
 
-static herr_t H5D__write_LZ4_threads(hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
+static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
                                      hid_t* dxpl_id,const void **buf, hsize_t threads_count);
 
 
@@ -1389,30 +1389,27 @@ done:
 }
 
 static herr_t
-H5D__write_LZ4_threads(hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id, hid_t* dxpl_id,
+H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id, hid_t* dxpl_id,
          const void **buf, hsize_t threads_count){
     herr_t ret_value = SUCCEED;
 
+    thread_arguments* targs = NULL;
+    queue* q = NULL;
+
 FUNC_ENTER_PACKAGE
-    queue* q = malloc(sizeof(*q));
+    if ((q = malloc(sizeof(*q))) == NULL)
+        HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
+
+    q->head = NULL;
+    q->tail == NULL;
     q->elmts_added = 0;
 
     pthread_mutex_init(&q->lock, NULL);
     pthread_cond_init(&q->wait, NULL);
 
-    q->head = NULL;
-    q->tail == NULL;
-
     hid_t dcpl, fspace;
 
-    if ((dcpl = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
-        HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
-
-    hsize_t chunk_dims[H5S_MAX_RANK];
-
-    if (H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims) < 0)
-        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
-
+    /*** Dataset information retrieval ***/
     if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
         HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
 
@@ -1427,6 +1424,19 @@ FUNC_ENTER_PACKAGE
     hsize_t dims[rank];
     if ((H5Sget_simple_extent_dims(fspace, dims, NULL)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
+    /*#################################*/
+
+    /*** Chunk information retrieval ***/
+    if ((dcpl = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
+        HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
+
+    hsize_t chunk_dims[H5S_MAX_RANK];
+    int chunk_size;
+
+    if ((chunk_size = H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims)) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+    /*#################################*/
+
 
     app_args a_args;
 
@@ -1440,21 +1450,21 @@ FUNC_ENTER_PACKAGE
     a_args.chunk_size_bytes = chunk_size*4;
     a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
 
-    a_args.chunks = calloc(a_args.nchunks, sizeof(chunk_info));
+    if ((a_args.chunks = calloc(a_args.nchunks, sizeof(chunk_info))) == NULL)
+        HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
 
     char *error;
     H5Z_class2_t* H5Z_LZ4;
 
-    void* handle = dlopen("/usr/local/hdf5/lib/plugin/libh5lz4.so.0", RTLD_LAZY);
-    if (!handle) {
-        fprintf(stderr, "%s\n", dlerror());
-        exit(EXIT_FAILURE);
-    }
+    void* handle;
+    if ((handle = dlopen("/usr/local/hdf5/lib/plugin/libh5lz4.so.0", RTLD_LAZY)) == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
+
     dlerror();
 
     H5Z_LZ4 = dlsym(handle, "H5Z_LZ4");
     if (H5Z_LZ4 == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin.");
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
 
     a_args.H5Z_LZ4 = H5Z_LZ4;
 
@@ -1466,7 +1476,8 @@ FUNC_ENTER_PACKAGE
 
     a_args.nthreads = nthreads;
 
-    thread_arguments* targs = calloc(nthreads, sizeof(thread_arguments));
+    if ((targs = calloc(nthreads, sizeof(thread_arguments))) == NULL)
+        HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for threads.");
 
     for(size_t threadno = 0; threadno < nthreads; threadno++){
         targs[threadno].thread_number = threadno;
@@ -1477,12 +1488,14 @@ FUNC_ENTER_PACKAGE
         pthread_create(&targs[threadno].thread_id, NULL, &thread_start, &targs[threadno]);
     }
 
-
     for(size_t threadno = 0; threadno < nthreads; threadno++){
         pthread_join(targs[threadno].thread_id, NULL);
     }
 
 done:
+    free(q);
+    free(targs);
+
     FUNC_LEAVE_NOAPI(ret_value);
 }
 
