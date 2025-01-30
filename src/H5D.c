@@ -66,7 +66,7 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
 /*
  * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
  */
-static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, const hid_t* dxpl_id, const void **buf, hsize_t threads_count);
+static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count);
 
 void* pool_function(void* thread_args);
 /**************************************************************************/
@@ -1384,7 +1384,7 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t thre
     if (!H5Zfilter_avail(32004))
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
 
-    if(H5D__write_LZ4_threads(&dset_id, &dxpl_id, &buf, threads_count) < 0)
+    if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
 
 done:
@@ -1392,7 +1392,7 @@ done:
 }
 
 static herr_t
-H5D__write_LZ4_threads(const hid_t* dset_id, const hid_t* dxpl_id, const void **buf, hsize_t threads_count){
+H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
     herr_t ret_value = SUCCEED;
 
     thread_arguments* targs = NULL;
@@ -1403,7 +1403,7 @@ FUNC_ENTER_PACKAGE
         HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
 
     q->head = NULL;
-    q->tail == NULL;
+    q->tail = NULL;
     q->elmts_added = 0;
 
     pthread_mutex_init(&q->lock, NULL);
@@ -1443,7 +1443,7 @@ FUNC_ENTER_PACKAGE
     app_args a_args;
 
     a_args.q = q;
-    a_args.buf = (int*) *buf;
+    a_args.buf = buf[0];
     a_args.dset_size = dset_size;
     a_args.h5_dset_id = *dset_id;
     a_args.chunk_dims = chunk_dims;
@@ -1452,7 +1452,7 @@ FUNC_ENTER_PACKAGE
     a_args.chunk_size_bytes = chunk_size*4;
     a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
 
-    if ((a_args.chunks = calloc(a_args.nchunks, sizeof(chunk_info))) == NULL)
+    if ((a_args.chunks = calloc(a_args.nchunks, sizeof(t_chunk_info))) == NULL)
         HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
 
     char *error;
@@ -1500,7 +1500,7 @@ FUNC_ENTER_PACKAGE
     printf("Beginning chunk write...\n");
     for (int i = 0; i < a_args.nchunks; ++i) //Write here
     {
-        H5Dwrite_chunk(*dset_id, *dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes, a_args.chunks[i]->chunk);
+        H5Dwrite_chunk(*dset_id, dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes, a_args.chunks[i]->chunk);
         free(a_args.chunks[i]->chunk);
 
         free(a_args.chunks[i]);
@@ -1536,7 +1536,7 @@ void* pool_function(void* thread_args)
 
     while (targs->status == T_CHUNKING)
     {
-        chunk_info* chunk_info = malloc(sizeof(*chunk_info));
+        t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
         chunk_info->chunk_no = chunk_no;
 
         int* chunk = calloc(a_args->chunk_size, sizeof(int));
@@ -1579,7 +1579,7 @@ void* pool_function(void* thread_args)
             queue_add(a_args->q, NULL);
             break;
         }
-        chunk_info* chunk_info = queue_get(a_args->q);
+        t_chunk_info* chunk_info = queue_get(a_args->q);
         if (chunk_info == NULL)
         {
             break;

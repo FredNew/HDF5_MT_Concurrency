@@ -169,16 +169,19 @@ typedef struct H5D_append_flush_t {
     void           *udata;                  /* User data */
 } H5D_append_flush_t;
 
-typedef struct chunk_info
+/*
+* Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
+*/
+typedef struct t_chunk_info
 {
     size_t chunk_no;
     size_t chunk_size_bytes;
     int* chunk;
-} chunk_info;
+} t_chunk_info;
 
 typedef struct app_args{
     queue* q;
-    int* buf;
+    void* buf;
     unsigned long dset_size;
     hid_t h5_dset_id;
     hsize_t* dset_dims;
@@ -189,10 +192,11 @@ typedef struct app_args{
     long nchunks;
     size_t nthreads;
 
-    chunk_info** chunks; //Array of all chunks for sequential writing
+    t_chunk_info** chunks; //Array of all chunks for sequential writing
 
     H5Z_class2_t* H5Z_LZ4; //HDF5 LZ4 filtering struct
 } app_args;
+/*************************************************************************/
 
 
 /*****************************/
