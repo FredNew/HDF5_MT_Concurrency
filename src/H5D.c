@@ -31,6 +31,9 @@
 
 #include "H5VLnative_private.h" /* Native VOL connector                     */
 
+#include "queue.h"
+#include "threadpool.h"
+
 /****************/
 /* Local Macros */
 /****************/
@@ -1372,6 +1375,7 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t
          const void *buf, hsize_t threads_count){
 
     herr_t ret_value = SUCCEED;
+
     FUNC_ENTER_API(FAIL)
 
     if (!H5Zfilter_avail(32004))
@@ -1390,7 +1394,68 @@ H5D__write_LZ4_threads(hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, 
     herr_t ret_value = SUCCEED;
 
 FUNC_ENTER_PACKAGE
+    queue* q = malloc(sizeof(*q));
+    q->elmts_added = 0;
 
+    pthread_mutex_init(&q->lock, NULL);
+    pthread_cond_init(&q->wait, NULL);
+
+    q->head = NULL;
+    q->tail == NULL;
+
+    app_args a_args;
+
+    a_args.q = q;
+    a_args.dset = dset;
+    a_args.dset_size = dset_size;
+    a_args.h5_dset_id = dataset_id_direct_comp;
+    a_args.chunk_dims = chunk_dims;
+    a_args.dset_dims = dims;
+    a_args.chunk_size = chunk_size;
+    a_args.chunk_size_bytes = chunk_size*4;
+    a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
+
+    a_args.chunks = calloc(a_args.nchunks, sizeof(chunk_info));
+
+    char *error;
+    H5Z_class2_t* H5Z_LZ4;
+
+    void* handle = dlopen("/usr/local/hdf5/lib/plugin/libh5lz4.so.0", RTLD_LAZY);
+    if (!handle) {
+        fprintf(stderr, "%s\n", dlerror());
+        exit(EXIT_FAILURE);
+    }
+    dlerror();
+
+    H5Z_LZ4 = dlsym(handle, "H5Z_LZ4");
+    if (H5Z_LZ4 == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin.");
+
+    a_args.H5Z_LZ4 = H5Z_LZ4;
+
+    error = dlerror();
+    if (error != NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Error while loading plugin handle.");
+
+    size_t nthreads = threads_count;
+
+    a_args.nthreads = nthreads;
+
+    thread_arguments* targs = calloc(nthreads, sizeof(thread_arguments));
+
+    for(size_t threadno = 0; threadno < nthreads; threadno++){
+        targs[threadno].thread_number = threadno;
+        targs[threadno].status = T_CHUNKING;
+        targs[threadno].application_args = &a_args;
+        targs[threadno].application_function = &pool_function;
+
+        pthread_create(&targs[threadno].thread_id, NULL, &thread_start, &targs[threadno]);
+    }
+
+
+    for(size_t threadno = 0; threadno < nthreads; threadno++){
+        pthread_join(targs[threadno].thread_id, NULL);
+    }
 
 done:
     FUNC_LEAVE_NOAPI(ret_value);

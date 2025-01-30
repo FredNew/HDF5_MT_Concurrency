@@ -130,6 +130,14 @@
 #define H5D_OBJ_ID(D) (H5D_get_dcpl_id(D))
 #endif
 
+/* Parallel LZ4 filtering info */
+#define T_CHUNKING 1
+#define T_COMPRESSING 2
+#define T_DONE 3
+
+#define H5Z_FILTER_LZ4 32004
+
+
 /****************************/
 /* Library Private Typedefs */
 /****************************/
@@ -159,6 +167,32 @@ typedef struct H5D_append_flush_t {
     H5D_append_cb_t func;                   /* The callback function */
     void           *udata;                  /* User data */
 } H5D_append_flush_t;
+
+typedef struct chunk_info
+{
+    size_t chunk_no;
+    size_t chunk_size_bytes;
+    int* chunk;
+} chunk_info;
+
+typedef struct app_args{
+    queue* q;
+    int* dset;
+    unsigned long dset_size;
+    hid_t h5_dset_id;
+    hsize_t* dset_dims;
+    hsize_t* chunk_dims;
+
+    size_t chunk_size;
+    size_t chunk_size_bytes;
+    long nchunks;
+    size_t nthreads;
+
+    chunk_info** chunks; //Array of all chunks for sequential writing
+
+    H5Z_class2_t* H5Z_LZ4; //HDF5 LZ4 filtering struct
+} app_args;
+
 
 /*****************************/
 /* Library Private Variables */
