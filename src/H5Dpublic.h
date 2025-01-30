@@ -1097,12 +1097,6 @@ H5_DLL herr_t H5Dread_multi_async(size_t count, hid_t dset_id[], hid_t mem_type_
 H5_DLL herr_t H5Dwrite(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
                        hid_t dxpl_id, const void *buf);
 
-
-
-H5_DLL herr_t H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id,
-                       hid_t dxpl_id, const void *buf, hsize_t threads_count);
-
-
 /**
  * --------------------------------------------------------------------------
  * \ingroup H5D
@@ -1643,6 +1637,12 @@ H5_DLL herr_t H5Dgather(hid_t src_space_id, const void *src_buf, hid_t type_id, 
  */
 H5_DLL herr_t H5Dclose(hid_t dset_id);
 
+/*
+* Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
+*/
+H5_DLL herr_t H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t threads_count);
+/*************************************************************************/
+
 /**
  * --------------------------------------------------------------------------
  * \ingroup ASYNC
@@ -1890,6 +1890,7 @@ H5_DLL herr_t H5Dextend(hid_t dset_id, const hsize_t size[]);
  *
  */
 H5_DLL herr_t H5Dvlen_reclaim(hid_t type_id, hid_t space_id, hid_t dxpl_id, void *buf);
+
 
 #endif /* H5_NO_DEPRECATED_SYMBOLS */
 

@@ -66,8 +66,8 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
 /*
  * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
  */
-static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
-                                     hid_t* dxpl_id,const void **buf, hsize_t threads_count);
+static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, const hid_t* dxpl_id, const void **buf, hsize_t threads_count);
+
 void* pool_function(void* thread_args);
 /**************************************************************************/
 
@@ -1375,8 +1375,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t file_space_id, hid_t dxpl_id,
-         const void *buf, hsize_t threads_count){
+H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t threads_count){
 
     herr_t ret_value = SUCCEED;
 
@@ -1385,7 +1384,7 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t mem_type_id, hid_t mem_space_id, hid_t
     if (!H5Zfilter_avail(32004))
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
 
-    if(H5D__write_LZ4_threads(&dset_id, &mem_type_id, &mem_space_id, &file_space_id, &dxpl_id, &buf, threads_count) < 0)
+    if(H5D__write_LZ4_threads(&dset_id, &dxpl_id, &buf, threads_count) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
 
 done:
@@ -1393,8 +1392,7 @@ done:
 }
 
 static herr_t
-H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id, hid_t* dxpl_id,
-         const void **buf, hsize_t threads_count){
+H5D__write_LZ4_threads(const hid_t* dset_id, const hid_t* dxpl_id, const void **buf, hsize_t threads_count){
     herr_t ret_value = SUCCEED;
 
     thread_arguments* targs = NULL;
@@ -1494,6 +1492,26 @@ FUNC_ENTER_PACKAGE
 
     for(size_t threadno = 0; threadno < nthreads; threadno++){
         pthread_join(targs[threadno].thread_id, NULL);
+    }
+
+    uint32_t filter = 0;
+    size_t hchunk_offset[] = {0,0};
+
+    printf("Beginning chunk write...\n");
+    for (int i = 0; i < a_args.nchunks; ++i) //Write here
+    {
+        H5Dwrite_chunk(*dset_id, *dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes, a_args.chunks[i]->chunk);
+        free(a_args.chunks[i]->chunk);
+
+        free(a_args.chunks[i]);
+
+        hchunk_offset[1] += chunk_dims[1];
+
+        if (hchunk_offset[1] >= dims[1])
+        {
+            hchunk_offset[1] = 0;
+            hchunk_offset[0] += chunk_dims[0];
+        }
     }
 
 done:
