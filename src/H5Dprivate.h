@@ -24,6 +24,7 @@
 #include "H5Oprivate.h"  /* Object headers              */
 #include "H5Sprivate.h"  /* Dataspaces                  */
 #include "H5Zprivate.h"  /* Data filters                */
+#include "queue.h"
 
 /**************************/
 /* Library Private Macros */
@@ -177,7 +178,7 @@ typedef struct chunk_info
 
 typedef struct app_args{
     queue* q;
-    int* dset;
+    int* buf;
     unsigned long dset_size;
     hid_t h5_dset_id;
     hsize_t* dset_dims;

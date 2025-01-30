@@ -1403,12 +1403,22 @@ FUNC_ENTER_PACKAGE
     q->head = NULL;
     q->tail == NULL;
 
+    hid_t dcpl;
+
+    if ((dcpl = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
+        HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
+
+    hsize_t chunk_dims[H5S_MAX_RANK];
+
+    if (H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+
     app_args a_args;
 
     a_args.q = q;
-    a_args.dset = dset;
+    a_args.buf = (int*) *buf;
     a_args.dset_size = dset_size;
-    a_args.h5_dset_id = dataset_id_direct_comp;
+    a_args.h5_dset_id = *dset_id;
     a_args.chunk_dims = chunk_dims;
     a_args.dset_dims = dims;
     a_args.chunk_size = chunk_size;
