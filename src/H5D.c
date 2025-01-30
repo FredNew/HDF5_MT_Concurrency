@@ -66,7 +66,7 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
 /*
  * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
  */
-static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count);
+static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id,const void* buf[], hsize_t threads_count);
 
 void* pool_function(void* thread_args);
 /**************************************************************************/
@@ -1375,7 +1375,7 @@ done:
  *-------------------------------------------------------------------------
  */
 herr_t
-H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t threads_count){
+H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
 
     herr_t ret_value = SUCCEED;
 
@@ -1383,7 +1383,6 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t thre
 
     if (!H5Zfilter_avail(32004))
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
-
     if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
 
@@ -1398,9 +1397,12 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     thread_arguments* targs = NULL;
     queue* q = NULL;
 
-FUNC_ENTER_PACKAGE
+    FUNC_ENTER_PACKAGE
+
     if ((q = malloc(sizeof(*q))) == NULL)
-        HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
+    {
+        //HGOTO_ERROR(H5E_NONE_MAJOR, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
+    }
 
     q->head = NULL;
     q->tail = NULL;
@@ -1412,19 +1414,19 @@ FUNC_ENTER_PACKAGE
     hid_t dcpl, fspace;
 
     /*** Dataset information retrieval ***/
-    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
-        HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
+    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID) {}
+    //HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
 
     hssize_t dset_size;
-    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0)
-        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
+    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0) {}
+    // HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
 
     int rank;
-    if ((rank = H5Sget_simple_extent_ndims(fspace)) < 0)
-        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dataspace rank.");
+    if ((rank = H5Sget_simple_extent_ndims(fspace)) < 0) {}
+    //HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dataspace rank.");
 
-    hsize_t dims[rank];
-    if ((H5Sget_simple_extent_dims(fspace, dims, NULL)) < 0)
+    hsize_t buf_dims[rank];
+    if ((H5Sget_simple_extent_dims(fspace, buf_dims, NULL)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
     /*#################################*/
 
@@ -1433,10 +1435,17 @@ FUNC_ENTER_PACKAGE
         HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
 
     hsize_t chunk_dims[H5S_MAX_RANK];
-    int chunk_size;
+    int chunk_rank;
+    hsize_t chunk_size = 0;
 
-    if ((chunk_size = H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims)) < 0)
+    if ((chunk_rank = H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims)) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+
+    if (chunk_rank >0) chunk_size = chunk_dims[0];
+    for (hsize_t i = 1; i < chunk_rank; i++)
+    {
+        chunk_size *= chunk_dims[i];
+    }
     /*#################################*/
 
 
@@ -1447,7 +1456,7 @@ FUNC_ENTER_PACKAGE
     a_args.dset_size = dset_size;
     a_args.h5_dset_id = *dset_id;
     a_args.chunk_dims = chunk_dims;
-    a_args.dset_dims = dims;
+    a_args.dset_dims = buf_dims;
     a_args.chunk_size = chunk_size;
     a_args.chunk_size_bytes = chunk_size*4;
     a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
@@ -1480,7 +1489,6 @@ FUNC_ENTER_PACKAGE
 
     if ((targs = calloc(nthreads, sizeof(thread_arguments))) == NULL)
         HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for threads.");
-
     for(size_t threadno = 0; threadno < nthreads; threadno++){
         targs[threadno].thread_number = threadno;
         targs[threadno].status = T_CHUNKING;
@@ -1498,7 +1506,7 @@ FUNC_ENTER_PACKAGE
     size_t hchunk_offset[] = {0,0};
 
     printf("Beginning chunk write...\n");
-    for (int i = 0; i < a_args.nchunks; ++i) //Write here
+    for (unsigned i = 0; i < a_args.nchunks; ++i) //Write here
     {
         H5Dwrite_chunk(*dset_id, dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes, a_args.chunks[i]->chunk);
         free(a_args.chunks[i]->chunk);
@@ -1507,7 +1515,7 @@ FUNC_ENTER_PACKAGE
 
         hchunk_offset[1] += chunk_dims[1];
 
-        if (hchunk_offset[1] >= dims[1])
+        if (hchunk_offset[1] >= buf_dims[1])
         {
             hchunk_offset[1] = 0;
             hchunk_offset[0] += chunk_dims[0];
@@ -1527,6 +1535,9 @@ void* pool_function(void* thread_args)
     thread_arguments* targs = (thread_arguments*) thread_args;
     app_args* a_args = (app_args*) targs->application_args;
 
+    printf("Thread %lu ready.\n", targs->thread_number);
+
+    int* buf = (int*) a_args->buf;
     size_t chunk_no = targs->thread_number;
 
     if (chunk_no > a_args->nchunks) //More threads than chunks. Skipping to next step.
@@ -1543,20 +1554,20 @@ void* pool_function(void* thread_args)
 
         if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
         {
-            printf("Chunk No: %lu is to be copied not entirely.\n", chunk_no);
-            printf("End of chunk %lu: %lu, dset size: %ld\n", chunk_no, ((chunk_no + 1) * a_args->chunk_size_bytes), a_args->dset_size*4);
-            printf("Copy only %lu bytes.\n", a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+            // printf("Chunk No: %lu is to be copied not entirely.\n", chunk_no);
+            // printf("End of chunk %lu: %lu, dset size: %ld\n", chunk_no, ((chunk_no + 1) * a_args->chunk_size_bytes), a_args->dset_size*4);
+            // printf("Copy only %lu bytes.\n", a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
 
             memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size], a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
         }else{
             for (int i = 0; i < a_args->chunk_dims[0]; i++)
             {
+
                 memcpy(&chunk[i * a_args->chunk_dims[1]],
-                &a_args->buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
                     - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
                     + i * a_args->dset_dims[1]],
                     a_args->chunk_dims[1] * sizeof(int));
-
             }
         }
 
@@ -1564,6 +1575,7 @@ void* pool_function(void* thread_args)
         chunk_info->chunk_size_bytes = a_args->chunk_size;
 
         queue_add(a_args->q, chunk_info);
+
         if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
         {
             targs->status = T_COMPRESSING;

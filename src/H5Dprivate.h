@@ -181,15 +181,15 @@ typedef struct t_chunk_info
 
 typedef struct app_args{
     queue* q;
-    void* buf;
-    unsigned long dset_size;
+    const void* buf;
+    hssize_t dset_size;
     hid_t h5_dset_id;
     hsize_t* dset_dims;
     hsize_t* chunk_dims;
 
-    size_t chunk_size;
+    hsize_t chunk_size;
     size_t chunk_size_bytes;
-    long nchunks;
+    size_t nchunks;
     size_t nthreads;
 
     t_chunk_info** chunks; //Array of all chunks for sequential writing

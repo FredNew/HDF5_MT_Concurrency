@@ -1,6 +1,9 @@
 #ifndef THREADPOOL_H
 #define THREADPOOL_H
 
+#include <pthread.h>
+
+
 typedef struct thread_arguments{
     pthread_t thread_id;
     size_t thread_number;
