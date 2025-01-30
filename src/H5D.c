@@ -59,13 +59,17 @@ static herr_t H5D__read_api_common(size_t count, hid_t dset_id[], hid_t mem_type
 static herr_t H5D__write_api_common(size_t count, hid_t dset_id[], hid_t mem_type_id[], hid_t mem_space_id[],
                                     hid_t file_space_id[], hid_t dxpl_id, const void *buf[], void **token_ptr,
                                     H5VL_object_t **_vol_obj_ptr);
-
-static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
-                                     hid_t* dxpl_id,const void **buf, hsize_t threads_count);
-
-
 static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], void **token_ptr,
                                          H5VL_object_t **_vol_obj_ptr);
+
+
+/*
+ * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
+ */
+static herr_t H5D__write_LZ4_threads(const hid_t* dset_id, hid_t* mem_type_id, hid_t* mem_space_id, hid_t* file_space_id,
+                                     hid_t* dxpl_id,const void **buf, hsize_t threads_count);
+void* pool_function(void* thread_args);
+/**************************************************************************/
 
 /*********************/
 /* Package Variables */
@@ -1493,11 +1497,82 @@ FUNC_ENTER_PACKAGE
     }
 
 done:
-    free(q);
-    free(targs);
+    if (q != NULL) free(q);
+    if (targs != NULL) free(targs);
 
     FUNC_LEAVE_NOAPI(ret_value);
 }
+
+
+void* pool_function(void* thread_args)
+{
+    thread_arguments* targs = (thread_arguments*) thread_args;
+    app_args* a_args = (app_args*) targs->application_args;
+
+    size_t chunk_no = targs->thread_number;
+
+    if (chunk_no > a_args->nchunks) //More threads than chunks. Skipping to next step.
+    {
+        targs->status = T_COMPRESSING;
+    }
+
+    while (targs->status == T_CHUNKING)
+    {
+        chunk_info* chunk_info = malloc(sizeof(*chunk_info));
+        chunk_info->chunk_no = chunk_no;
+
+        int* chunk = calloc(a_args->chunk_size, sizeof(int));
+
+        if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+        {
+            printf("Chunk No: %lu is to be copied not entirely.\n", chunk_no);
+            printf("End of chunk %lu: %lu, dset size: %ld\n", chunk_no, ((chunk_no + 1) * a_args->chunk_size_bytes), a_args->dset_size*4);
+            printf("Copy only %lu bytes.\n", a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+
+            memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size], a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+        }else{
+            for (int i = 0; i < a_args->chunk_dims[0]; i++)
+            {
+                memcpy(&chunk[i * a_args->chunk_dims[1]],
+                &a_args->buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                    - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                    + i * a_args->dset_dims[1]],
+                    a_args->chunk_dims[1] * sizeof(int));
+
+            }
+        }
+
+        chunk_info->chunk = chunk;
+        chunk_info->chunk_size_bytes = a_args->chunk_size;
+
+        queue_add(a_args->q, chunk_info);
+        if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+        {
+            targs->status = T_COMPRESSING;
+        }
+    }
+
+    const unsigned int cd_values[1] = {8*1024};
+    size_t buf_size = a_args->chunk_size_bytes;
+    while (targs->status == T_COMPRESSING)
+    {
+        if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+        {
+            queue_add(a_args->q, NULL);
+            break;
+        }
+        chunk_info* chunk_info = queue_get(a_args->q);
+        if (chunk_info == NULL)
+        {
+            break;
+        }
+
+        chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->H5Z_LZ4->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+        a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+    }
+
+    return 0;
+   }
 
 
 /*-------------------------------------------------------------------------
