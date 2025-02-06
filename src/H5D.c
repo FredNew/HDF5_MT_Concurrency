@@ -1467,8 +1467,17 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     char *error;
     H5Z_class2_t* H5Z_LZ4;
 
+    char* plugin_path = getenv("HDF5_PLUGIN_PATH");
+
+    if (plugin_path == NULL) //Not set. Use std
+    {
+        strcpy(plugin_path, "/usr/local/hdf5/lib/plugin");
+    }
+
+    char* lib_path = strcat(plugin_path, "/libh5lz4.so.0");
+
     void* handle;
-    if ((handle = dlopen("/usr/local/hdf5/lib/plugin/libh5lz4.so.0", RTLD_LAZY)) == NULL)
+    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
 
     dlerror();
