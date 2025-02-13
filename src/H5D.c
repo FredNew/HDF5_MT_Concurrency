@@ -1393,6 +1393,10 @@ done:
 static herr_t
 H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
     herr_t ret_value = SUCCEED;
+    hssize_t dset_size;
+    hid_t dcpl, fspace;
+
+    hsize_t buf_dims[H5S_MAX_RANK];
 
     thread_arguments* targs = NULL;
     queue* q = NULL;
@@ -1400,9 +1404,7 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     FUNC_ENTER_PACKAGE
 
     if ((q = malloc(sizeof(*q))) == NULL)
-    {
-        //HGOTO_ERROR(H5E_NONE_MAJOR, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
-    }
+        HGOTO_ERROR(H5E_NONE_MAJOR, H5E_CANTALLOC, FAIL, "Can't allocate memory for queue.");
 
     q->head = NULL;
     q->tail = NULL;
@@ -1411,21 +1413,13 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     pthread_mutex_init(&q->lock, NULL);
     pthread_cond_init(&q->wait, NULL);
 
-    hid_t dcpl, fspace;
-
     /*** Dataset information retrieval ***/
-    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID) {}
-    //HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
+    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
+        HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
 
-    hssize_t dset_size;
-    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0) {}
-    // HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
+    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0)
+        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
 
-    int rank;
-    if ((rank = H5Sget_simple_extent_ndims(fspace)) < 0) {}
-    //HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dataspace rank.");
-
-    hsize_t buf_dims[rank];
     if ((H5Sget_simple_extent_dims(fspace, buf_dims, NULL)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
     /*#################################*/
@@ -1441,7 +1435,8 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     if ((chunk_rank = H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims)) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
 
-    if (chunk_rank >0) chunk_size = chunk_dims[0];
+    if (chunk_rank > 0) chunk_size = chunk_dims[0];
+
     for (hsize_t i = 1; i < chunk_rank; i++)
     {
         chunk_size *= chunk_dims[i];
@@ -1467,18 +1462,29 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     char *error;
     H5Z_class2_t* H5Z_LZ4;
 
-    char* plugin_path = getenv("HDF5_PLUGIN_PATH");
+    const char* plugin_path = getenv("HDF5_PLUGIN_PATH");
 
     if (plugin_path == NULL) //Not set. Use std
     {
-        strcpy(plugin_path, "/usr/local/hdf5/lib/plugin");
+        plugin_path = "/usr/local/hdf5/lib/plugin";
     }
 
-    char* lib_path = strcat(plugin_path, "/libh5lz4.so.0");
+    const char* filter_lib_name = "/libh5lz4.so.0";
+
+    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
+
+    char* lib_path = calloc(lib_path_len, sizeof(char));
+
+    strcpy(lib_path, plugin_path);
+    strcat(lib_path, filter_lib_name);
+
+    printf("Lib Path: %s\n", lib_path);
 
     void* handle;
     if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
+
+    free(lib_path);
 
     dlerror();
 
