@@ -194,7 +194,7 @@ typedef struct app_args{
 
     t_chunk_info** chunks; //Array of all chunks for sequential writing
 
-    H5Z_class2_t* H5Z_LZ4; //HDF5 LZ4 filtering struct
+    H5Z_class2_t* h5z_filter; //HDF5 filtering struct
 } app_args;
 /*************************************************************************/
 

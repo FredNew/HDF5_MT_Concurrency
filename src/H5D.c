@@ -67,6 +67,7 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
  * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
  */
 static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id,const void* buf[], hsize_t threads_count);
+static herr_t H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name);
 
 void* pool_function(void* thread_args);
 /**************************************************************************/
@@ -1391,6 +1392,49 @@ done:
 }
 
 static herr_t
+H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name)
+{
+    herr_t ret_value = SUCCEED;
+
+    FUNC_ENTER_PACKAGE
+
+    const char* filter_lib_name;
+    const char* filter_symbol;
+
+    if (strcmp(filter_name, "LZ4") == 0)
+    {
+        filter_lib_name = "/libh5lz4.so.0";
+        filter_symbol = "H5Z_LZ4";
+    }else{
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
+    }
+
+    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
+
+    char* lib_path = calloc(lib_path_len, sizeof(char));
+
+    strcpy(lib_path, plugin_path);
+    strcat(lib_path, filter_lib_name);
+
+    printf("Filter path: %s\n", lib_path);
+
+    void* handle;
+    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
+
+    free(lib_path);
+
+    dlerror();
+
+    *h5z_symbol = dlsym(handle, filter_symbol);
+    if (h5z_symbol == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
+
+    done:
+    FUNC_LEAVE_NOAPI(ret_value);
+}
+
+static herr_t
 H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
     herr_t ret_value = SUCCEED;
     hssize_t dset_size;
@@ -1443,7 +1487,6 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     }
     /*#################################*/
 
-
     app_args a_args;
 
     a_args.q = q;
@@ -1460,7 +1503,7 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
         HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
 
     char *error;
-    H5Z_class2_t* H5Z_LZ4;
+    H5Z_class2_t* h5z_symbol = NULL;
 
     const char* plugin_path = getenv("HDF5_PLUGIN_PATH");
 
@@ -1469,30 +1512,12 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
         plugin_path = "/usr/local/hdf5/lib/plugin";
     }
 
-    const char* filter_lib_name = "/libh5lz4.so.0";
+    if (H5D__assign_filter(&h5z_symbol, plugin_path, "LZ4") == FAIL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "Can't assign plugin symbol.");
 
-    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
-
-    char* lib_path = calloc(lib_path_len, sizeof(char));
-
-    strcpy(lib_path, plugin_path);
-    strcat(lib_path, filter_lib_name);
-
-    printf("Lib Path: %s\n", lib_path);
-
-    void* handle;
-    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
-
-    free(lib_path);
-
-    dlerror();
-
-    H5Z_LZ4 = dlsym(handle, "H5Z_LZ4");
-    if (H5Z_LZ4 == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
-
-    a_args.H5Z_LZ4 = H5Z_LZ4;
+    if (h5z_symbol == NULL)
+        HGOTO_ERROR(H5E_ERROR, H5E_CANTGET, FAIL, "Can't get plugin symbol.");
+    a_args.h5z_filter = h5z_symbol;
 
     error = dlerror();
     if (error != NULL)
@@ -1504,6 +1529,7 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
 
     if ((targs = calloc(nthreads, sizeof(thread_arguments))) == NULL)
         HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for threads.");
+
     for(size_t threadno = 0; threadno < nthreads; threadno++){
         targs[threadno].thread_number = threadno;
         targs[threadno].status = T_CHUNKING;
@@ -1569,10 +1595,6 @@ void* pool_function(void* thread_args)
 
         if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
         {
-            // printf("Chunk No: %lu is to be copied not entirely.\n", chunk_no);
-            // printf("End of chunk %lu: %lu, dset size: %ld\n", chunk_no, ((chunk_no + 1) * a_args->chunk_size_bytes), a_args->dset_size*4);
-            // printf("Copy only %lu bytes.\n", a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
-
             memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size], a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
         }else{
             for (int i = 0; i < a_args->chunk_dims[0]; i++)
@@ -1596,7 +1618,6 @@ void* pool_function(void* thread_args)
             targs->status = T_COMPRESSING;
         }
     }
-
     const unsigned int cd_values[1] = {8*1024};
     size_t buf_size = a_args->chunk_size_bytes;
     while (targs->status == T_COMPRESSING)
@@ -1612,7 +1633,7 @@ void* pool_function(void* thread_args)
             break;
         }
 
-        chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->H5Z_LZ4->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+        chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
         a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
     }
 
