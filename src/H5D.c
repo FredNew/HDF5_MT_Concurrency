@@ -1672,22 +1672,25 @@ void* pool_function(void* thread_args)
         {
             if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
             {
-                queue_add(a_args->q, NULL);
+                //queue_add(a_args->q, NULL);
                 targs->status = T_DONE;
                 break;
-            }else if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+            }
+
+            t_chunk_info* chunk_info = queue_get(a_args->q);
+            if (chunk_info == NULL) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
             {
                 targs->status = T_CHUNKING;
-
-            }
-            t_chunk_info* chunk_info = queue_get(a_args->q);
-            if (chunk_info == NULL)
-            {
-                break;
+                continue;
             }
 
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
             a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+
+            if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+            {
+                targs->status = T_CHUNKING;
+            }
         }
     }
 
