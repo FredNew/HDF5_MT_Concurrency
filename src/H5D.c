@@ -1516,14 +1516,15 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     a_args.buf = buf[0];
     a_args.dset_size = dset_size;
     a_args.h5_dset_id = *dset_id;
+    a_args.h5_dxpl_id = dxpl_id;
     a_args.chunk_dims = chunk_dims;
     a_args.dset_dims = buf_dims;
     a_args.chunk_size = chunk_size;
     a_args.chunk_size_bytes = chunk_size*4;
     a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
 
-    if ((a_args.chunks = calloc(a_args.nchunks, sizeof(t_chunk_info))) == NULL)
-        HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
+    // if ((a_args.chunks = calloc(a_args.nchunks, sizeof(t_chunk_info))) == NULL)
+    //     HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
 
     char *error;
     H5Z_class2_t* h5z_symbol = NULL;
@@ -1566,29 +1567,6 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
         pthread_join(targs[threadno].thread_id, NULL);
     }
 
-    uint32_t filter = 0;
-    size_t hchunk_offset[] = {0,0};
-
-    printf("Beginning chunk write...\n");
-    for (unsigned i = 0; i < a_args.nchunks; ++i) //Write here
-    {
-        if (H5Dwrite_chunk(*dset_id, dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes,
-            a_args.chunks[i]->chunk) == FAIL)
-            HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
-                                        //Need to free all chunks in a_args after failure
-
-        free(a_args.chunks[i]->chunk);
-
-        free(a_args.chunks[i]);
-
-        hchunk_offset[1] += chunk_dims[1];
-
-        if (hchunk_offset[1] >= buf_dims[1])
-        {
-            hchunk_offset[1] = 0;
-            hchunk_offset[0] += chunk_dims[0];
-        }
-    }
 
 done:
     if (q != NULL) free(q);
@@ -1616,6 +1594,11 @@ void* pool_function(void* thread_args)
 
     const unsigned int cd_values[1] = {8*1024};
     size_t buf_size = a_args->chunk_size_bytes;
+
+    uint32_t filter = 0;
+    size_t hchunk_offset[] = {0,0};
+    unsigned offset_v;
+    unsigned offset_h;
 
     while (targs->status != T_DONE) //Looping until all tasks completed. Enables better OOM handling.
     {
@@ -1685,7 +1668,27 @@ void* pool_function(void* thread_args)
             }
 
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
-            a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+            // a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+
+            offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
+            offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
+            hchunk_offset[0] = offset_v;
+            hchunk_offset[1] = offset_h;
+
+            if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
+                chunk_info->chunk) == FAIL)
+            {
+                printf("Error writing\n");
+                break;
+            }
+
+            printf("Chunk #%lu written.\n", chunk_info->chunk_no);
+
+            free(chunk_info->chunk);
+
+
+    //HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
+                                //Need to free all chunks in a_args after failure
 
             if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
             {

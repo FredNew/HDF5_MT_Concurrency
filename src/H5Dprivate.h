@@ -184,6 +184,7 @@ typedef struct app_args{
     const void* buf;
     hssize_t dset_size;
     hid_t h5_dset_id;
+    hid_t h5_dxpl_id;
     hsize_t* dset_dims;
     hsize_t* chunk_dims;
 
@@ -192,7 +193,7 @@ typedef struct app_args{
     size_t nchunks;
     size_t nthreads;
 
-    t_chunk_info** chunks; //Array of all chunks for sequential writing
+    //t_chunk_info** chunks; //Array of all chunks for sequential writing
 
     H5Z_class2_t* h5z_filter; //HDF5 filtering struct
 } app_args;
