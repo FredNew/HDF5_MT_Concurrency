@@ -1,6 +1,7 @@
 #include "hdf5.h"
 #include "dataset.h"
 #include <stdio.h>
+#include <time.h>
 
 #define H5Z_FILTER_LZ4 32004
 
@@ -10,11 +11,11 @@ int main(int argc, char* argv[]){
     hsize_t dims[rank];
     hsize_t chunk_dims[rank];
 
-    dims[0] = 4*1024;//4*16*1024;
-    dims[1] = 1024;//16*1024;
+    dims[0] = 4*16*1024;
+    dims[1] = 16*1024;
 
-    chunk_dims[0] = 1024;//16*1024; //down
-    chunk_dims[1] = 256;//2*1024; //right
+    chunk_dims[0] = 16*1024; //down
+    chunk_dims[1] = 2*1024; //right
 
     hsize_t dset_size = dims[0] * dims[1];
     hsize_t chunk_size = chunk_dims[0] * chunk_dims[1];

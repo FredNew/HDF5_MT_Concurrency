@@ -1382,6 +1382,7 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t thre
 
     FUNC_ENTER_API(FAIL)
 
+
     if (!H5Zfilter_avail(32004))
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
     if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
@@ -1391,6 +1392,15 @@ done:
     FUNC_LEAVE_API(ret_value)
 }
 
+/**
+ * Assigns a filter loaded from a dynamic library into the passed H5Z_class2_t struct.
+ *
+ * Onlu LZ4 is implemented, other HDF5 filters should have an identical plugin path as folder to choose library from.
+ * @param h5z_symbol
+ * @param plugin_path
+ * @param filter_name
+ * @return
+ */
 static herr_t
 H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name)
 {
@@ -1411,7 +1421,9 @@ H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const cha
 
     const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
 
-    char* lib_path = calloc(lib_path_len, sizeof(char));
+    char* lib_path;
+    if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
 
     strcpy(lib_path, plugin_path);
     strcat(lib_path, filter_lib_name);
@@ -1434,6 +1446,17 @@ H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const cha
     FUNC_LEAVE_NOAPI(ret_value);
 }
 
+
+/**
+ * The general chunked, pre-filtered write function. For proof of concept, at this point  used for LZ4 compression only.
+ * Can be generalized using Ḧ5D__assign_filter and passing info on which filter is to be used.
+ *
+ * @param dset_id
+ * @param dxpl_id
+ * @param buf
+ * @param threads_count
+ * @return
+ */
 static herr_t
 H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
     herr_t ret_value = SUCCEED;
@@ -1549,7 +1572,11 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     printf("Beginning chunk write...\n");
     for (unsigned i = 0; i < a_args.nchunks; ++i) //Write here
     {
-        H5Dwrite_chunk(*dset_id, dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes, a_args.chunks[i]->chunk);
+        if (H5Dwrite_chunk(*dset_id, dxpl_id, filter, hchunk_offset, a_args.chunks[i]->chunk_size_bytes,
+            a_args.chunks[i]->chunk) == FAIL)
+            HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
+                                        //Need to free all chunks in a_args after failure
+
         free(a_args.chunks[i]->chunk);
 
         free(a_args.chunks[i]);
@@ -1586,56 +1613,156 @@ void* pool_function(void* thread_args)
         targs->status = T_COMPRESSING;
     }
 
-    while (targs->status == T_CHUNKING)
+
+    const unsigned int cd_values[1] = {8*1024};
+    size_t buf_size = a_args->chunk_size_bytes;
+
+    while (targs->status != T_DONE) //Looping until all tasks completed. Enables better OOM handling.
     {
-        t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
-        chunk_info->chunk_no = chunk_no;
-
-        int* chunk = calloc(a_args->chunk_size, sizeof(int));
-
-        if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+        if (targs->status == T_CHUNKING)
         {
-            memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size], a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
-        }else{
-            for (int i = 0; i < a_args->chunk_dims[0]; i++)
-            {
+            t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
+            chunk_info->chunk_no = chunk_no;
 
-                memcpy(&chunk[i * a_args->chunk_dims[1]],
-                &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-                    - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-                    + i * a_args->dset_dims[1]],
-                    a_args->chunk_dims[1] * sizeof(int));
+            int* chunk;
+            /*
+             * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
+             * queue empty. Failed chunk will be attempted on next CHUNKING mode.
+             */
+            if ((chunk = calloc(a_args->chunk_size, sizeof(int))) == NULL)
+            { //OOM
+                targs->status = T_COMPRESSING;
+                continue;
+            }
+
+            /*
+             * Performs actual copy into chunk memory
+             */
+            if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+            {
+                memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
+                    a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+            }else{
+                for (int i = 0; i < a_args->chunk_dims[0]; i++)
+                {
+
+                    memcpy(&chunk[i * a_args->chunk_dims[1]],
+                    &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                        - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                        + i * a_args->dset_dims[1]],
+                        a_args->chunk_dims[1] * sizeof(int));
+                }
+            }
+
+            chunk_info->chunk = chunk;
+            chunk_info->chunk_size_bytes = a_args->chunk_size;
+
+            queue_add(a_args->q, chunk_info);
+
+            /*
+             * Advance n-threads further. Enables non locking asynchronous chunk creation.
+             */
+            if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+            {
+                targs->status = T_COMPRESSING;
             }
         }
 
-        chunk_info->chunk = chunk;
-        chunk_info->chunk_size_bytes = a_args->chunk_size;
-
-        queue_add(a_args->q, chunk_info);
-
-        if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+        if (targs->status == T_COMPRESSING)
         {
-            targs->status = T_COMPRESSING;
+            if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+            {
+                queue_add(a_args->q, NULL);
+                targs->status = T_DONE;
+                break;
+            }else if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+            {
+                targs->status = T_CHUNKING;
+
+            }
+            t_chunk_info* chunk_info = queue_get(a_args->q);
+            if (chunk_info == NULL)
+            {
+                break;
+            }
+
+            chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+            a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
         }
     }
-    const unsigned int cd_values[1] = {8*1024};
-    size_t buf_size = a_args->chunk_size_bytes;
-    while (targs->status == T_COMPRESSING)
-    {
-        if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
-        {
-            queue_add(a_args->q, NULL);
-            break;
-        }
-        t_chunk_info* chunk_info = queue_get(a_args->q);
-        if (chunk_info == NULL)
-        {
-            break;
-        }
 
-        chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
-        a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
-    }
+    // chunking:
+    // while (targs->status == T_CHUNKING)
+    // {
+    //     t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
+    //     chunk_info->chunk_no = chunk_no;
+    //
+    //     int* chunk;
+    //     /*
+    //      * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
+    //      * queue empty. Failed chunk will be attempted on next CHUNKING mode.
+    //      */
+    //     if ((chunk = calloc(a_args->chunk_size, sizeof(int))) == NULL)
+    //     {
+    //         targs->status = T_COMPRESSING;
+    //         break;
+    //     }
+    //
+    //     /*
+    //      * Performs actual copy into chunk memory
+    //      */
+    //     if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+    //     {
+    //         memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
+    //             a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+    //     }else{
+    //         for (int i = 0; i < a_args->chunk_dims[0]; i++)
+    //         {
+    //
+    //             memcpy(&chunk[i * a_args->chunk_dims[1]],
+    //             &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+    //                 - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+    //                 + i * a_args->dset_dims[1]],
+    //                 a_args->chunk_dims[1] * sizeof(int));
+    //         }
+    //     }
+    //
+    //     chunk_info->chunk = chunk;
+    //     chunk_info->chunk_size_bytes = a_args->chunk_size;
+    //
+    //     queue_add(a_args->q, chunk_info);
+    //
+    //     /*
+    //      * Advance n-threads further. Enables non locking asynchronous chunk creation.
+    //      */
+    //     if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+    //     {
+    //         targs->status = T_COMPRESSING;
+    //     }
+    // }
+    // const unsigned int cd_values[1] = {8*1024};
+    // size_t buf_size = a_args->chunk_size_bytes;
+
+    // while (targs->status == T_COMPRESSING)
+    // {
+    //     if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+    //     {
+    //         queue_add(a_args->q, NULL);
+    //         break;
+    //     }else if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+    //     {
+    //         targs->status = T_CHUNKING;
+    //         goto chunking;
+    //     }
+    //     t_chunk_info* chunk_info = queue_get(a_args->q);
+    //     if (chunk_info == NULL)
+    //     {
+    //         break;
+    //     }
+    //
+    //     chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+    //     a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+    // }
 
     return 0;
    }
