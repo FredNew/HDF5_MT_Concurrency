@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
     dset_id = H5Dcreate(file_id, "LZ4 parallel", H5T_NATIVE_INT, fspace_id, H5P_DEFAULT, dcpl_id, H5P_DEFAULT);
 
     printf("Beginning write...\n");
-    H5Dwrite_LZ4_threads(dset_id, H5S_ALL, dset, 4);
+    H5Dwrite_LZ4_threads(dset_id, H5S_ALL, dset, 16);
     printf("Write completed.\n");
 
     H5Dclose(dset_id);

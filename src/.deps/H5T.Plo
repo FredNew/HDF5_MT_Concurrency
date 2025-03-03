@@ -136,6 +136,10 @@ H5T.lo: H5T.c /usr/include/stdc-predef.h H5Tmodule.h H5private.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
+ /usr/include/pthread.h /usr/include/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -178,23 +182,20 @@ H5T.lo: H5T.c /usr/include/stdc-predef.h H5Tmodule.h H5private.h \
  /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
- H5win32defs.h H5TSprivate.h H5encode.h H5MMprivate.h H5MMpublic.h \
- H5ACprivate.h H5ACpublic.h H5Cpublic.h H5Cprivate.h H5Fprivate.h \
- H5Fpublic.h H5Ipublic.h H5FDprivate.h H5FDpublic.h H5FDdevelop.h \
- H5Pprivate.h H5Ppublic.h H5Dpublic.h H5Lpublic.h H5Opublic.h H5Tpublic.h \
- H5Spublic.h H5Zpublic.h H5Sprivate.h H5Gprivate.h H5Gpublic.h \
- H5Bprivate.h H5UCprivate.h H5RSprivate.h H5Tprivate.h H5Tdevelop.h \
- H5Rprivate.h H5Rpublic.h H5Tconv.h H5VLprivate.h H5VLpublic.h \
- H5VLconnector.h H5Apublic.h H5ESpublic.h H5VLconnector_passthru.h \
- H5VLnative.h H5FDmpi.h H5FDmpio.h H5SLprivate.h H5CXprivate.h \
- H5Zprivate.h H5Zdevelop.h H5Dprivate.h H5Oprivate.h H5HGprivate.h \
- queue.h /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h H5Eprivate.h H5Epublic.h \
- H5Epubgen.h H5ESprivate.h H5ESdevelop.h H5FLprivate.h H5FOprivate.h \
- H5Iprivate.h H5Idevelop.h H5Tpkg.h H5VMprivate.h H5Tconv_integer.h \
- H5Tconv_float.h H5Tconv_string.h H5Tconv_bitfield.h H5Tconv_compound.h \
+ H5win32defs.h H5TSprivate.h H5TSdevelop.h H5encode.h H5MMprivate.h \
+ H5MMpublic.h H5ACprivate.h H5ACpublic.h H5Cpublic.h H5Cprivate.h \
+ H5Fprivate.h H5Fpublic.h H5Ipublic.h H5FDprivate.h H5FDpublic.h \
+ H5FDdevelop.h H5Pprivate.h H5Ppublic.h H5Dpublic.h H5Lpublic.h \
+ H5Opublic.h H5Tpublic.h H5Spublic.h H5Zpublic.h H5Sprivate.h \
+ H5Gprivate.h H5Gpublic.h H5Bprivate.h H5UCprivate.h H5RSprivate.h \
+ H5Tprivate.h H5Tdevelop.h H5Rprivate.h H5Rpublic.h H5Tconv.h \
+ H5VLprivate.h H5VLpublic.h H5VLconnector.h H5Apublic.h H5ESpublic.h \
+ H5VLconnector_passthru.h H5VLnative.h H5FDmpi.h H5FDmpio.h H5SLprivate.h \
+ H5CXprivate.h H5Zprivate.h H5Zdevelop.h H5Dprivate.h H5Oprivate.h \
+ H5HGprivate.h queue.h H5Eprivate.h H5Epublic.h H5Epubgen.h H5ESprivate.h \
+ H5ESdevelop.h H5FLprivate.h H5FOprivate.h H5Iprivate.h H5Idevelop.h \
+ H5Tpkg.h H5VMprivate.h H5Tconv_integer.h H5Tconv_float.h \
+ H5Tconv_string.h H5Tconv_bitfield.h H5Tconv_compound.h \
  H5Tconv_reference.h H5Tconv_enum.h H5Tconv_vlen.h H5Tconv_array.h
 /usr/include/stdc-predef.h:
 H5Tmodule.h:
@@ -361,6 +362,11 @@ H5api_adpt.h:
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
+/usr/include/pthread.h:
+/usr/include/sched.h:
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -416,6 +422,7 @@ uthash.h:
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
 H5win32defs.h:
 H5TSprivate.h:
+H5TSdevelop.h:
 H5encode.h:
 H5MMprivate.h:
 H5MMpublic.h:
@@ -465,11 +472,6 @@ H5Dprivate.h:
 H5Oprivate.h:
 H5HGprivate.h:
 queue.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 H5Eprivate.h:
 H5Epublic.h:
 H5Epubgen.h:

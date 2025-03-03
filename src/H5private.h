@@ -53,7 +53,7 @@
 #include <sys/wait.h>
 #endif
 
-/* Include the Pthreads header, if necessary */
+/* Include the Pthreads header, if necessary. */
 #if defined(H5_HAVE_THREADSAFE) && defined(H5_HAVE_PTHREAD_H)
 #include <pthread.h>
 #endif
