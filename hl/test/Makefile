@@ -517,9 +517,9 @@ BYTESEX = little-endian
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CC_VERSION = /usr/bin/gcc
-CFLAGS = 
+CFLAGS = -pthread
 CLANG_SANITIZE_CHECKS = none
-CONFIG_DATE = Mon Mar  3 07:23:19 CET 2025
+CONFIG_DATE = Mon Mar  3 17:10:41 CET 2025
 CONFIG_MODE = 
 CONFIG_USER = fred@frexedo
 CPPFLAGS = 

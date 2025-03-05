@@ -136,10 +136,6 @@ H5WB.lo: H5WB.c /usr/include/stdc-predef.h H5private.h H5public.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -182,9 +178,9 @@ H5WB.lo: H5WB.c /usr/include/stdc-predef.h H5private.h H5public.h \
  /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
- H5win32defs.h H5TSprivate.h H5TSdevelop.h H5encode.h H5MMprivate.h \
- H5MMpublic.h H5Eprivate.h H5Epublic.h H5Ipublic.h H5Epubgen.h \
- H5FLprivate.h H5WBprivate.h
+ H5win32defs.h H5TSprivate.h H5encode.h H5MMprivate.h H5MMpublic.h \
+ H5Eprivate.h H5Epublic.h H5Ipublic.h H5Epubgen.h H5FLprivate.h \
+ H5WBprivate.h
 /usr/include/stdc-predef.h:
 H5private.h:
 H5public.h:
@@ -349,11 +345,6 @@ H5api_adpt.h:
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -409,7 +400,6 @@ uthash.h:
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
 H5win32defs.h:
 H5TSprivate.h:
-H5TSdevelop.h:
 H5encode.h:
 H5MMprivate.h:
 H5MMpublic.h:

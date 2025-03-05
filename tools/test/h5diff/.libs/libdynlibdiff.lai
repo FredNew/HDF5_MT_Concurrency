@@ -14,10 +14,10 @@ library_names='libdynlibdiff.so libdynlibdiff.so libdynlibdiff.so'
 old_library=''
 
 # Linker flags that cannot go in dependency_libs.
-inherited_linker_flags=''
+inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' -lpthread -lz -ldl -lm'
+dependency_libs=' -lz -ldl -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''

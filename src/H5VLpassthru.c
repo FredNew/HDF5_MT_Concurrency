@@ -1377,6 +1377,9 @@ H5VL_pass_through_dataset_specific(void *obj, H5VL_dataset_specific_args_t *args
 static herr_t
 H5VL_pass_through_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_id, void **req)
 {
+
+    // TODO: DELETE printf("Pass through optional on dataset. Here: %s\n", __func__); //No
+
     H5VL_pass_through_t *o = (H5VL_pass_through_t *)obj;
     herr_t               ret_value;
 

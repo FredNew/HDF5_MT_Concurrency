@@ -136,10 +136,6 @@ H5Tcset.lo: H5Tcset.c /usr/include/stdc-predef.h H5Tmodule.h H5private.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -182,10 +178,10 @@ H5Tcset.lo: H5Tcset.c /usr/include/stdc-predef.h H5Tmodule.h H5private.h \
  /usr/include/x86_64-linux-gnu/bits/socket2.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
- H5win32defs.h H5TSprivate.h H5TSdevelop.h H5encode.h H5MMprivate.h \
- H5MMpublic.h H5Eprivate.h H5Epublic.h H5Ipublic.h H5Epubgen.h \
- H5Iprivate.h H5Idevelop.h H5VLprivate.h H5VLpublic.h H5VLconnector.h \
- H5Apublic.h H5Opublic.h H5Tpublic.h H5Dpublic.h H5ESpublic.h H5Fpublic.h \
+ H5win32defs.h H5TSprivate.h H5encode.h H5MMprivate.h H5MMpublic.h \
+ H5Eprivate.h H5Epublic.h H5Ipublic.h H5Epubgen.h H5Iprivate.h \
+ H5Idevelop.h H5VLprivate.h H5VLpublic.h H5VLconnector.h H5Apublic.h \
+ H5Opublic.h H5Tpublic.h H5Dpublic.h H5ESpublic.h H5Fpublic.h \
  H5ACpublic.h H5Cpublic.h H5Lpublic.h H5Rpublic.h H5Gpublic.h \
  H5VLconnector_passthru.h H5VLnative.h H5Tpkg.h H5Tprivate.h H5Tdevelop.h \
  H5Gprivate.h H5Bprivate.h H5Fprivate.h H5FDprivate.h H5FDpublic.h \
@@ -358,11 +354,6 @@ H5api_adpt.h:
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -418,7 +409,6 @@ uthash.h:
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
 H5win32defs.h:
 H5TSprivate.h:
-H5TSdevelop.h:
 H5encode.h:
 H5MMprivate.h:
 H5MMpublic.h:

@@ -154,10 +154,6 @@ vds.o: vds.c /usr/include/stdc-predef.h h5test.h ../src/hdf5.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -208,7 +204,10 @@ vds.o: vds.c /usr/include/stdc-predef.h h5test.h ../src/hdf5.h \
  ../src/H5RSprivate.h ../src/H5Tprivate.h ../src/H5Rprivate.h \
  ../src/H5Tconv.h ../src/H5Oprivate.h ../src/H5ACprivate.h \
  ../src/H5Cprivate.h ../src/H5SLprivate.h ../src/H5HGprivate.h \
- ../src/H5Zprivate.h ../src/queue.h
+ ../src/H5Zprivate.h ../src/queue.h /usr/include/pthread.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h
 /usr/include/stdc-predef.h:
 h5test.h:
 ../src/hdf5.h:
@@ -425,11 +424,6 @@ h5test.h:
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -509,3 +503,8 @@ h5test.h:
 ../src/H5HGprivate.h:
 ../src/H5Zprivate.h:
 ../src/queue.h:
+/usr/include/pthread.h:
+/usr/include/sched.h:
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:

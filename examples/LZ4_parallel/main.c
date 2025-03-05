@@ -11,11 +11,11 @@ int main(int argc, char* argv[]){
     hsize_t dims[rank];
     hsize_t chunk_dims[rank];
 
-    dims[0] = 4*1024;
-    dims[1] = 1024;
+    dims[0] = 4*16*1024;
+    dims[1] = 4*1024;
 
-    chunk_dims[0] = 1024; //down
-    chunk_dims[1] = 256; //right
+    chunk_dims[0] = 4*1024; //down
+    chunk_dims[1] = 1024; //right
 
     hsize_t dset_size = dims[0] * dims[1];
     hsize_t chunk_size = chunk_dims[0] * chunk_dims[1];
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]){
     dset_id = H5Dcreate(file_id, "LZ4 parallel", H5T_NATIVE_INT, fspace_id, H5P_DEFAULT, dcpl_id, H5P_DEFAULT);
 
     printf("Beginning write...\n");
-    H5Dwrite_LZ4_threads(dset_id, H5S_ALL, dset, 16);
+    H5Dwrite_LZ4_threads(dset_id, H5S_ALL, dset, 8);
     printf("Write completed.\n");
 
     H5Dclose(dset_id);

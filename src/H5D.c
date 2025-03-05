@@ -1364,6 +1364,7 @@ done:
 } /* end H5Dwrite() */
 
 
+
 /*-------------------------------------------------------------------------
  * Function:    H5Dwrite_write_LZ4_threads
  *
@@ -1381,7 +1382,6 @@ H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t thre
     herr_t ret_value = SUCCEED;
 
     FUNC_ENTER_API(FAIL)
-
 
     if (!H5Zfilter_avail(32004))
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
@@ -1657,7 +1657,6 @@ void* pool_function(void* thread_args)
             {
                 //queue_add(a_args->q, NULL);
                 targs->status = T_DONE;
-                printf("Thread #%lu done.\n", targs->thread_number);
                 break;
             }
 
@@ -1683,7 +1682,6 @@ void* pool_function(void* thread_args)
                 break;
             }
 
-            printf("Chunk #%lu written.\n", chunk_info->chunk_no);
 
             free(chunk_info->chunk);
 

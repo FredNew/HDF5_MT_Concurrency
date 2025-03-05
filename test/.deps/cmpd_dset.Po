@@ -138,10 +138,6 @@ cmpd_dset.o: cmpd_dset.c /usr/include/stdc-predef.h ../src/H5Tpkg.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -185,24 +181,24 @@ cmpd_dset.o: cmpd_dset.c /usr/include/stdc-predef.h ../src/H5Tpkg.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
  ../src/H5win32defs.h ../src/H5overflow.h ../src/H5TSprivate.h \
- ../src/H5TSdevelop.h ../src/H5encode.h ../src/H5MMprivate.h \
- ../src/H5Gprivate.h ../src/H5Gpublic.h ../src/H5Lpublic.h \
- ../src/H5Opublic.h ../src/H5Bprivate.h ../src/H5Fprivate.h \
- ../src/H5Fpublic.h ../src/H5ACpublic.h ../src/H5Cpublic.h \
- ../src/H5FDprivate.h ../src/H5FDpublic.h ../src/H5FDdevelop.h \
- ../src/H5Pprivate.h ../src/H5Ppublic.h ../src/H5Dpublic.h \
- ../src/H5Spublic.h ../src/H5Zpublic.h ../src/H5Sprivate.h \
- ../src/H5FDmpi.h ../src/H5FDmpio.h ../src/H5VLprivate.h \
- ../src/H5VLpublic.h ../src/H5VLconnector.h ../src/H5Apublic.h \
- ../src/H5ESpublic.h ../src/H5Rpublic.h ../src/H5VLconnector_passthru.h \
- ../src/H5VLnative.h ../src/H5UCprivate.h ../src/H5RSprivate.h \
- ../src/H5Rprivate.h ../src/H5Tconv.h ../src/H5FLprivate.h \
- ../src/H5Oprivate.h ../src/H5ACprivate.h ../src/H5Cprivate.h \
- ../src/H5SLprivate.h ../src/H5HGprivate.h ../src/H5Zprivate.h \
- ../src/H5Zdevelop.h ../src/H5Tconv_compound.h ../src/H5Tpkg.h \
- ../src/H5Iprivate.h ../src/H5Idevelop.h h5test.h ../src/hdf5.h \
- ../src/H5Epublic.h ../src/H5Epubgen.h ../src/H5Mpublic.h \
- ../src/H5PLpublic.h ../src/H5ESdevelop.h ../src/H5Ldevelop.h \
+ ../src/H5encode.h ../src/H5MMprivate.h ../src/H5Gprivate.h \
+ ../src/H5Gpublic.h ../src/H5Lpublic.h ../src/H5Opublic.h \
+ ../src/H5Bprivate.h ../src/H5Fprivate.h ../src/H5Fpublic.h \
+ ../src/H5ACpublic.h ../src/H5Cpublic.h ../src/H5FDprivate.h \
+ ../src/H5FDpublic.h ../src/H5FDdevelop.h ../src/H5Pprivate.h \
+ ../src/H5Ppublic.h ../src/H5Dpublic.h ../src/H5Spublic.h \
+ ../src/H5Zpublic.h ../src/H5Sprivate.h ../src/H5FDmpi.h \
+ ../src/H5FDmpio.h ../src/H5VLprivate.h ../src/H5VLpublic.h \
+ ../src/H5VLconnector.h ../src/H5Apublic.h ../src/H5ESpublic.h \
+ ../src/H5Rpublic.h ../src/H5VLconnector_passthru.h ../src/H5VLnative.h \
+ ../src/H5UCprivate.h ../src/H5RSprivate.h ../src/H5Rprivate.h \
+ ../src/H5Tconv.h ../src/H5FLprivate.h ../src/H5Oprivate.h \
+ ../src/H5ACprivate.h ../src/H5Cprivate.h ../src/H5SLprivate.h \
+ ../src/H5HGprivate.h ../src/H5Zprivate.h ../src/H5Zdevelop.h \
+ ../src/H5Tconv_compound.h ../src/H5Tpkg.h ../src/H5Iprivate.h \
+ ../src/H5Idevelop.h h5test.h ../src/hdf5.h ../src/H5Epublic.h \
+ ../src/H5Epubgen.h ../src/H5Mpublic.h ../src/H5PLpublic.h \
+ ../src/H5ESdevelop.h ../src/H5Ldevelop.h ../src/H5TSdevelop.h \
  ../src/H5FDcore.h ../src/H5FDdirect.h ../src/H5FDfamily.h \
  ../src/H5FDhdfs.h ../src/H5FDlog.h ../src/H5FDmirror.h \
  ../src/H5FDmulti.h ../src/H5FDonion.h ../src/H5FDros3.h \
@@ -381,11 +377,6 @@ cmpd_dset.o: cmpd_dset.c /usr/include/stdc-predef.h ../src/H5Tpkg.h \
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -442,7 +433,6 @@ cmpd_dset.o: cmpd_dset.c /usr/include/stdc-predef.h ../src/H5Tpkg.h \
 ../src/H5win32defs.h:
 ../src/H5overflow.h:
 ../src/H5TSprivate.h:
-../src/H5TSdevelop.h:
 ../src/H5encode.h:
 ../src/H5MMprivate.h:
 ../src/H5Gprivate.h:
@@ -497,6 +487,7 @@ h5test.h:
 ../src/H5PLpublic.h:
 ../src/H5ESdevelop.h:
 ../src/H5Ldevelop.h:
+../src/H5TSdevelop.h:
 ../src/H5FDcore.h:
 ../src/H5FDdirect.h:
 ../src/H5FDfamily.h:

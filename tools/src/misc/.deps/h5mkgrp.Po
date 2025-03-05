@@ -137,10 +137,6 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -184,10 +180,10 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
  /usr/include/x86_64-linux-gnu/bits/in.h /usr/include/netdb.h \
  /usr/include/rpc/netdb.h /usr/include/x86_64-linux-gnu/bits/netdb.h \
  ../../../src/H5win32defs.h ../../../src/H5TSprivate.h \
- ../../../src/H5TSdevelop.h ../../../src/H5encode.h \
- ../../../src/H5MMprivate.h ../../../src/H5MMpublic.h \
- ../../../src/H5private.h ../../../tools/lib/h5tools.h \
- ../../../src/hdf5.h ../../../src/H5Apublic.h ../../../src/H5Ipublic.h \
+ ../../../src/H5encode.h ../../../src/H5MMprivate.h \
+ ../../../src/H5MMpublic.h ../../../src/H5private.h \
+ ../../../tools/lib/h5tools.h ../../../src/hdf5.h \
+ ../../../src/H5Apublic.h ../../../src/H5Ipublic.h \
  ../../../src/H5Opublic.h ../../../src/H5Tpublic.h \
  ../../../src/H5ACpublic.h ../../../src/H5Cpublic.h \
  ../../../src/H5Dpublic.h ../../../src/H5Epublic.h \
@@ -200,13 +196,13 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
  ../../../src/H5Zpublic.h ../../../src/H5PLpublic.h \
  ../../../src/H5ESdevelop.h ../../../src/H5FDdevelop.h \
  ../../../src/H5Idevelop.h ../../../src/H5Ldevelop.h \
- ../../../src/H5Tdevelop.h ../../../src/H5Zdevelop.h \
- ../../../src/H5VLconnector_passthru.h ../../../src/H5VLnative.h \
- ../../../src/H5FDcore.h ../../../src/H5FDdirect.h \
- ../../../src/H5FDfamily.h ../../../src/H5FDhdfs.h ../../../src/H5FDlog.h \
- ../../../src/H5FDmirror.h ../../../src/H5FDmpi.h ../../../src/H5FDmpio.h \
- ../../../src/H5FDmulti.h ../../../src/H5FDonion.h \
- ../../../src/H5FDros3.h ../../../src/H5FDsec2.h \
+ ../../../src/H5Tdevelop.h ../../../src/H5TSdevelop.h \
+ ../../../src/H5Zdevelop.h ../../../src/H5VLconnector_passthru.h \
+ ../../../src/H5VLnative.h ../../../src/H5FDcore.h \
+ ../../../src/H5FDdirect.h ../../../src/H5FDfamily.h \
+ ../../../src/H5FDhdfs.h ../../../src/H5FDlog.h ../../../src/H5FDmirror.h \
+ ../../../src/H5FDmpi.h ../../../src/H5FDmpio.h ../../../src/H5FDmulti.h \
+ ../../../src/H5FDonion.h ../../../src/H5FDros3.h ../../../src/H5FDsec2.h \
  ../../../src/H5FDsplitter.h ../../../src/H5FDstdio.h \
  /home/fred/CLionProjects/HDF5_parallel_LZ4/src/H5FDsubfiling/H5FDsubfiling.h \
  /home/fred/CLionProjects/HDF5_parallel_LZ4/src/H5FDsubfiling/H5FDioc.h \
@@ -378,11 +374,6 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -438,7 +429,6 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
 /usr/include/x86_64-linux-gnu/bits/netdb.h:
 ../../../src/H5win32defs.h:
 ../../../src/H5TSprivate.h:
-../../../src/H5TSdevelop.h:
 ../../../src/H5encode.h:
 ../../../src/H5MMprivate.h:
 ../../../src/H5MMpublic.h:
@@ -472,6 +462,7 @@ h5mkgrp.o: h5mkgrp.c /usr/include/stdc-predef.h ../../../src/H5private.h \
 ../../../src/H5Idevelop.h:
 ../../../src/H5Ldevelop.h:
 ../../../src/H5Tdevelop.h:
+../../../src/H5TSdevelop.h:
 ../../../src/H5Zdevelop.h:
 ../../../src/H5VLconnector_passthru.h:
 ../../../src/H5VLnative.h:

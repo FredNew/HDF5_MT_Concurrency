@@ -555,6 +555,9 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5VL__native_dataset_specific() */
 
+static pthread_mutex_t global_test_lock = PTHREAD_MUTEX_INITIALIZER;
+
+
 /*-------------------------------------------------------------------------
  * Function:    H5VL__native_dataset_optional
  *
@@ -570,6 +573,8 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
     H5D_t                               *dset      = (H5D_t *)obj; /* Dataset */
     H5VL_native_dataset_optional_args_t *opt_args  = args->args; /* Pointer to native operation's arguments */
     herr_t                               ret_value = SUCCEED;    /* Return value */
+
+    printf("Optional in %s\n", __func__);
 
     FUNC_ENTER_PACKAGE
 
@@ -739,6 +744,7 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
             break;
         }
 
+
         /* H5Dwrite_chunk */
         case H5VL_NATIVE_DATASET_CHUNK_WRITE: {
             H5VL_native_dataset_chunk_write_t *chunk_write_args = &opt_args->chunk_write;
@@ -756,11 +762,12 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
             if (H5D__chunk_get_offset_copy(dset, chunk_write_args->offset, offset_copy) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTCOPY, FAIL, "failure to copy offset array");
 
-            /* Write chunk */
+            /* Write chunk */ //TODO: Need a lock around here. Fetches chunk addresses that might be incorrect.
+            pthread_mutex_lock(&global_test_lock);
             if (H5D__chunk_direct_write(dset, chunk_write_args->filters, offset_copy, chunk_write_args->size,
                                         chunk_write_args->buf) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write unprocessed chunk data");
-
+            pthread_mutex_unlock(&global_test_lock);
             break;
         }
 

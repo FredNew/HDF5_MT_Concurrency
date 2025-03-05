@@ -154,10 +154,6 @@ evict_on_close.o: evict_on_close.c /usr/include/stdc-predef.h h5test.h \
  /usr/include/x86_64-linux-gnu/sys/time.h /usr/include/pwd.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h \
  /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h \
- /usr/include/pthread.h /usr/include/sched.h \
- /usr/include/x86_64-linux-gnu/bits/sched.h \
- /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
- /usr/include/x86_64-linux-gnu/bits/cpu-set.h \
  /usr/include/x86_64-linux-gnu/sys/stat.h \
  /usr/include/x86_64-linux-gnu/bits/statx.h /usr/include/linux/stat.h \
  /usr/include/linux/types.h /usr/include/x86_64-linux-gnu/asm/types.h \
@@ -209,7 +205,10 @@ evict_on_close.o: evict_on_close.c /usr/include/stdc-predef.h h5test.h \
  ../src/H5Tconv.h ../src/H5VLprivate.h ../src/H5Clog.h \
  ../src/H5SLprivate.h ../src/H5Dpkg.h ../src/H5Dprivate.h \
  ../src/H5Oprivate.h ../src/H5ACprivate.h ../src/H5HGprivate.h \
- ../src/H5Zprivate.h ../src/queue.h ../src/H5B2private.h \
+ ../src/H5Zprivate.h ../src/queue.h /usr/include/pthread.h \
+ /usr/include/sched.h /usr/include/x86_64-linux-gnu/bits/sched.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
+ /usr/include/x86_64-linux-gnu/bits/cpu-set.h ../src/H5B2private.h \
  ../src/H5FLprivate.h ../src/H5Fpkg.h ../src/H5FOprivate.h \
  ../src/H5FSprivate.h ../src/H5PBprivate.h ../src/H5Gpkg.h \
  ../src/H5HFprivate.h ../src/H5HLprivate.h ../src/H5Ipkg.h \
@@ -430,11 +429,6 @@ h5test.h:
 /usr/include/pwd.h:
 /usr/include/x86_64-linux-gnu/sys/wait.h:
 /usr/include/x86_64-linux-gnu/bits/types/idtype_t.h:
-/usr/include/pthread.h:
-/usr/include/sched.h:
-/usr/include/x86_64-linux-gnu/bits/sched.h:
-/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
-/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 /usr/include/x86_64-linux-gnu/sys/stat.h:
 /usr/include/x86_64-linux-gnu/bits/statx.h:
 /usr/include/linux/stat.h:
@@ -517,6 +511,11 @@ h5test.h:
 ../src/H5HGprivate.h:
 ../src/H5Zprivate.h:
 ../src/queue.h:
+/usr/include/pthread.h:
+/usr/include/sched.h:
+/usr/include/x86_64-linux-gnu/bits/sched.h:
+/usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+/usr/include/x86_64-linux-gnu/bits/cpu-set.h:
 ../src/H5B2private.h:
 ../src/H5FLprivate.h:
 ../src/H5Fpkg.h:

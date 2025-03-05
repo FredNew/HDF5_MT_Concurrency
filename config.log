@@ -108,8 +108,8 @@ BASH_LOADABLES_PATH=/usr/local/lib/bash:/usr/lib/bash:/opt/local/lib/bash:/usr/p
 BASH_SOURCE=([0]="./configure")
 BASH_VERSINFO=([0]="5" [1]="2" [2]="21" [3]="1" [4]="release" [5]="x86_64-pc-linux-gnu")
 BASH_VERSION='5.2.21(1)-release'
-CFLAGS=
-CFLAGS_SED=
+CFLAGS=-pthread
+CFLAGS_SED=-pthread
 COLORFGBG='15;0'
 COLORTERM=truecolor
 COLUMNS=236
@@ -262,7 +262,7 @@ XKB_DEFAULT_VARIANT=euro
 _='checking shell variables initial values... '
 _am_tools='gnutar  pax cpio none'
 ac_abs_confdir=/home/fred/CLionProjects/HDF5_parallel_LZ4
-ac_arg=--prefix=/home/fred/parallel_lz4_hdf5/
+ac_arg=CFLAGS=-pthread
 ac_aux=install-sh
 ac_aux_dir=./bin/
 ac_aux_dir_candidates=./bin
@@ -1057,7 +1057,7 @@ ac_config_guess='/bin/bash ./bin/config.guess'
 ac_config_headers=' src/H5config.h'
 ac_config_libobj_dir=.
 ac_config_sub='/bin/bash ./bin/config.sub'
-ac_configure_args=' '\''--prefix=/home/fred/parallel_lz4_hdf5/'\'''
+ac_configure_args=' '\''--prefix=/home/fred/parallel_lz4_hdf5/'\'' '\''CFLAGS=-pthread'\'''
 ac_configure_args_raw=' --prefix=/home/fred/parallel_lz4_hdf5/'
 ac_cpp='$CPP $CPPFLAGS'
 ac_cv_build=x86_64-pc-linux-gnu
@@ -1065,8 +1065,8 @@ ac_cv_env_CCC_set=
 ac_cv_env_CCC_value=
 ac_cv_env_CC_set=
 ac_cv_env_CC_value=
-ac_cv_env_CFLAGS_set=
-ac_cv_env_CFLAGS_value=
+ac_cv_env_CFLAGS_set=set
+ac_cv_env_CFLAGS_value=-pthread
 ac_cv_env_CPPFLAGS_set=
 ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CXXCPP_set=
@@ -1538,8 +1538,8 @@ ac_env_CCC_set=
 ac_env_CCC_value=
 ac_env_CC_set=
 ac_env_CC_value=
-ac_env_CFLAGS_set=
-ac_env_CFLAGS_value=
+ac_env_CFLAGS_set=set
+ac_env_CFLAGS_value=-pthread
 ac_env_CPPFLAGS_set=
 ac_env_CPPFLAGS_value=
 ac_env_CXXCPP_set=
@@ -2148,7 +2148,7 @@ am_lf='
 '
 am_make=make
 am_missing_run='${SHELL} '\''/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing'\'' '
-am_sleep_pid=327297
+am_sleep_pid=361046
 as_basename=basename
 as_cr_LETTERS=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 as_cr_Letters=abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ
@@ -2216,7 +2216,7 @@ program_suffix=NONE
 program_transform_name=s,x,x,
 psdir='${docdir}'
 runstatedir='${localstatedir}/run'
-saved_user_CFLAGS=
+saved_user_CFLAGS=-pthread
 saved_user_CPPFLAGS=
 saved_user_CXXFLAGS=
 saved_user_FCFLAGS=
@@ -2303,27 +2303,27 @@ gcc: fatal error: no input files
 compilation terminated.
 configure:5624: $? = 1
 configure:5644: checking whether the C compiler works
-configure:5666: gcc       conftest.c  >&5
+configure:5666: gcc  -pthread     conftest.c  >&5
 configure:5670: $? = 0
 configure:5720: result: yes
 configure:5723: checking for C compiler default output file name
 configure:5725: result: a.out
 configure:5731: checking for suffix of executables
-configure:5738: gcc -o conftest       conftest.c  >&5
+configure:5738: gcc -o conftest  -pthread     conftest.c  >&5
 configure:5742: $? = 0
 configure:5765: result: 
 configure:5787: checking whether we are cross compiling
-configure:5795: gcc -o conftest       conftest.c  >&5
+configure:5795: gcc -o conftest  -pthread     conftest.c  >&5
 configure:5799: $? = 0
 configure:5806: ./conftest
 configure:5810: $? = 0
 configure:5825: result: no
 configure:5830: checking for suffix of object files
-configure:5853: gcc -c     conftest.c >&5
+configure:5853: gcc -c  -pthread   conftest.c >&5
 configure:5857: $? = 0
 configure:5879: result: o
 configure:5883: checking whether the compiler supports GNU C
-configure:5903: gcc -c     conftest.c >&5
+configure:5903: gcc -c  -pthread   conftest.c >&5
 configure:5903: $? = 0
 configure:5913: result: yes
 configure:5924: checking whether gcc accepts -g
@@ -2331,7 +2331,7 @@ configure:5945: gcc -c -g   conftest.c >&5
 configure:5945: $? = 0
 configure:5989: result: yes
 configure:6009: checking for gcc option to enable C11 features
-configure:6024: gcc  -c     conftest.c >&5
+configure:6024: gcc  -c  -pthread   conftest.c >&5
 configure:6024: $? = 0
 configure:6042: result: none needed
 configure:6158: checking whether gcc understands -c and -o together
@@ -2350,45 +2350,45 @@ configure:6391: result: gcc3
 configure:6413: checking if unsupported combinations of configure options are allowed
 configure:6424: result: no
 configure:6443: checking for stdio.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for stdlib.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for string.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for inttypes.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for stdint.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for strings.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for sys/stat.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for sys/types.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6443: checking for unistd.h
-configure:6443: gcc -c     conftest.c >&5
+configure:6443: gcc -c  -pthread   conftest.c >&5
 configure:6443: $? = 0
 configure:6443: result: yes
 configure:6468: checking for off_t
-configure:6468: gcc -c     conftest.c >&5
+configure:6468: gcc -c  -pthread   conftest.c >&5
 configure:6468: $? = 0
-configure:6468: gcc -c     conftest.c >&5
+configure:6468: gcc -c  -pthread   conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:52:20: error: expected expression before ')' token
    52 | if (sizeof ((off_t)))
@@ -2453,9 +2453,9 @@ configure: failed program was:
 | }
 configure:6468: result: yes
 configure:6478: checking for ssize_t
-configure:6478: gcc -c     conftest.c >&5
+configure:6478: gcc -c  -pthread   conftest.c >&5
 configure:6478: $? = 0
-configure:6478: gcc -c     conftest.c >&5
+configure:6478: gcc -c  -pthread   conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:52:22: error: expected expression before ')' token
    52 | if (sizeof ((ssize_t)))
@@ -2520,7 +2520,7 @@ configure: failed program was:
 | }
 configure:6478: result: yes
 configure:6488: checking whether byte ordering is bigendian
-configure:6504: gcc -c     conftest.c >&5
+configure:6504: gcc -c  -pthread   conftest.c >&5
 conftest.c:22:16: error: unknown type name 'not'
    22 |                not a universal capable compiler
       |                ^~~
@@ -2555,9 +2555,9 @@ configure: failed program was:
 | 	     #endif
 | 	     typedef int dummy;
 | 
-configure:6550: gcc -c     conftest.c >&5
+configure:6550: gcc -c  -pthread   conftest.c >&5
 configure:6550: $? = 0
-configure:6569: gcc -c     conftest.c >&5
+configure:6569: gcc -c  -pthread   conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:28:18: error: unknown type name 'not'; did you mean 'ino_t'?
    28 |                  not big endian
@@ -2603,55 +2603,55 @@ configure: failed program was:
 | }
 configure:6703: result: no
 configure:6725: checking size of char
-configure:6731: gcc -o conftest       conftest.c  >&5
+configure:6731: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6731: $? = 0
 configure:6731: ./conftest
 configure:6731: $? = 0
 configure:6746: result: 1
 configure:6758: checking size of short
-configure:6764: gcc -o conftest       conftest.c  >&5
+configure:6764: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6764: $? = 0
 configure:6764: ./conftest
 configure:6764: $? = 0
 configure:6779: result: 2
 configure:6791: checking size of int
-configure:6797: gcc -o conftest       conftest.c  >&5
+configure:6797: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6797: $? = 0
 configure:6797: ./conftest
 configure:6797: $? = 0
 configure:6812: result: 4
 configure:6824: checking size of unsigned
-configure:6830: gcc -o conftest       conftest.c  >&5
+configure:6830: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6830: $? = 0
 configure:6830: ./conftest
 configure:6830: $? = 0
 configure:6845: result: 4
 configure:6857: checking size of long
-configure:6863: gcc -o conftest       conftest.c  >&5
+configure:6863: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6863: $? = 0
 configure:6863: ./conftest
 configure:6863: $? = 0
 configure:6878: result: 8
 configure:6890: checking size of long long
-configure:6896: gcc -o conftest       conftest.c  >&5
+configure:6896: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6896: $? = 0
 configure:6896: ./conftest
 configure:6896: $? = 0
 configure:6911: result: 8
 configure:6923: checking size of float
-configure:6929: gcc -o conftest       conftest.c  >&5
+configure:6929: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6929: $? = 0
 configure:6929: ./conftest
 configure:6929: $? = 0
 configure:6944: result: 4
 configure:6956: checking size of double
-configure:6962: gcc -o conftest       conftest.c  >&5
+configure:6962: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6962: $? = 0
 configure:6962: ./conftest
 configure:6962: $? = 0
 configure:6977: result: 8
 configure:6989: checking size of long double
-configure:6995: gcc -o conftest       conftest.c  >&5
+configure:6995: gcc -o conftest  -pthread     conftest.c  >&5
 configure:6995: $? = 0
 configure:6995: ./conftest
 configure:6995: $? = 0
@@ -2662,13 +2662,13 @@ configure:7054: checking if _Float16 support is enabled
 configure:7070: result: yes
 configure:7080: checking if _Float16 support is available
 configure:7086: checking size of _Float16
-configure:7092: gcc -o conftest       conftest.c  >&5
+configure:7092: gcc -o conftest  -pthread     conftest.c  >&5
 configure:7092: $? = 0
 configure:7092: ./conftest
 configure:7092: $? = 0
 configure:7107: result: 2
 configure:7119: checking for gcc options needed to detect all undeclared functions
-configure:7141: gcc -c      conftest.c >&5
+configure:7141: gcc -c  -pthread    conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:35:8: error: 'strchr' undeclared (first use in this function)
    35 | (void) strchr;
@@ -2718,35 +2718,35 @@ configure: failed program was:
 |   ;
 |   return 0;
 | }
-configure:7168: gcc -c      conftest.c >&5
+configure:7168: gcc -c  -pthread    conftest.c >&5
 configure:7168: $? = 0
 configure:7185: result: none needed
 configure:7199: checking whether FLT16_EPSILON is declared
-configure:7199: gcc -c      conftest.c >&5
+configure:7199: gcc -c  -pthread    conftest.c >&5
 configure:7199: $? = 0
 configure:7199: result: yes
 configure:7207: checking whether FLT16_MIN is declared
-configure:7207: gcc -c      conftest.c >&5
+configure:7207: gcc -c  -pthread    conftest.c >&5
 configure:7207: $? = 0
 configure:7207: result: yes
 configure:7215: checking whether FLT16_MAX is declared
-configure:7215: gcc -c      conftest.c >&5
+configure:7215: gcc -c  -pthread    conftest.c >&5
 configure:7215: $? = 0
 configure:7215: result: yes
 configure:7223: checking whether FLT16_MIN_10_EXP is declared
-configure:7223: gcc -c      conftest.c >&5
+configure:7223: gcc -c  -pthread    conftest.c >&5
 configure:7223: $? = 0
 configure:7223: result: yes
 configure:7231: checking whether FLT16_MAX_10_EXP is declared
-configure:7231: gcc -c      conftest.c >&5
+configure:7231: gcc -c  -pthread    conftest.c >&5
 configure:7231: $? = 0
 configure:7231: result: yes
 configure:7239: checking whether FLT16_MANT_DIG is declared
-configure:7239: gcc -c      conftest.c >&5
+configure:7239: gcc -c  -pthread    conftest.c >&5
 configure:7239: $? = 0
 configure:7239: result: yes
 configure:7265: checking if compiler can correctly compile and run a test program which converts _Float16 to other types with casts
-configure:7280: gcc -o conftest       conftest.c  >&5
+configure:7280: gcc -o conftest  -pthread     conftest.c  >&5
 configure:7280: $? = 0
 configure:7280: ./conftest
 configure:7280: $? = 0
@@ -2758,7 +2758,7 @@ configure:7319: ./conftest
 configure:7319: $? = 0
 configure:7331: result: yes
 configure:7345: checking if compiler can correctly convert long double values to _Float16
-configure:7363: gcc -o conftest       conftest.c  >&5
+configure:7363: gcc -o conftest  -pthread     conftest.c  >&5
 configure:7363: $? = 0
 configure:7363: ./conftest
 configure:7363: $? = 0
@@ -2770,14 +2770,14 @@ configure:7401: ./conftest
 configure:7401: $? = 0
 configure:7414: result: yes
 configure:7432: checking for fabsf16
-configure:7432: gcc -o conftest       conftest.c  >&5
+configure:7432: gcc -o conftest  -pthread     conftest.c  >&5
 conftest.c:48:6: warning: conflicting types for built-in function 'fabsf16'; expected '_Float16(_Float16)' [-Wbuiltin-declaration-mismatch]
    48 | char fabsf16 ();
       |      ^~~~~~~
 conftest.c:40:1: note: 'fabsf16' is declared in header '<math.h>'
    39 | #include <limits.h>
    40 | #undef fabsf16
-/usr/bin/ld: /tmp/ccfIvZgR.o: in function `main':
+/usr/bin/ld: /tmp/cc9K00j4.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `fabsf16'
 collect2: error: ld returned 1 exit status
 configure:7432: $? = 1
@@ -3036,7 +3036,7 @@ configure:14777: result: yes
 configure:14789: checking for BSD- or MS-compatible name lister (nm)
 configure:14844: result: /usr/bin/nm -B
 configure:14984: checking the name lister (/usr/bin/nm -B) interface
-configure:14992: gcc -c     conftest.c >&5
+configure:14992: gcc -c  -pthread   conftest.c >&5
 configure:14995: /usr/bin/nm -B "conftest.o"
 configure:14998: output
 0000000000000000 B some_variable
@@ -3064,7 +3064,7 @@ configure:15861: result: no
 configure:15891: checking how to associate runtime and link libraries
 configure:15919: result: printf %s\n
 configure:16069: checking for archiver @FILE support
-configure:16095: gcc -c     conftest.c >&5
+configure:16095: gcc -c  -pthread   conftest.c >&5
 configure:16095: $? = 0
 configure:16099: ar cr libconftest.a @conftest.lst >&5
 configure:16102: $? = 0
@@ -3079,10 +3079,10 @@ configure:16294: checking for ranlib
 configure:16315: found /usr/bin/ranlib
 configure:16326: result: ranlib
 configure:16428: checking command to parse /usr/bin/nm -B output from gcc object
-configure:16582: gcc -c     conftest.c >&5
+configure:16582: gcc -c  -pthread   conftest.c >&5
 configure:16585: $? = 0
 configure:16589: /usr/bin/nm -B conftest.o | /usr/bin/sed -n -e 's/^.*[	 ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[	 ][	 ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p' | /usr/bin/sed '/ __gnu_lto/d' > conftest.nm
-configure:16655: gcc -o conftest       conftest.c conftstm.o >&5
+configure:16655: gcc -o conftest  -pthread     conftest.c conftstm.o >&5
 configure:16658: $? = 0
 configure:16696: result: ok
 configure:16743: checking for sysroot
@@ -3091,7 +3091,7 @@ configure:16781: checking for a working dd
 configure:16825: result: /usr/bin/dd
 configure:16829: checking how to truncate binary pipes
 configure:16845: result: /usr/bin/dd bs=4096 count=1
-configure:16982: gcc -c     conftest.c >&5
+configure:16982: gcc -c  -pthread   conftest.c >&5
 configure:16985: $? = 0
 configure:17190: checking for mt
 configure:17211: found /usr/bin/mt
@@ -3100,26 +3100,26 @@ configure:17245: checking if mt is a manifest tool
 configure:17252: mt '-?'
 configure:17260: result: no
 configure:17989: checking for dlfcn.h
-configure:17989: gcc -c     conftest.c >&5
+configure:17989: gcc -c  -pthread   conftest.c >&5
 configure:17989: $? = 0
 configure:17989: result: yes
 configure:18258: checking for objdir
 configure:18274: result: .libs
 configure:18538: checking if gcc supports -fno-rtti -fno-exceptions
-configure:18557: gcc -c     -fno-rtti -fno-exceptions conftest.c >&5
+configure:18557: gcc -c  -pthread   -fno-rtti -fno-exceptions conftest.c >&5
 cc1: warning: command-line option '-fno-rtti' is valid for C++/D/ObjC++ but not for C
 configure:18561: $? = 0
 configure:18574: result: no
 configure:18938: checking for gcc option to produce PIC
 configure:18946: result: -fPIC -DPIC
 configure:18954: checking if gcc PIC flag -fPIC -DPIC works
-configure:18973: gcc -c     -fPIC -DPIC -DPIC conftest.c >&5
+configure:18973: gcc -c  -pthread   -fPIC -DPIC -DPIC conftest.c >&5
 configure:18977: $? = 0
 configure:18990: result: yes
 configure:19019: checking if gcc static flag -static works
 configure:19048: result: yes
 configure:19063: checking if gcc supports -c -o file.o
-configure:19085: gcc -c     -o out/conftest2.o conftest.c >&5
+configure:19085: gcc -c  -pthread   -o out/conftest2.o conftest.c >&5
 configure:19089: $? = 0
 configure:19111: result: yes
 configure:19119: checking if gcc supports -c -o file.o
@@ -3127,20 +3127,20 @@ configure:19167: result: yes
 configure:19200: checking whether the gcc linker (/usr/bin/ld -m elf_x86_64) supports shared libraries
 configure:20490: result: yes
 configure:20527: checking whether -lc should be explicitly linked in
-configure:20536: gcc -c     conftest.c >&5
+configure:20536: gcc -c  -pthread   conftest.c >&5
 configure:20539: $? = 0
 configure:20554: gcc -shared  -fPIC -DPIC conftest.o  -v -Wl,-soname -Wl,conftest -o conftest 2\>\&1 \| /usr/bin/grep  -lc  \>/dev/null 2\>\&1
 configure:20557: $? = 0
 configure:20571: result: no
 configure:20731: checking dynamic linker characteristics
-configure:21321: gcc -o conftest       -Wl,-rpath -Wl,/foo conftest.c  >&5
+configure:21321: gcc -o conftest  -pthread     -Wl,-rpath -Wl,/foo conftest.c  >&5
 configure:21321: $? = 0
 configure:21572: result: GNU/Linux ld.so
 configure:21694: checking how to hardcode library paths into programs
 configure:21719: result: immediate
 configure:21829: checking for shl_load
-configure:21829: gcc -o conftest       conftest.c  >&5
-/usr/bin/ld: /tmp/ccwQzCYj.o: in function `main':
+configure:21829: gcc -o conftest  -pthread     conftest.c  >&5
+/usr/bin/ld: /tmp/ccQKgj2N.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `shl_load'
 collect2: error: ld returned 1 exit status
 configure:21829: $? = 1
@@ -3214,7 +3214,7 @@ configure: failed program was:
 | }
 configure:21829: result: no
 configure:21834: checking for shl_load in -ldld
-configure:21865: gcc -o conftest       conftest.c -ldld   >&5
+configure:21865: gcc -o conftest  -pthread     conftest.c -ldld   >&5
 /usr/bin/ld: cannot find -ldld: No such file or directory
 collect2: error: ld returned 1 exit status
 configure:21865: $? = 1
@@ -3277,16 +3277,16 @@ configure: failed program was:
 | }
 configure:21875: result: no
 configure:21881: checking for dlopen
-configure:21881: gcc -o conftest       conftest.c  >&5
+configure:21881: gcc -o conftest  -pthread     conftest.c  >&5
 configure:21881: $? = 0
 configure:21881: result: yes
 configure:22063: checking whether a program can dlopen itself
-configure:22144: gcc -o conftest     -DHAVE_DLFCN_H   -Wl,--export-dynamic conftest.c   >&5
+configure:22144: gcc -o conftest  -pthread   -DHAVE_DLFCN_H   -Wl,--export-dynamic conftest.c   >&5
 configure:22147: $? = 0
 configure:22165: result: yes
 configure:22170: checking whether a statically linked program can dlopen itself
-configure:22251: gcc -o conftest     -DHAVE_DLFCN_H   -Wl,--export-dynamic -static conftest.c   >&5
-/usr/bin/ld: /tmp/ccgABFbc.o: in function `main':
+configure:22251: gcc -o conftest  -pthread   -DHAVE_DLFCN_H   -Wl,--export-dynamic -static conftest.c   >&5
+/usr/bin/ld: /tmp/cc27LzTI.o: in function `main':
 conftest.c:(.text+0x26): warning: Using 'dlopen' in statically linked applications requires at runtime the shared libraries from the glibc version used for linking
 configure:22254: $? = 0
 conftest: undefined symbol: _fnord
@@ -3304,7 +3304,7 @@ configure:28940: result: no
 configure:28979: checking if -Wl,-rpath should be used to link shared libs in nondefault directories
 configure:28998: result: yes
 configure:29011: checking for ceil in -lm
-configure:29042: gcc -o conftest       conftest.c -lm   >&5
+configure:29042: gcc -o conftest  -pthread     conftest.c -lm   >&5
 conftest.c:41:6: warning: conflicting types for built-in function 'ceil'; expected 'double(double)' [-Wbuiltin-declaration-mismatch]
    41 | char ceil ();
       |      ^~~~
@@ -3313,247 +3313,247 @@ conftest.c:1:1: note: 'ceil' is declared in header '<math.h>'
 configure:29042: $? = 0
 configure:29052: result: yes
 configure:29062: checking for dlopen in -ldl
-configure:29093: gcc -o conftest       conftest.c -ldl  -lm  >&5
+configure:29093: gcc -o conftest  -pthread     conftest.c -ldl  -lm  >&5
 configure:29093: $? = 0
 configure:29103: result: yes
 configure:29119: checking for dirent.h
-configure:29119: gcc -c     conftest.c >&5
+configure:29119: gcc -c  -pthread   conftest.c >&5
 configure:29119: $? = 0
 configure:29119: result: yes
 configure:29125: checking for features.h
-configure:29125: gcc -c     conftest.c >&5
+configure:29125: gcc -c  -pthread   conftest.c >&5
 configure:29125: $? = 0
 configure:29125: result: yes
 configure:29131: checking for pwd.h
-configure:29131: gcc -c     conftest.c >&5
+configure:29131: gcc -c  -pthread   conftest.c >&5
 configure:29131: $? = 0
 configure:29131: result: yes
 configure:29137: checking for unistd.h
 configure:29137: result: yes
 configure:29144: checking for sys/file.h
-configure:29144: gcc -c     conftest.c >&5
+configure:29144: gcc -c  -pthread   conftest.c >&5
 configure:29144: $? = 0
 configure:29144: result: yes
 configure:29150: checking for sys/ioctl.h
-configure:29150: gcc -c     conftest.c >&5
+configure:29150: gcc -c  -pthread   conftest.c >&5
 configure:29150: $? = 0
 configure:29150: result: yes
 configure:29156: checking for sys/resource.h
-configure:29156: gcc -c     conftest.c >&5
+configure:29156: gcc -c  -pthread   conftest.c >&5
 configure:29156: $? = 0
 configure:29156: result: yes
 configure:29163: checking for sys/stat.h
 configure:29163: result: yes
 configure:29169: checking for sys/time.h
-configure:29169: gcc -c     conftest.c >&5
+configure:29169: gcc -c  -pthread   conftest.c >&5
 configure:29169: $? = 0
 configure:29169: result: yes
 configure:29175: checking for sys/types.h
 configure:29175: result: yes
 configure:29254: checking for arpa/inet.h
-configure:29254: gcc -c     conftest.c >&5
+configure:29254: gcc -c  -pthread   conftest.c >&5
 configure:29254: $? = 0
 configure:29254: result: yes
 configure:29260: checking for netdb.h
-configure:29260: gcc -c     conftest.c >&5
+configure:29260: gcc -c  -pthread   conftest.c >&5
 configure:29260: $? = 0
 configure:29260: result: yes
 configure:29266: checking for netinet/in.h
-configure:29266: gcc -c     conftest.c >&5
+configure:29266: gcc -c  -pthread   conftest.c >&5
 configure:29266: $? = 0
 configure:29266: result: yes
 configure:29272: checking for sys/socket.h
-configure:29272: gcc -c     conftest.c >&5
+configure:29272: gcc -c  -pthread   conftest.c >&5
 configure:29272: $? = 0
 configure:29272: result: yes
 configure:29287: checking if libtool needs -no-undefined flag to build shared libraries
 configure:29298: result: no
 configure:29320: checking for _FILE_OFFSET_BITS value needed for large files
-configure:29354: gcc -c     conftest.c >&5
+configure:29354: gcc -c  -pthread   conftest.c >&5
 configure:29354: $? = 0
 configure:29396: result: no
 configure:29639: checking size of int8_t
-configure:29645: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29645: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29645: $? = 0
 configure:29645: ./conftest
 configure:29645: $? = 0
 configure:29660: result: 1
 configure:29672: checking size of uint8_t
-configure:29678: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29678: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29678: $? = 0
 configure:29678: ./conftest
 configure:29678: $? = 0
 configure:29693: result: 1
 configure:29705: checking size of int_least8_t
-configure:29711: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29711: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29711: $? = 0
 configure:29711: ./conftest
 configure:29711: $? = 0
 configure:29726: result: 1
 configure:29738: checking size of uint_least8_t
-configure:29744: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29744: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29744: $? = 0
 configure:29744: ./conftest
 configure:29744: $? = 0
 configure:29759: result: 1
 configure:29771: checking size of int_fast8_t
-configure:29777: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29777: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29777: $? = 0
 configure:29777: ./conftest
 configure:29777: $? = 0
 configure:29792: result: 1
 configure:29804: checking size of uint_fast8_t
-configure:29810: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29810: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29810: $? = 0
 configure:29810: ./conftest
 configure:29810: $? = 0
 configure:29825: result: 1
 configure:29838: checking size of int16_t
-configure:29844: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29844: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29844: $? = 0
 configure:29844: ./conftest
 configure:29844: $? = 0
 configure:29859: result: 2
 configure:29871: checking size of uint16_t
-configure:29877: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29877: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29877: $? = 0
 configure:29877: ./conftest
 configure:29877: $? = 0
 configure:29892: result: 2
 configure:29904: checking size of int_least16_t
-configure:29910: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29910: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29910: $? = 0
 configure:29910: ./conftest
 configure:29910: $? = 0
 configure:29925: result: 2
 configure:29937: checking size of uint_least16_t
-configure:29943: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29943: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29943: $? = 0
 configure:29943: ./conftest
 configure:29943: $? = 0
 configure:29958: result: 2
 configure:29970: checking size of int_fast16_t
-configure:29976: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:29976: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:29976: $? = 0
 configure:29976: ./conftest
 configure:29976: $? = 0
 configure:29991: result: 8
 configure:30003: checking size of uint_fast16_t
-configure:30009: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30009: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30009: $? = 0
 configure:30009: ./conftest
 configure:30009: $? = 0
 configure:30024: result: 8
 configure:30037: checking size of int32_t
-configure:30043: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30043: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30043: $? = 0
 configure:30043: ./conftest
 configure:30043: $? = 0
 configure:30058: result: 4
 configure:30070: checking size of uint32_t
-configure:30076: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30076: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30076: $? = 0
 configure:30076: ./conftest
 configure:30076: $? = 0
 configure:30091: result: 4
 configure:30103: checking size of int_least32_t
-configure:30109: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30109: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30109: $? = 0
 configure:30109: ./conftest
 configure:30109: $? = 0
 configure:30124: result: 4
 configure:30136: checking size of uint_least32_t
-configure:30142: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30142: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30142: $? = 0
 configure:30142: ./conftest
 configure:30142: $? = 0
 configure:30157: result: 4
 configure:30169: checking size of int_fast32_t
-configure:30175: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30175: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30175: $? = 0
 configure:30175: ./conftest
 configure:30175: $? = 0
 configure:30190: result: 8
 configure:30202: checking size of uint_fast32_t
-configure:30208: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30208: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30208: $? = 0
 configure:30208: ./conftest
 configure:30208: $? = 0
 configure:30223: result: 8
 configure:30236: checking size of int64_t
-configure:30242: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30242: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30242: $? = 0
 configure:30242: ./conftest
 configure:30242: $? = 0
 configure:30257: result: 8
 configure:30269: checking size of uint64_t
-configure:30275: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30275: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30275: $? = 0
 configure:30275: ./conftest
 configure:30275: $? = 0
 configure:30290: result: 8
 configure:30302: checking size of int_least64_t
-configure:30308: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30308: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30308: $? = 0
 configure:30308: ./conftest
 configure:30308: $? = 0
 configure:30323: result: 8
 configure:30335: checking size of uint_least64_t
-configure:30341: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30341: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30341: $? = 0
 configure:30341: ./conftest
 configure:30341: $? = 0
 configure:30356: result: 8
 configure:30368: checking size of int_fast64_t
-configure:30374: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30374: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30374: $? = 0
 configure:30374: ./conftest
 configure:30374: $? = 0
 configure:30389: result: 8
 configure:30401: checking size of uint_fast64_t
-configure:30407: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30407: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30407: $? = 0
 configure:30407: ./conftest
 configure:30407: $? = 0
 configure:30422: result: 8
 configure:30435: checking size of bool
-configure:30441: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30441: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30441: $? = 0
 configure:30441: ./conftest
 configure:30441: $? = 0
 configure:30457: result: 1
 configure:30469: checking size of off_t
-configure:30475: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30475: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30475: $? = 0
 configure:30475: ./conftest
 configure:30475: $? = 0
 configure:30490: result: 8
 configure:30502: checking size of ptrdiff_t
-configure:30508: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30508: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30508: $? = 0
 configure:30508: ./conftest
 configure:30508: $? = 0
 configure:30523: result: 8
 configure:30535: checking size of size_t
-configure:30541: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30541: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30541: $? = 0
 configure:30541: ./conftest
 configure:30541: $? = 0
 configure:30556: result: 8
 configure:30568: checking size of ssize_t
-configure:30574: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30574: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30574: $? = 0
 configure:30574: ./conftest
 configure:30574: $? = 0
 configure:30589: result: 8
 configure:30601: checking size of time_t
-configure:30607: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
+configure:30607: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -ldl -lm  >&5
 configure:30607: $? = 0
 configure:30607: ./conftest
 configure:30607: $? = 0
 configure:30623: result: 8
 configure:30714: checking if dev_t is scalar
-configure:30739: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:30739: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:99:17: warning: 'd1' is used uninitialized [-Wuninitialized]
    99 | dev_t d1, d2; if(d1==d2) return 0;
@@ -3570,19 +3570,19 @@ conftest.c:99:11: note: 'd2' was declared here
 configure:30739: $? = 0
 configure:30744: result: yes
 configure:30795: checking for zlib.h
-configure:30795: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:30795: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 configure:30795: $? = 0
 configure:30795: result: yes
 configure:30806: checking for compress2 in -lz
-configure:30837: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz  -ldl -lm  >&5
+configure:30837: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz  -ldl -lm  >&5
 configure:30837: $? = 0
 configure:30847: result: yes
 configure:30865: checking for compress2
-configure:30865: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:30865: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:30865: $? = 0
 configure:30865: result: yes
 configure:31036: checking for szlib.h
-configure:31036: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:31036: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c:115:10: fatal error: szlib.h: No such file or directory
   115 | #include <szlib.h>
       |          ^~~~~~~~~
@@ -3708,11 +3708,11 @@ configure:31036: result: no
 configure:31411: checking for thread safe support
 configure:31463: result: no
 configure:31839: checking whether CLOCK_MONOTONIC is declared
-configure:31839: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt     -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:31839: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread  -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 configure:31839: $? = 0
 configure:31839: result: yes
 configure:31854: checking for tm_gmtoff in struct tm
-configure:31878: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:31878: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:102:11: warning: variable 'tm' set but not used [-Wunused-but-set-variable]
   102 | struct tm tm; tm.tm_gmtoff=0;
@@ -3720,11 +3720,11 @@ conftest.c:102:11: warning: variable 'tm' set but not used [-Wunused-but-set-var
 configure:31878: $? = 0
 configure:31883: result: yes
 configure:31892: checking for global timezone variable
-configure:31922: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:31922: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:31922: $? = 0
 configure:31927: result: yes
 configure:31942: checking for st_blocks in struct stat
-configure:31964: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:31964: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:102:13: warning: variable 'sb' set but not used [-Wunused-but-set-variable]
   102 | struct stat sb; sb.st_blocks=0;
@@ -3732,8 +3732,8 @@ conftest.c:102:13: warning: variable 'sb' set but not used [-Wunused-but-set-var
 configure:31964: $? = 0
 configure:31969: result: yes
 configure:31980: checking for _getvideoconfig
-configure:31980: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
-/usr/bin/ld: /tmp/ccvZorV3.o: in function `main':
+configure:31980: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+/usr/bin/ld: /tmp/ccs6CqED.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `_getvideoconfig'
 collect2: error: ld returned 1 exit status
 configure:31980: $? = 1
@@ -3860,8 +3860,8 @@ configure: failed program was:
 | }
 configure:31980: result: no
 configure:31986: checking for gettextinfo
-configure:31986: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
-/usr/bin/ld: /tmp/ccMt4Sut.o: in function `main':
+configure:31986: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+/usr/bin/ld: /tmp/ccFHwyZ1.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `gettextinfo'
 collect2: error: ld returned 1 exit status
 configure:31986: $? = 1
@@ -3988,8 +3988,8 @@ configure: failed program was:
 | }
 configure:31986: result: no
 configure:31997: checking for GetConsoleScreenBufferInfo
-configure:31997: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
-/usr/bin/ld: /tmp/ccg8uROb.o: in function `main':
+configure:31997: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+/usr/bin/ld: /tmp/ccDYXuTx.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `GetConsoleScreenBufferInfo'
 collect2: error: ld returned 1 exit status
 configure:31997: $? = 1
@@ -4116,8 +4116,8 @@ configure: failed program was:
 | }
 configure:31997: result: no
 configure:32006: checking for _scrsize
-configure:32006: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
-/usr/bin/ld: /tmp/cc9IyToK.o: in function `main':
+configure:32006: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+/usr/bin/ld: /tmp/ccYzz1wq.o: in function `main':
 conftest.c:(.text+0xe): undefined reference to `_scrsize'
 collect2: error: ld returned 1 exit status
 configure:32006: $? = 1
@@ -4244,11 +4244,11 @@ configure: failed program was:
 | }
 configure:32006: result: no
 configure:32012: checking for ioctl
-configure:32012: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32012: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32012: $? = 0
 configure:32012: result: yes
 configure:32020: checking for struct videoconfig
-configure:32041: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32041: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:103:20: error: storage size of 'w' isn't known
   103 | struct videoconfig w; w.numtextcols=0;
@@ -4364,7 +4364,7 @@ configure: failed program was:
 | }
 configure:32049: result: no
 configure:32054: checking for struct text_info
-configure:32075: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32075: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:103:18: error: storage size of 'w' isn't known
   103 | struct text_info w; w.screenwidth=0;
@@ -4480,7 +4480,7 @@ configure: failed program was:
 | }
 configure:32083: result: no
 configure:32088: checking for TIOCGWINSZ
-configure:32111: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32111: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:105:5: warning: unused variable 'w' [-Wunused-variable]
   105 | int w=TIOCGWINSZ;
@@ -4488,7 +4488,7 @@ conftest.c:105:5: warning: unused variable 'w' [-Wunused-variable]
 configure:32111: $? = 0
 configure:32116: result: yes
 configure:32124: checking for TIOCGETD
-configure:32147: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32147: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 conftest.c: In function 'main':
 conftest.c:106:5: warning: unused variable 'w' [-Wunused-variable]
   106 | int w=TIOCGETD;
@@ -4496,83 +4496,83 @@ conftest.c:106:5: warning: unused variable 'w' [-Wunused-variable]
 configure:32147: $? = 0
 configure:32152: result: yes
 configure:32166: checking for library containing clock_gettime
-configure:32204: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32204: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32204: $? = 0
 configure:32224: result: none required
 configure:32233: checking for asprintf
-configure:32233: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32233: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32233: $? = 0
 configure:32233: result: yes
 configure:32239: checking for clock_gettime
-configure:32239: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32239: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32239: $? = 0
 configure:32239: result: yes
 configure:32245: checking for fcntl
-configure:32245: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32245: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32245: $? = 0
 configure:32245: result: yes
 configure:32251: checking for flock
-configure:32251: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32251: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32251: $? = 0
 configure:32251: result: yes
 configure:32257: checking for fork
-configure:32257: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32257: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32257: $? = 0
 configure:32257: result: yes
 configure:32264: checking for gethostname
-configure:32264: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32264: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32264: $? = 0
 configure:32264: result: yes
 configure:32270: checking for getrusage
-configure:32270: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32270: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32270: $? = 0
 configure:32270: result: yes
 configure:32276: checking for gettimeofday
-configure:32276: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32276: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32276: $? = 0
 configure:32276: result: yes
 configure:32283: checking for rand_r
-configure:32283: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32283: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32283: $? = 0
 configure:32283: result: yes
 configure:32289: checking for random
-configure:32289: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32289: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32289: $? = 0
 configure:32289: result: yes
 configure:32296: checking for strcasestr
-configure:32296: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32296: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32296: $? = 0
 configure:32296: result: yes
 configure:32302: checking for strdup
-configure:32302: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32302: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32302: $? = 0
 configure:32302: result: yes
 configure:32308: checking for symlink
-configure:32308: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32308: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32308: $? = 0
 configure:32308: result: yes
 configure:32315: checking for tmpfile
-configure:32315: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32315: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32315: $? = 0
 configure:32315: result: yes
 configure:32321: checking for vasprintf
-configure:32321: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32321: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32321: $? = 0
 configure:32321: result: yes
 configure:32327: checking for waitpid
-configure:32327: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32327: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32327: $? = 0
 configure:32327: result: yes
 configure:32342: checking for alarm
-configure:32342: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:32342: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:32342: $? = 0
 configure:32342: result: yes
 configure:32355: checking for __attribute__ extension
-configure:32376: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32376: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 configure:32376: $? = 0
 configure:32381: result: yes
 configure:32389: checking if compiler supports the __builtin_expect() extension
-configure:32411: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:32411: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 configure:32411: $? = 0
 configure:32416: result: yes
 configure:32447: checking enable build diagnostics
@@ -4606,11 +4606,11 @@ configure:33897: result: no
 configure:33914: checking if the subfiling I/O virtual file driver (VFD) is enabled
 configure:34159: result: no
 configure:34204: checking whether O_DIRECT is declared
-configure:34204: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt     -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
+configure:34204: gcc -c  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread  -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L      conftest.c >&5
 configure:34204: $? = 0
 configure:34204: result: yes
 configure:34218: checking for posix_memalign
-configure:34218: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:34218: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:34218: $? = 0
 configure:34218: result: yes
 configure:34229: checking if the direct I/O virtual file driver (VFD) is enabled
@@ -4632,7 +4632,7 @@ configure:34985: result: yes
 configure:35001: checking if the machine has window style path name
 configure:35013: result: no
 configure:35028: checking if using special algorithm to convert long double to (unsigned) long values
-configure:35053: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35053: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 conftest.c: In function 'main':
 conftest.c:202:1: warning: label 'done' defined but not used [-Wunused-label]
   202 | done:
@@ -5172,7 +5172,7 @@ configure: failed program was:
 | 
 configure:35074: result: no
 configure:35087: checking if using special algorithm to convert (unsigned) long to long double values
-configure:35108: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35108: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 conftest.c: In function 'main':
 conftest.c:276:1: warning: label 'done' defined but not used [-Wunused-label]
   276 | done:
@@ -5712,7 +5712,7 @@ configure: failed program was:
 | 
 configure:35129: result: no
 configure:35145: checking if correctly converting long double to (unsigned) long long values
-configure:35165: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35165: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 conftest.c: In function 'main':
 conftest.c:323:1: warning: label 'done' defined but not used [-Wunused-label]
   323 | done:
@@ -5722,7 +5722,7 @@ configure:35165: ./conftest
 configure:35165: $? = 0
 configure:35183: result: yes
 configure:35200: checking if correctly converting (unsigned) long long to long double values
-configure:35220: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35220: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 conftest.c: In function 'main':
 conftest.c:378:1: warning: label 'done' defined but not used [-Wunused-label]
   378 | done:
@@ -5732,7 +5732,7 @@ configure:35220: ./conftest
 configure:35220: $? = 0
 configure:35238: result: yes
 configure:35250: checking if the system is IBM ppc64le and cannot correctly convert some long double values
-configure:35270: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35270: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:35270: $? = 0
 configure:35270: ./conftest
 configure:35270: $? = 1
@@ -6277,11 +6277,11 @@ configure:35545: result: v114
 configure:35569: checking whether to perform strict file format checks
 configure:35596: result: no
 configure:35613: checking for pread
-configure:35613: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35613: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:35613: $? = 0
 configure:35613: result: yes
 configure:35621: checking for pwrite
-configure:35621: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt    -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
+configure:35621: gcc -o conftest  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt   -pthread -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L        conftest.c -lz -ldl -lm  >&5
 configure:35621: $? = 0
 configure:35621: result: yes
 configure:35630: checking whether to use pread/pwrite instead of read/write in certain VFDs
@@ -6434,6 +6434,7 @@ config.status:1713: creating hl/fortran/examples/Makefile
 config.status:1713: creating hl/fortran/examples/run-hlfortran-ex.sh
 config.status:1713: creating utils/subfiling_vfd/h5fuse
 config.status:1713: creating src/H5config.h
+config.status:1894: src/H5config.h is unchanged
 config.status:1973: executing pubconf commands
 config.status:1973: executing depfiles commands
 config.status:2071: cd src       && sed -e '/# am--include-marker/d' Makefile         | make -f - am--depfiles
@@ -6580,8 +6581,8 @@ ac_cv_env_CCC_set=
 ac_cv_env_CCC_value=
 ac_cv_env_CC_set=
 ac_cv_env_CC_value=
-ac_cv_env_CFLAGS_set=
-ac_cv_env_CFLAGS_value=
+ac_cv_env_CFLAGS_set=set
+ac_cv_env_CFLAGS_value=-pthread
 ac_cv_env_CPPFLAGS_set=
 ac_cv_env_CPPFLAGS_value=
 ac_cv_env_CXXCPP_set=
@@ -6849,9 +6850,9 @@ BYTESEX='little-endian'
 CC='gcc'
 CCDEPMODE='depmode=gcc3'
 CC_VERSION='/usr/bin/gcc'
-CFLAGS=''
+CFLAGS='-pthread'
 CLANG_SANITIZE_CHECKS='none'
-CONFIG_DATE='Mon Mar  3 07:23:19 CET 2025'
+CONFIG_DATE='Mon Mar  3 17:10:41 CET 2025'
 CONFIG_MODE=''
 CONFIG_USER='fred@frexedo'
 CPPFLAGS=''

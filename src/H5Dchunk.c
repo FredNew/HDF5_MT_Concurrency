@@ -377,7 +377,7 @@ H5FL_EXTERN(H5S_sel_iter_t);
  *
  *-------------------------------------------------------------------------
  */
-herr_t
+herr_t //TODO: Locking here: Checking for Chunk addresses
 H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t data_size, const void *buf)
 {
     const H5O_layout_t *layout = &(dset->shared->layout); /* Dataset layout */

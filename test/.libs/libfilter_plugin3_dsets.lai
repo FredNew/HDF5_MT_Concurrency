@@ -14,10 +14,10 @@ library_names='libfilter_plugin3_dsets.so libfilter_plugin3_dsets.so libfilter_p
 old_library=''
 
 # Linker flags that cannot go in dependency_libs.
-inherited_linker_flags=''
+inherited_linker_flags=' -pthread'
 
 # Libraries that this one depends upon.
-dependency_libs=' /home/fred/parallel_lz4_hdf5/lib/libhdf5.la -lpthread -lz -ldl -lm'
+dependency_libs=' /home/fred/parallel_lz4_hdf5/lib/libhdf5.la -lz -ldl -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
