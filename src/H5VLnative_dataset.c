@@ -37,6 +37,7 @@
 #include "H5VLprivate.h" /* Virtual Object Layer                     */
 
 #include "H5VLnative_private.h" /* Native VOL connector                     */
+#include "threadpool.h"
 
 /****************/
 /* Local Macros */
@@ -384,6 +385,129 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5VL__native_dataset_read() */
 
+void* H5VL__native_pool_function(void* thread_args)
+{
+    thread_arguments* targs = (thread_arguments*) thread_args;
+    app_args* a_args = (app_args*) targs->application_args;
+
+    printf("Thread %lu ready.\n", targs->thread_number);
+
+    int* buf = (int*) a_args->buf;
+    size_t chunk_no = targs->thread_number;
+
+    if (chunk_no > a_args->nchunks) //More threads than chunks. Skipping to next step.
+    {
+        targs->status = T_COMPRESSING;
+    }
+
+
+    const unsigned int cd_values[1] = {8*1024};
+    size_t buf_size = a_args->chunk_size_bytes;
+
+    uint32_t filter = 0;
+    size_t hchunk_offset[] = {0,0};
+    unsigned offset_v;
+    unsigned offset_h;
+
+    while (targs->status != T_DONE) //Looping until all tasks completed. Enables better OOM handling.
+    {
+        if (targs->status == T_CHUNKING)
+        {
+            t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
+            chunk_info->chunk_no = chunk_no;
+
+            int* chunk;
+            /*
+             * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
+             * queue empty. Failed chunk will be attempted on next CHUNKING mode.
+             */
+            if ((chunk = calloc(a_args->chunk_size, sizeof(int))) == NULL)
+            { //OOM
+                targs->status = T_COMPRESSING;
+                continue;
+            }
+
+            /*
+             * Performs actual copy into chunk memory
+             */
+            if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+            {
+                memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
+                    a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
+            }else{
+                for (int i = 0; i < a_args->chunk_dims[0]; i++)
+                {
+
+                    memcpy(&chunk[i * a_args->chunk_dims[1]],
+                    &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                        - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                        + i * a_args->dset_dims[1]],
+                        a_args->chunk_dims[1] * sizeof(int));
+                }
+            }
+
+            chunk_info->chunk = chunk;
+            chunk_info->chunk_size_bytes = a_args->chunk_size;
+
+            queue_add(a_args->q, chunk_info);
+
+            /*
+             * Advance n-threads further. Enables non locking asynchronous chunk creation.
+             */
+            if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+            {
+                targs->status = T_COMPRESSING;
+            }
+        }
+
+        if (targs->status == T_COMPRESSING)
+        {
+            if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+            {
+                //queue_add(a_args->q, NULL);
+                targs->status = T_DONE;
+                break;
+            }
+
+            t_chunk_info* chunk_info = queue_get(a_args->q);
+            if (chunk_info == NULL) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
+            {
+                targs->status = T_CHUNKING;
+                continue;
+            }
+
+            chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+            // a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
+
+            offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
+            offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
+            hchunk_offset[0] = offset_v;
+            hchunk_offset[1] = offset_h;
+
+            if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
+                chunk_info->chunk) == FAIL)
+            {
+                printf("Error writing\n");
+                break;
+            }
+
+
+            free(chunk_info->chunk);
+
+
+    //HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
+                                //Need to free all chunks in a_args after failure
+
+            if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+            {
+                targs->status = T_CHUNKING;
+            }
+        }
+    }
+
+    return 0;
+   }
+
 /*-------------------------------------------------------------------------
  * Function:    H5VL__native_dataset_write
  *
@@ -574,7 +698,7 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
     H5VL_native_dataset_optional_args_t *opt_args  = args->args; /* Pointer to native operation's arguments */
     herr_t                               ret_value = SUCCEED;    /* Return value */
 
-    printf("Optional in %s\n", __func__);
+    //printf("Optional in %s\n", __func__);
 
     FUNC_ENTER_PACKAGE
 
