@@ -69,7 +69,7 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
 static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id,const void* buf[], hsize_t threads_count);
 static herr_t H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name);
 
-void* pool_function(void* thread_args);
+//void* pool_function(void* thread_args);
 /**************************************************************************/
 
 /*********************/
@@ -1392,6 +1392,59 @@ done:
     FUNC_LEAVE_API(ret_value)
 }
 
+/*-------------------------------------------------------------------------
+ * Function:    H5Dwrite_write_LZ4_threads
+ *
+ * Purpose:     For increased performance in LZ4 dataset compression using
+ *              a threadpool to parallel compress chunks into a single
+ *              dataset.
+ *
+ * Return:      Non-negative on success/Negative on failure
+ *
+ *-------------------------------------------------------------------------
+ */
+herr_t
+H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
+
+    herr_t ret_value = SUCCEED;
+    H5P_genplist_t *dc_plist;
+    H5O_pline_t dcpl_pline;
+
+    FUNC_ENTER_API(FAIL)
+
+
+    /* Check arguments */
+    if (NULL == (dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(dset_id))))
+        HGOTO_ERROR(H5E_ID, H5E_NOTFOUND, FAIL, "Object for plist ID not found");
+    if (H5P_peek(dc_plist, H5O_CRT_PIPELINE_NAME, &dcpl_pline) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't retrieve pipeline filter");
+
+    /* Sanity checks */
+    assert(dc_plist);
+
+
+printf("Sane! Filter: %d\n", dcpl_pline.filter[0].id);
+
+    if(dcpl_pline.nused > 0) //Filters in pipeline
+    {
+        printf("Using filters.\n");
+
+        for (int i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
+        {
+            if (!H5Zfilter_avail(dcpl_pline.filter[i].id))
+                HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
+        }
+
+        if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
+            HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
+    }else
+    {
+        HGOTO_ERROR(H5E_PLIST, H5E_NOFILTER, FAIL, "No filters in pipeline.");
+    }
+    done:
+        FUNC_LEAVE_API(ret_value)
+    }
+
 /**
  * Assigns a filter loaded from a dynamic library into the passed H5Z_class2_t struct.
  *
@@ -1522,9 +1575,6 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     a_args.chunk_size = chunk_size;
     a_args.chunk_size_bytes = chunk_size*4;
     a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
-
-    // if ((a_args.chunks = calloc(a_args.nchunks, sizeof(t_chunk_info))) == NULL)
-    //     HGOTO_ERROR(H5E_FUNC, H5E_CANTALLOC, FAIL, "Can't allocate memory for chunks.");
 
     char *error;
     H5Z_class2_t* h5z_symbol = NULL;

@@ -193,7 +193,7 @@ H5VLnative_dataset.lo: H5VLnative_dataset.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h \
  /usr/include/x86_64-linux-gnu/bits/cpu-set.h H5B2private.h H5FLprivate.h \
  H5Eprivate.h H5Epublic.h H5Epubgen.h H5Iprivate.h H5Idevelop.h \
- H5VLnative_private.h
+ H5VLnative_private.h threadpool.h
 /usr/include/stdc-predef.h:
 H5private.h:
 H5public.h:
@@ -476,3 +476,4 @@ H5Epubgen.h:
 H5Iprivate.h:
 H5Idevelop.h:
 H5VLnative_private.h:
+threadpool.h:

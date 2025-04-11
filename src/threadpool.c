@@ -5,14 +5,15 @@
 void* thread_start(void* args){
     thread_arguments* targs = (thread_arguments*) args;
 
-//    printf("Thread %lu alive: %d\n", targs->thread_number, targs->status);
-
-
     thread_work(targs);
+
+    return (void*) 0;
 }
 
 int thread_work(thread_arguments* targs){
     targs->application_function(targs);
+
+    return 0;
 }
 
 size_t get_thread_count(void){

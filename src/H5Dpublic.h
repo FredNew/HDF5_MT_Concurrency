@@ -1641,6 +1641,7 @@ H5_DLL herr_t H5Dclose(hid_t dset_id);
 * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
 */
 H5_DLL herr_t H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void *buf, hsize_t threads_count);
+H5_DLL herr_t H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count);
 /*************************************************************************/
 
 /**

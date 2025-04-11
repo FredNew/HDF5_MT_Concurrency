@@ -413,9 +413,9 @@ void* H5VL__native_pool_function(void* thread_args)
     {
         if (targs->status == T_CHUNKING)
         {
+
             t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
             chunk_info->chunk_no = chunk_no;
-
             int* chunk;
             /*
              * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
@@ -477,7 +477,6 @@ void* H5VL__native_pool_function(void* thread_args)
             }
 
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
-            // a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
 
             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
             offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
@@ -491,12 +490,8 @@ void* H5VL__native_pool_function(void* thread_args)
                 break;
             }
 
-
             free(chunk_info->chunk);
-
-
-    //HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
-                                //Need to free all chunks in a_args after failure
+            //Need to free all chunks in a_args after failure
 
             if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
             {
@@ -887,6 +882,7 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
                 HGOTO_ERROR(H5E_DATASET, H5E_CANTCOPY, FAIL, "failure to copy offset array");
 
             /* Write chunk */ //TODO: Need a lock around here. Fetches chunk addresses that might be incorrect.
+
             pthread_mutex_lock(&global_test_lock);
             if (H5D__chunk_direct_write(dset, chunk_write_args->filters, offset_copy, chunk_write_args->size,
                                         chunk_write_args->buf) < 0)
