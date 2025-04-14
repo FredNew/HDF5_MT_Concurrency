@@ -454,18 +454,22 @@ void* H5VL__native_pool_function(void* thread_args)
              */
             if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
             {
-                printf("Rest? Cno %lu\n", chunk_no);
                 memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
                     a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
             }else{
                 for (int i = 0; i < a_args->chunk_dims[0]; i++)
                 {
                     memcpy(&chunk[i * a_args->chunk_dims[1]],
-                    &buf[chunk_no * a_args->chunk_dims[1] +
-                        ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
-                        (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
-                        + i * a_args->dset_dims[1]],
-                        a_args->chunk_dims[1] * sizeof(int));
+                                        &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                                            - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                                            + i * a_args->dset_dims[1]],
+                                            a_args->chunk_dims[1] * sizeof(int));
+                    //memcpy(&chunk[i * a_args->chunk_dims[1]],
+                    // &buf[chunk_no * a_args->chunk_dims[1] +
+                    //     ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
+                    //     (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
+                    //     + i * a_args->dset_dims[1]],
+                    //     a_args->chunk_dims[1] * sizeof(int));
                 }
             }
 
@@ -489,12 +493,13 @@ void* H5VL__native_pool_function(void* thread_args)
             if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
             {
                 targs->status = T_DONE;
+                queue_add(a_args->q, NULL); //all elements written. Send NULL to cause cond_signal. broadcast better?
                 break;
             }
 
             t_chunk_info* chunk_info = queue_get(a_args->q);
-            if (chunk_info == NULL) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
-            {
+            if ((chunk_info == NULL) && (a_args->nchunks < a_args->q->elmts_added)) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
+            { //Case of OOM before. Not all chunks have been added. Now memory for at least one chunk should be available.
                 printf("%lu Going back to Chunking\n", chunk_no);
                 targs->status = T_CHUNKING;
                 continue;
@@ -507,12 +512,12 @@ void* H5VL__native_pool_function(void* thread_args)
             hchunk_offset[0] = offset_v;
             hchunk_offset[1] = offset_h;
 
-            if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
-                chunk_info->chunk) == FAIL)
-            {
-                printf("Error writing\n");
-                break;
-            }
+            // if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
+            //     chunk_info->chunk) == FAIL)
+            // {
+            //     printf("Error writing\n");
+            //     break;
+            // }
 
             free(chunk_info->chunk);
             //Need to free all chunks in a_args after failure

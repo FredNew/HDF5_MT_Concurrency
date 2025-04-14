@@ -7,7 +7,10 @@ int queue_add(queue* q, void* item){
 
     if (item == NULL)
     {
+        pthread_mutex_lock(&q->lock);
+        q->nelmts = -1;
         pthread_cond_signal(&q->wait);
+        pthread_mutex_unlock(&q->lock);
         return 0;
     }
     queue_item* q_item = malloc(sizeof(queue_item));
@@ -27,8 +30,8 @@ int queue_add(queue* q, void* item){
         q->nelmts++;
         q->elmts_added++;
     }
-    pthread_mutex_unlock(&q->lock);
     pthread_cond_signal(&q->wait);
+    pthread_mutex_unlock(&q->lock);
 
     return 1;
 }
@@ -40,7 +43,7 @@ void* queue_get(queue* q){
 
     pthread_mutex_lock(&q->lock);
 
-    while(q->nelmts < 1){
+    while(q->nelmts == 0){ //using negative numbers to denote status done
         pthread_cond_wait(&q->wait, &q->lock);
     }
 
