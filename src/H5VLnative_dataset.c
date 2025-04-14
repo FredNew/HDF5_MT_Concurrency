@@ -517,7 +517,7 @@ void* H5VL__native_pool_function(void* thread_args)
             free(chunk_info->chunk);
             //Need to free all chunks in a_args after failure
 
-            if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
+            if ((chunk_no < a_args->nchunks - 1) && (a_args->q->elmts_added < a_args->nchunks))//Not all elements yet chunked. Go back to finish up.
             {
                 printf("%lu Going back to Chunking\n", chunk_no);
 
