@@ -74,6 +74,7 @@ static int H5Z__check_unregister_dset_cb(void *obj_ptr, hid_t obj_id, void *key)
 static int H5Z__check_unregister_group_cb(void *obj_ptr, hid_t obj_id, void *key);
 static int H5Z__flush_file_cb(void *obj_ptr, hid_t obj_id, void *key);
 
+
 /*-------------------------------------------------------------------------
  * Function:    H5Z_init
  *
@@ -1764,3 +1765,60 @@ H5Z_get_filter_info(H5Z_filter_t filter, unsigned int *filter_config_flags)
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5Z_get_filter_info() */
+
+/**
+ * Assigns a filter loaded from a dynamic library into the passed H5Z_class2_t struct.
+ *
+ * Only LZ4 is implemented, other HDF5 filters should have an identical plugin path as folder to choose library from.
+ * @param h5z_symbol
+ * @param plugin_path
+ * @param filter_name
+ * @return
+ */
+herr_t
+H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int filter_id)
+{
+    herr_t ret_value = SUCCEED;
+
+    FUNC_ENTER_PACKAGE
+
+    const char* filter_lib_name;
+    const char* filter_symbol;
+
+
+    switch (filter_id)
+    {
+        case H5Z_FILTER_LZ4:
+            filter_lib_name = "/libh5lz4.so.0";
+            filter_symbol = "H5Z_LZ4";
+            break;
+
+        default: HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
+    }
+
+    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
+
+    char* lib_path;
+    if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
+
+    strcpy(lib_path, plugin_path);
+    strcat(lib_path, filter_lib_name);
+
+    printf("Filter path: %s\n", lib_path);
+
+    void* handle;
+    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
+
+    free(lib_path);
+
+    dlerror();
+
+    *h5z_symbol = dlsym(handle, filter_symbol);
+    if (h5z_symbol == NULL)
+        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
+
+    done:
+    FUNC_LEAVE_NOAPI(ret_value);
+}

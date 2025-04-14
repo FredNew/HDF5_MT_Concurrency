@@ -390,8 +390,6 @@ void* H5VL__native_pool_function(void* thread_args)
     thread_arguments* targs = (thread_arguments*) thread_args;
     app_args* a_args = (app_args*) targs->application_args;
 
-    printf("Thread %lu ready.\n", targs->thread_number);
-
     int* buf = (int*) a_args->buf;
     size_t chunk_no = targs->thread_number;
 
@@ -401,7 +399,25 @@ void* H5VL__native_pool_function(void* thread_args)
     }
 
 
-    const unsigned int cd_values[1] = {8*1024};
+    H5P_genplist_t *dc_plist;
+    H5O_pline_t dcpl_pline;
+
+    dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(a_args->h5_dset_id));
+    H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
+
+    size_t cd_nelmts = 0;
+    const unsigned int *cd_values = NULL;
+
+    for (int i = 0; i < dcpl_pline.nused; ++i)
+    {
+        if (dcpl_pline.filter[i].id == a_args->h5z_filter->id) //Select correct cd_nelmts and values for filter set before
+        {
+            cd_nelmts = dcpl_pline.filter->cd_nelmts;
+            cd_values = dcpl_pline.filter->cd_values;
+        }
+    }
+
+
     size_t buf_size = a_args->chunk_size_bytes;
 
     uint32_t filter = 0;
@@ -464,7 +480,6 @@ void* H5VL__native_pool_function(void* thread_args)
         {
             if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
             {
-                //queue_add(a_args->q, NULL);
                 targs->status = T_DONE;
                 break;
             }
@@ -476,7 +491,7 @@ void* H5VL__native_pool_function(void* thread_args)
                 continue;
             }
 
-            chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+            chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
 
             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
             offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
@@ -501,7 +516,7 @@ void* H5VL__native_pool_function(void* thread_args)
     }
 
     return 0;
-   }
+}
 
 /*-------------------------------------------------------------------------
  * Function:    H5VL__native_dataset_write

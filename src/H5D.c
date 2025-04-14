@@ -66,8 +66,8 @@ static herr_t H5D__set_extent_api_common(hid_t dset_id, const hsize_t size[], vo
 /*
  * Added by Frederick Neu (University Hamburg) for parallel LZ4 compression.
  */
-static herr_t H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id,const void* buf[], hsize_t threads_count);
-static herr_t H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name);
+static herr_t H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id,const void* buf[], hsize_t threads_count);
+//static herr_t H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name);
 
 //void* pool_function(void* thread_args);
 /**************************************************************************/
@@ -1365,32 +1365,32 @@ done:
 
 
 
-/*-------------------------------------------------------------------------
- * Function:    H5Dwrite_write_LZ4_threads
- *
- * Purpose:     For increased performance in LZ4 dataset compression using
- *              a threadpool to parallel compress chunks into a single
- *              dataset.
- *
- * Return:      Non-negative on success/Negative on failure
- *
- *-------------------------------------------------------------------------
- */
-herr_t
-H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
-
-    herr_t ret_value = SUCCEED;
-
-    FUNC_ENTER_API(FAIL)
-
-    if (!H5Zfilter_avail(32004))
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
-    if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
-        HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
-
-done:
-    FUNC_LEAVE_API(ret_value)
-}
+// /*-------------------------------------------------------------------------
+//  * Function:    H5Dwrite_write_LZ4_threads
+//  *
+//  * Purpose:     For increased performance in LZ4 dataset compression using
+//  *              a threadpool to parallel compress chunks into a single
+//  *              dataset.
+//  *
+//  * Return:      Non-negative on success/Negative on failure
+//  *
+//  *-------------------------------------------------------------------------
+//  */
+// herr_t
+// H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
+//
+//     herr_t ret_value = SUCCEED;
+//
+//     FUNC_ENTER_API(FAIL)
+//
+//     if (!H5Zfilter_avail(32004))
+//         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
+//     if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
+//         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
+//
+// done:
+//     FUNC_LEAVE_API(ret_value)
+// }
 
 /*-------------------------------------------------------------------------
  * Function:    H5Dwrite_write_LZ4_threads
@@ -1422,20 +1422,15 @@ H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t 
     /* Sanity checks */
     assert(dc_plist);
 
-
-printf("Sane! Filter: %d\n", dcpl_pline.filter[0].id);
-
     if(dcpl_pline.nused > 0) //Filters in pipeline
     {
-        printf("Using filters.\n");
-
         for (int i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
         {
             if (!H5Zfilter_avail(dcpl_pline.filter[i].id))
                 HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
         }
 
-        if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
+        if(H5D__write_filter_parallel(&dset_id, dxpl_id, &buf, threads_count) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
     }else
     {
@@ -1445,59 +1440,7 @@ printf("Sane! Filter: %d\n", dcpl_pline.filter[0].id);
         FUNC_LEAVE_API(ret_value)
     }
 
-/**
- * Assigns a filter loaded from a dynamic library into the passed H5Z_class2_t struct.
- *
- * Onlu LZ4 is implemented, other HDF5 filters should have an identical plugin path as folder to choose library from.
- * @param h5z_symbol
- * @param plugin_path
- * @param filter_name
- * @return
- */
-static herr_t
-H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const char* filter_name)
-{
-    herr_t ret_value = SUCCEED;
 
-    FUNC_ENTER_PACKAGE
-
-    const char* filter_lib_name;
-    const char* filter_symbol;
-
-    if (strcmp(filter_name, "LZ4") == 0)
-    {
-        filter_lib_name = "/libh5lz4.so.0";
-        filter_symbol = "H5Z_LZ4";
-    }else{
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
-    }
-
-    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
-
-    char* lib_path;
-    if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
-
-    strcpy(lib_path, plugin_path);
-    strcat(lib_path, filter_lib_name);
-
-    printf("Filter path: %s\n", lib_path);
-
-    void* handle;
-    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
-
-    free(lib_path);
-
-    dlerror();
-
-    *h5z_symbol = dlsym(handle, filter_symbol);
-    if (h5z_symbol == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
-
-    done:
-    FUNC_LEAVE_NOAPI(ret_value);
-}
 
 
 /**
@@ -1511,15 +1454,15 @@ H5D__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const cha
  * @return
  */
 static herr_t
-H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
+H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
     herr_t ret_value = SUCCEED;
     hssize_t dset_size;
-    hid_t dcpl, fspace;
-
-    hsize_t buf_dims[H5S_MAX_RANK];
+    hid_t dcpl_id, fspace_id;
 
     thread_arguments* targs = NULL;
     queue* q = NULL;
+
+    hsize_t buf_dims[H5S_MAX_RANK];
 
     FUNC_ENTER_PACKAGE
 
@@ -1534,25 +1477,25 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     pthread_cond_init(&q->wait, NULL);
 
     /*** Dataset information retrieval ***/
-    if ((fspace = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
+    if ((fspace_id = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
         HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
 
-    if ((dset_size = H5Sget_simple_extent_npoints(fspace)) < 0)
+    if ((dset_size = H5Sget_simple_extent_npoints(fspace_id)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
 
-    if ((H5Sget_simple_extent_dims(fspace, buf_dims, NULL)) < 0)
+    if ((H5Sget_simple_extent_dims(fspace_id, buf_dims, NULL)) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
     /*#################################*/
 
     /*** Chunk information retrieval ***/
-    if ((dcpl = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
+    if ((dcpl_id = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
         HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
 
     hsize_t chunk_dims[H5S_MAX_RANK];
     int chunk_rank;
     hsize_t chunk_size = 0;
 
-    if ((chunk_rank = H5Pget_chunk(dcpl, H5S_MAX_RANK, chunk_dims)) < 0)
+    if ((chunk_rank = H5Pget_chunk(dcpl_id, H5S_MAX_RANK, chunk_dims)) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
 
     if (chunk_rank > 0) chunk_size = chunk_dims[0];
@@ -1573,8 +1516,8 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
     a_args.chunk_dims = chunk_dims;
     a_args.dset_dims = buf_dims;
     a_args.chunk_size = chunk_size;
-    a_args.chunk_size_bytes = chunk_size*4;
-    a_args.nchunks = dset_size/chunk_size + (dset_size%chunk_size? 1:0);
+    a_args.chunk_size_bytes = chunk_size * sizeof(int);
+    a_args.nchunks = dset_size / chunk_size + (dset_size%chunk_size? 1:0); //Last part to cover not full chunk
 
     char *error;
     H5Z_class2_t* h5z_symbol = NULL;
@@ -1586,7 +1529,7 @@ H5D__write_LZ4_threads(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], 
         plugin_path = "/usr/local/hdf5/lib/plugin";
     }
 
-    if (H5D__assign_filter(&h5z_symbol, plugin_path, "LZ4") == FAIL)
+    if (H5Z__assign_filter(&h5z_symbol, plugin_path, H5Z_FILTER_LZ4) == FAIL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "Can't assign plugin symbol.");
 
     if (h5z_symbol == NULL)
