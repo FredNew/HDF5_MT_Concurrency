@@ -57,3 +57,8 @@ dkms.conf
 /src/.libs/
 /test/.deps/
 /test/.libs/
+
+
+# Intel Threadinspector
+*.Po
+*.Plo
