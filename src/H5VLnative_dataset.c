@@ -430,6 +430,12 @@ void* H5VL__native_pool_function(void* thread_args)
         if (targs->status == T_CHUNKING)
         {
 
+            // if (chunk_no > a_args->nchunks) //Somehow one thread sometimes makes it through
+            // {
+            //     targs->status = T_COMPRESSING;
+            //     continue;
+            // }
+
             t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
             chunk_info->chunk_no = chunk_no;
             int* chunk;
@@ -448,15 +454,16 @@ void* H5VL__native_pool_function(void* thread_args)
              */
             if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
             {
+                printf("Rest? Cno %lu\n", chunk_no);
                 memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
                     a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
             }else{
                 for (int i = 0; i < a_args->chunk_dims[0]; i++)
                 {
-
                     memcpy(&chunk[i * a_args->chunk_dims[1]],
-                    &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-                        - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                    &buf[chunk_no * a_args->chunk_dims[1] +
+                        ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
+                        (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
                         + i * a_args->dset_dims[1]],
                         a_args->chunk_dims[1] * sizeof(int));
                 }
@@ -470,8 +477,9 @@ void* H5VL__native_pool_function(void* thread_args)
             /*
              * Advance n-threads further. Enables non locking asynchronous chunk creation.
              */
-            if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
+            if ((chunk_no += a_args->nthreads) > a_args->nchunks - 1) //Careful. Chunk numbering starts at 0
             {
+                printf("%lu Going to compress.\n", chunk_no - a_args->nthreads);
                 targs->status = T_COMPRESSING;
             }
         }
@@ -487,6 +495,7 @@ void* H5VL__native_pool_function(void* thread_args)
             t_chunk_info* chunk_info = queue_get(a_args->q);
             if (chunk_info == NULL) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
             {
+                printf("%lu Going back to Chunking\n", chunk_no);
                 targs->status = T_CHUNKING;
                 continue;
             }
@@ -510,6 +519,8 @@ void* H5VL__native_pool_function(void* thread_args)
 
             if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
             {
+                printf("%lu Going back to Chunking\n", chunk_no);
+
                 targs->status = T_CHUNKING;
             }
         }
