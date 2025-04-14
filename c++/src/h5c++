@@ -86,7 +86,7 @@ CXXLINKERBASE="no"
 # from the hdf5 build. The order of the flags is intended to give precedence
 # to the user's flags.
 H5BLD_CXXFLAGS=" "
-H5BLD_CPPFLAGS=" "
+H5BLD_CPPFLAGS=" -g"
 H5BLD_LDFLAGS=" "
 H5BLD_LIBS="-lz -ldl -lm "
 

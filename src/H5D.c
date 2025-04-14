@@ -1407,11 +1407,31 @@ herr_t
 H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
 
     herr_t ret_value = SUCCEED;
-    H5P_genplist_t *dc_plist;
+    hid_t dcpl_id;
+    H5P_genplist_t *dc_plist = NULL;
     H5O_pline_t dcpl_pline;
 
     FUNC_ENTER_API(FAIL)
 
+
+    /* Routine to get Pipeline information */
+
+
+    H5VL_object_t *vol_obj;
+    H5VL_dataset_get_args_t vol_cb_args;
+
+    vol_obj = H5VL_vol_object_verify(dset_id, H5I_DATASET);
+
+    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+    H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
+
+    dcpl_id =  vol_cb_args.args.get_dcpl.dcpl_id;
+
+    dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
+
+    H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
+    /************************************/
 
     /* Check arguments */
     if (NULL == (dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(dset_id))))

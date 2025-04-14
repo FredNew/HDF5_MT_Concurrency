@@ -385,6 +385,8 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5VL__native_dataset_read() */
 
+static pthread_mutex_t parallel_global_lock = PTHREAD_MUTEX_INITIALIZER;
+
 void* H5VL__native_pool_function(void* thread_args)
 {
     thread_arguments* targs = (thread_arguments*) thread_args;
@@ -399,11 +401,30 @@ void* H5VL__native_pool_function(void* thread_args)
     }
 
 
-    H5P_genplist_t *dc_plist;
+    /* Routine to get Pipeline information */
+    hid_t dcpl_id;
+    H5P_genplist_t *dc_plist = NULL;
     H5O_pline_t dcpl_pline;
 
-    dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(a_args->h5_dset_id));
+    H5VL_object_t *vol_obj;
+    H5VL_dataset_get_args_t vol_cb_args;
+
+    pthread_mutex_lock(&parallel_global_lock);
+    vol_obj = H5VL_vol_object_verify(a_args->h5_dset_id, H5I_DATASET);
+
+    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+    H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
+
+    dcpl_id =  vol_cb_args.args.get_dcpl.dcpl_id;
+
+    dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
+
     H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
+
+    pthread_mutex_unlock(&parallel_global_lock);
+    /************************************/
+
 
     size_t cd_nelmts = 0;
     const unsigned int *cd_values = NULL;
@@ -459,17 +480,18 @@ void* H5VL__native_pool_function(void* thread_args)
             }else{
                 for (int i = 0; i < a_args->chunk_dims[0]; i++)
                 {
+                    // memcpy(&chunk[i * a_args->chunk_dims[1]],
+                    //                     &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                    //                         - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                    //                         + i * a_args->dset_dims[1]],
+                    //                         a_args->chunk_dims[1] * sizeof(int));
+
                     memcpy(&chunk[i * a_args->chunk_dims[1]],
-                                        &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-                                            - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-                                            + i * a_args->dset_dims[1]],
-                                            a_args->chunk_dims[1] * sizeof(int));
-                    //memcpy(&chunk[i * a_args->chunk_dims[1]],
-                    // &buf[chunk_no * a_args->chunk_dims[1] +
-                    //     ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
-                    //     (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
-                    //     + i * a_args->dset_dims[1]],
-                    //     a_args->chunk_dims[1] * sizeof(int));
+                     &buf[chunk_no * a_args->chunk_dims[1] +
+                         ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
+                         (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
+                         + i * a_args->dset_dims[1]],
+                         a_args->chunk_dims[1] * sizeof(int));
                 }
             }
 
@@ -483,14 +505,14 @@ void* H5VL__native_pool_function(void* thread_args)
              */
             if ((chunk_no += a_args->nthreads) > a_args->nchunks - 1) //Careful. Chunk numbering starts at 0
             {
-                printf("%lu Going to compress.\n", chunk_no - a_args->nthreads);
+                //printf("%lu Going to compress.\n", chunk_no - a_args->nthreads);
                 targs->status = T_COMPRESSING;
             }
         }
 
         if (targs->status == T_COMPRESSING)
         {
-            if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+            if (queue_get_elmts_added(a_args->q) == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
             {
                 targs->status = T_DONE;
                 queue_add(a_args->q, NULL); //all elements written. Send NULL to cause cond_signal. broadcast better?
@@ -504,6 +526,8 @@ void* H5VL__native_pool_function(void* thread_args)
                 targs->status = T_CHUNKING;
                 continue;
             }
+
+            printf("Chunk #%lu\n", chunk_info->chunk_no);
 
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
 
@@ -704,8 +728,6 @@ H5VL__native_dataset_specific(void *obj, H5VL_dataset_specific_args_t *args, hid
 done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5VL__native_dataset_specific() */
-
-static pthread_mutex_t global_test_lock = PTHREAD_MUTEX_INITIALIZER;
 
 
 /*-------------------------------------------------------------------------
@@ -914,11 +936,11 @@ H5VL__native_dataset_optional(void *obj, H5VL_optional_args_t *args, hid_t dxpl_
 
             /* Write chunk */ //TODO: Need a lock around here. Fetches chunk addresses that might be incorrect.
 
-            pthread_mutex_lock(&global_test_lock);
+            pthread_mutex_lock(&parallel_global_lock);
             if (H5D__chunk_direct_write(dset, chunk_write_args->filters, offset_copy, chunk_write_args->size,
                                         chunk_write_args->buf) < 0)
                 HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write unprocessed chunk data");
-            pthread_mutex_unlock(&global_test_lock);
+            pthread_mutex_unlock(&parallel_global_lock);
             break;
         }
 

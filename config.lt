@@ -479,7 +479,7 @@ old_postuninstall_cmds=''
 old_archive_cmds='$AR $AR_FLAGS $oldlib$oldobjs~$RANLIB $tool_oldlib'
 lock_old_archive_extraction='no'
 CC='gcc'
-CFLAGS='-pthread'
+CFLAGS=''
 compiler='gcc'
 GCC='yes'
 lt_cv_sys_global_symbol_pipe='/usr/bin/sed -n -e '\''s/^.*[	 ]\([ABCDGIRSTW][ABCDGIRSTW]*\)[	 ][	 ]*\([_A-Za-z][_A-Za-z0-9]*\)$/\1 \2 \2/p'\'' | /usr/bin/sed '\''/ __gnu_lto/d'\'''
@@ -670,7 +670,7 @@ compiler_lib_search_path_CXX=''
 compiler_lib_search_path_FC=''
 
 LTCC='gcc'
-LTCFLAGS=' -pthread'
+LTCFLAGS=' '
 compiler='gcc'
 
 # A function that is used when there is no print builtin or printf.

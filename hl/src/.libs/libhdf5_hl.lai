@@ -14,7 +14,7 @@ library_names='libhdf5_hl.so.310.0.5 libhdf5_hl.so.310 libhdf5_hl.so'
 old_library='libhdf5_hl.a'
 
 # Linker flags that cannot go in dependency_libs.
-inherited_linker_flags=' -pthread'
+inherited_linker_flags=''
 
 # Libraries that this one depends upon.
 dependency_libs=' /home/fred/parallel_lz4_hdf5/lib/libhdf5.la -lz -ldl -lm'

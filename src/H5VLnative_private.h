@@ -159,6 +159,7 @@ H5_DLL herr_t H5VL__native_str_to_token(void *obj, H5I_type_t obj_type, const ch
 /* Parallel pool callback */
 void* H5VL__native_pool_function(void* thread_args);
 
+
     /* Helper functions */
 H5_DLL herr_t H5VL_native_get_file_addr_len(hid_t loc_id, size_t *addr_len);
 H5_DLL herr_t H5VL__native_get_file_addr_len(void *obj, H5I_type_t obj_type, size_t *addr_len);
