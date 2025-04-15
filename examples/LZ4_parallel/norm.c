@@ -11,11 +11,11 @@ int main(int argc, char* argv[]){
     hsize_t dims[rank];
     hsize_t chunk_dims[rank];
 
-    dims[0] = 4*1024;
+    dims[0] = 4*16*1024;
     dims[1] = 4*1024;
 
-    chunk_dims[0] = 1024; //down
-    chunk_dims[1] = 256; //right
+    chunk_dims[0] = 4*1024; //down
+    chunk_dims[1] = 1024; //right
 
     hsize_t dset_size = dims[0] * dims[1];
     hsize_t chunk_size = chunk_dims[0] * chunk_dims[1];

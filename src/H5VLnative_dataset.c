@@ -480,18 +480,18 @@ void* H5VL__native_pool_function(void* thread_args)
             }else{
                 for (int i = 0; i < a_args->chunk_dims[0]; i++)
                 {
-                    // memcpy(&chunk[i * a_args->chunk_dims[1]],
-                    //                     &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-                    //                         - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-                    //                         + i * a_args->dset_dims[1]],
-                    //                         a_args->chunk_dims[1] * sizeof(int));
-
                     memcpy(&chunk[i * a_args->chunk_dims[1]],
-                     &buf[chunk_no * a_args->chunk_dims[1] +
-                         ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
-                         (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
-                         + i * a_args->dset_dims[1]],
-                         a_args->chunk_dims[1] * sizeof(int));
+                                        &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                                            - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                                            + i * a_args->dset_dims[1]],
+                                            a_args->chunk_dims[1] * sizeof(int));
+
+                    // memcpy(&chunk[i * a_args->chunk_dims[1]],
+                    //  &buf[chunk_no * a_args->chunk_dims[1] +
+                    //      ((int)(chunk_no * a_args->chunk_dims[1] / a_args->dset_dims[1])) *
+                    //      (a_args->dset_dims[0] * a_args->chunk_dims[0] - a_args->chunk_dims[1])
+                    //      + i * a_args->dset_dims[1]],
+                    //      a_args->chunk_dims[1] * sizeof(int));
                 }
             }
 
