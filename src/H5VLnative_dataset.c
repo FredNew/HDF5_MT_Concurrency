@@ -527,8 +527,6 @@ void* H5VL__native_pool_function(void* thread_args)
                 continue;
             }
 
-            printf("Chunk #%lu\n", chunk_info->chunk_no);
-
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
 
             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
@@ -536,12 +534,12 @@ void* H5VL__native_pool_function(void* thread_args)
             hchunk_offset[0] = offset_v;
             hchunk_offset[1] = offset_h;
 
-            // if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
-            //     chunk_info->chunk) == FAIL)
-            // {
-            //     printf("Error writing\n");
-            //     break;
-            // }
+            if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
+                chunk_info->chunk) == FAIL)
+            {
+                printf("Error writing\n");
+                break;
+            }
 
             free(chunk_info->chunk);
             //Need to free all chunks in a_args after failure
