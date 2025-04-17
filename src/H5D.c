@@ -1584,7 +1584,6 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
 done:
     if (q != NULL) free(q);
     if (targs != NULL) free(targs);
-
     FUNC_LEAVE_NOAPI(ret_value);
 }
 

@@ -1805,7 +1805,7 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
     strcpy(lib_path, plugin_path);
     strcat(lib_path, filter_lib_name);
 
-    printf("Filter path: %s\n", lib_path);
+    //printf("Filter path: %s\n", lib_path);
 
     void* handle;
     if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)

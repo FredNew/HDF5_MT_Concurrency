@@ -1,7 +1,7 @@
 #include "hdf5.h"
 #include "dataset.h"
 #include <stdio.h>
-#include <time.h>
+#include <stdlib.h>
 
 #define H5Z_FILTER_LZ4 32004
 
@@ -11,11 +11,11 @@ int main(int argc, char* argv[]){
     hsize_t dims[rank];
     hsize_t chunk_dims[rank];
 
-    dims[0] = 256;
-    dims[1] = 128;
+    dims[0] = 4*16*1024;
+    dims[1] = 4*1024;
 
-    chunk_dims[0] = 32; //down
-    chunk_dims[1] = 32; //right
+    chunk_dims[0] = 4*1024; //down
+    chunk_dims[1] = 1024; //right
 
     hsize_t dset_size = dims[0] * dims[1];
     hsize_t chunk_size = chunk_dims[0] * chunk_dims[1];
@@ -31,7 +31,7 @@ int main(int argc, char* argv[]){
     dcpl_id = H5Pcreate(H5P_DATASET_CREATE);
     H5Pset_chunk(dcpl_id, rank, chunk_dims);
     
-    const unsigned int cd_values[1] = {8};
+    const unsigned int cd_values[1] = {8*1024};
 
     if(H5Zfilter_avail(H5Z_FILTER_LZ4)){
         printf("Filter %d available. Being applied. Block-Setting: %d.\n", H5Z_FILTER_LZ4, cd_values[0]);
@@ -46,8 +46,9 @@ int main(int argc, char* argv[]){
 
     printf("Beginning write...\n");
     H5Dwrite_filter_parallel(dset_id, H5S_ALL, dset, 4);
-    //H5Dwrite_LZ4_threads(dset_id, H5S_ALL, dset, 4);
     printf("Write completed.\n");
+
+    free(dset);
 
     H5Dclose(dset_id);
     H5Sclose(fspace_id);

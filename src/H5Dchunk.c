@@ -368,6 +368,8 @@ H5FL_BLK_DEFINE_STATIC(chunk);
 /* Declare extern free list to manage the H5S_sel_iter_t struct */
 H5FL_EXTERN(H5S_sel_iter_t);
 
+
+pthread_mutex_t b_tree_insert_lock = PTHREAD_MUTEX_INITIALIZER;
 /*-------------------------------------------------------------------------
  * Function:    H5D__chunk_direct_write
  *
@@ -392,6 +394,7 @@ H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t
 
     /* Sanity checks */
     assert(layout->type == H5D_CHUNKED);
+    pthread_mutex_lock(&b_tree_insert_lock);
 
     /* Allocate dataspace and initialize it if it hasn't been. */
     if (!H5D__chunk_is_space_alloc(&layout->storage))
@@ -402,7 +405,7 @@ H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t
     H5VM_chunk_scaled(dset->shared->ndims, offset, layout->u.chunk.dim, scaled);
     scaled[dset->shared->ndims] = 0;
 
-    /* Find out the file address of the chunk (if any) */
+    /* Find out the file address of the chunk (if any) */ //Probably need to lock from here.... Otherwise incorrect (outdated address)
     if (H5D__chunk_lookup(dset, scaled, &udata) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, FAIL, "error looking up chunk address");
 
@@ -460,7 +463,7 @@ H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t
                                data_size, buf) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "unable to write raw data to file");
 
-    /* Insert the chunk record into the index */
+    /* Insert the chunk record into the index */ //B-TREE
     if (need_insert && layout->storage.u.chunk.ops->insert) {
         /* Set the chunk's filter mask to the new settings */
         udata.filter_mask = filters;
@@ -468,6 +471,7 @@ H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t
         if ((layout->storage.u.chunk.ops->insert)(&idx_info, &udata, dset) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_CANTINSERT, FAIL, "unable to insert chunk addr into index");
     } /* end if */
+    pthread_mutex_unlock(&b_tree_insert_lock);
 
 done:
     FUNC_LEAVE_NOAPI_TAG(ret_value)

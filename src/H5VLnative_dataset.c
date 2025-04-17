@@ -411,7 +411,7 @@ void* H5VL__native_pool_function(void* thread_args)
 
     pthread_mutex_lock(&parallel_global_lock);
     vol_obj = H5VL_vol_object_verify(a_args->h5_dset_id, H5I_DATASET);
-
+    H5D_t *dset = (H5D_t*) vol_obj->data;
     vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
     vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
     H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
@@ -450,12 +450,6 @@ void* H5VL__native_pool_function(void* thread_args)
     {
         if (targs->status == T_CHUNKING)
         {
-
-            // if (chunk_no > a_args->nchunks) //Somehow one thread sometimes makes it through
-            // {
-            //     targs->status = T_COMPRESSING;
-            //     continue;
-            // }
 
             t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
             chunk_info->chunk_no = chunk_no;
@@ -499,7 +493,6 @@ void* H5VL__native_pool_function(void* thread_args)
              */
             if ((chunk_no += a_args->nthreads) > a_args->nchunks - 1) //Careful. Chunk numbering starts at 0
             {
-                //printf("%lu Going to compress.\n", chunk_no - a_args->nthreads);
                 targs->status = T_COMPRESSING;
             }
         }
@@ -528,15 +521,13 @@ void* H5VL__native_pool_function(void* thread_args)
             hchunk_offset[0] = offset_v;
             hchunk_offset[1] = offset_h;
 
-            if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
-                chunk_info->chunk) == FAIL)
-            {
+            if (H5D__chunk_direct_write(dset, filter, hchunk_offset, chunk_info->chunk_size_bytes, chunk_info->chunk) == FAIL){ //Using dset object directly.
                 printf("Error writing\n");
                 break;
             }
 
             free(chunk_info->chunk);
-            //Need to free all chunks in a_args after failure
+            free(chunk_info);
 
             if ((chunk_no < a_args->nchunks - 1) && (a_args->q->elmts_added < a_args->nchunks))//Not all elements yet chunked. Go back to finish up.
             {

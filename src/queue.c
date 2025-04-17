@@ -64,6 +64,8 @@ void* queue_get(queue* q){
 
         q->head = q->head->next;
         q->nelmts--;
+
+        free(q_item);
     }
     pthread_mutex_unlock(&q->lock);
     
