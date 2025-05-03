@@ -59,6 +59,10 @@ dkms.conf
 /test/.libs/
 
 
-# Intel Threadinspector
+#
 *.Po
 *.Plo
+*.h5
+*.data
+*.data.old
+*.log

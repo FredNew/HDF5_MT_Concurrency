@@ -390,11 +390,12 @@ H5D__chunk_direct_write(H5D_t *dset, uint32_t filters, hsize_t *offset, uint32_t
     bool                need_insert = false;   /* Whether the chunk needs to be inserted into the index */
     herr_t              ret_value   = SUCCEED; /* Return value */
 
+    pthread_mutex_lock(&b_tree_insert_lock);
+
     FUNC_ENTER_PACKAGE_TAG(dset->oloc.addr)
 
     /* Sanity checks */
     assert(layout->type == H5D_CHUNKED);
-    pthread_mutex_lock(&b_tree_insert_lock);
 
     /* Allocate dataspace and initialize it if it hasn't been. */
     if (!H5D__chunk_is_space_alloc(&layout->storage))

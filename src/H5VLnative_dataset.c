@@ -467,20 +467,13 @@ void* H5VL__native_pool_function(void* thread_args)
             /*
              * Performs actual copy into chunk memory
              */
-            if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
+            for (int i = 0; i < a_args->chunk_dims[0]; i++)
             {
-                memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
-                    a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
-            }else{
-                for (int i = 0; i < a_args->chunk_dims[0]; i++)
-                {
-                    memcpy(&chunk[i * a_args->chunk_dims[1]],
-                                        &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-                                            - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-                                            + i * a_args->dset_dims[1]],
-                                            a_args->chunk_dims[1] * sizeof(int));
-
-                }
+            memcpy(&chunk[i * a_args->chunk_dims[1]],
+                &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
+                - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
+                + i * a_args->dset_dims[1]],
+                a_args->chunk_dims[1] * sizeof(int));
             }
 
             chunk_info->chunk = chunk;
@@ -507,12 +500,6 @@ void* H5VL__native_pool_function(void* thread_args)
             }
 
             t_chunk_info* chunk_info = queue_get(a_args->q);
-            if ((chunk_info == NULL) && (a_args->nchunks < a_args->q->elmts_added)) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
-            { //Case of OOM before. Not all chunks have been added. Now memory for at least one chunk should be available.
-                printf("%lu Going back to Chunking\n", chunk_no);
-                targs->status = T_CHUNKING;
-                continue;
-            }
 
             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
 
