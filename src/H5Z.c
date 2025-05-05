@@ -1785,13 +1785,16 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
     const char* filter_lib_name;
     const char* filter_symbol;
 
-
     switch (filter_id)
     {
         case H5Z_FILTER_LZ4:
             filter_lib_name = "/libh5lz4.so.0";
             filter_symbol = "H5Z_LZ4";
             break;
+
+        case H5Z_FILTER_DEFLATE: //Using internal filter in H5Zdeflate.c
+            h5z_symbol = H5Z_DEFLATE;
+            HGOTO_DONE(ret_value);
 
         default: HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
     }
@@ -1804,8 +1807,6 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
 
     strcpy(lib_path, plugin_path);
     strcat(lib_path, filter_lib_name);
-
-    //printf("Filter path: %s\n", lib_path);
 
     void* handle;
     if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
