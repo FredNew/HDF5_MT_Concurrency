@@ -137,6 +137,7 @@
 #define T_DONE 3
 
 #define H5Z_FILTER_LZ4 32004
+#define H5Z_FILTER_ZSTD 32015
 
 
 /****************************/

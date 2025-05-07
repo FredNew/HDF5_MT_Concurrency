@@ -1792,6 +1792,11 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
             filter_symbol = "H5Z_LZ4";
             break;
 
+        case H5Z_FILTER_ZSTD:
+            filter_lib_name = "/libh5zstd.so.0";
+            filter_symbol = "H5Z_ZSTD";
+            break;
+
         case H5Z_FILTER_DEFLATE: //Using internal filter in H5Zdeflate.c
             *h5z_symbol = H5Z_DEFLATE;
             HGOTO_DONE(ret_value);
