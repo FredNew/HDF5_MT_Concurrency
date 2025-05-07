@@ -1793,9 +1793,11 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
             break;
 
         case H5Z_FILTER_DEFLATE: //Using internal filter in H5Zdeflate.c
-            h5z_symbol = H5Z_DEFLATE;
+            *h5z_symbol = H5Z_DEFLATE;
             HGOTO_DONE(ret_value);
 
+        case NULL:
+            h5z_symbol = NULL;
         default: HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
     }
 
