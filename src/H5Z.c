@@ -1818,6 +1818,8 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
     dlerror();
 
     *h5z_symbol = dlsym(handle, filter_symbol);
+    printf("Filter %s set.\n", (*h5z_symbol)->name);
+
     if (h5z_symbol == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
 
