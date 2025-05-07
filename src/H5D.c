@@ -1539,6 +1539,24 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     a_args.chunk_size_bytes = chunk_size * sizeof(int);
     a_args.nchunks = dset_size / chunk_size + (dset_size%chunk_size? 1:0); //Last part to cover not full chunk
 
+    /* Routine to get Pipeline information */
+    H5P_genplist_t *dc_plist = NULL;
+    H5O_pline_t dcpl_pline;
+
+    H5VL_object_t *vol_obj;
+    H5VL_dataset_get_args_t vol_cb_args;
+
+    vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET);
+    H5D_t *dset = (H5D_t*) vol_obj->data;
+    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+    H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
+
+    dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
+
+    H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
+    /************************************/
+
     char *error;
     H5Z_class2_t* h5z_symbol = NULL;
 
@@ -1549,7 +1567,8 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
         plugin_path = "/usr/local/hdf5/lib/plugin";
     }
 
-    if (H5Z__assign_filter(&h5z_symbol, plugin_path, H5Z_FILTER_LZ4) == FAIL)
+
+    if (H5Z__assign_filter(&h5z_symbol, plugin_path, dcpl_pline.filter[0].id) == FAIL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "Can't assign plugin symbol.");
 
     if (h5z_symbol == NULL)
