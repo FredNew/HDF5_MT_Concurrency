@@ -1364,36 +1364,8 @@ done:
 } /* end H5Dwrite() */
 
 
-
-// /*-------------------------------------------------------------------------
-//  * Function:    H5Dwrite_write_LZ4_threads
-//  *
-//  * Purpose:     For increased performance in LZ4 dataset compression using
-//  *              a threadpool to parallel compress chunks into a single
-//  *              dataset.
-//  *
-//  * Return:      Non-negative on success/Negative on failure
-//  *
-//  *-------------------------------------------------------------------------
-//  */
-// herr_t
-// H5Dwrite_LZ4_threads(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
-//
-//     herr_t ret_value = SUCCEED;
-//
-//     FUNC_ENTER_API(FAIL)
-//
-//     if (!H5Zfilter_avail(32004))
-//         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
-//     if(H5D__write_LZ4_threads(&dset_id, dxpl_id, &buf, threads_count) < 0)
-//         HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
-//
-// done:
-//     FUNC_LEAVE_API(ret_value)
-// }
-
 /*-------------------------------------------------------------------------
- * Function:    H5Dwrite_write_LZ4_threads
+ * Function:    H5Dwrite_write_filter_parallel
  *
  * Purpose:     For increased performance in LZ4 dataset compression using
  *              a threadpool to parallel compress chunks into a single
@@ -1407,55 +1379,54 @@ herr_t
 H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t threads_count){
 
     herr_t ret_value = SUCCEED;
-    hid_t dcpl_id;
-    H5P_genplist_t *dc_plist = NULL;
-    H5O_pline_t dcpl_pline;
+
+    // hid_t dcpl_id;
+    // H5P_genplist_t *dc_plist = NULL;
+    // H5O_pline_t dcpl_pline;
 
     FUNC_ENTER_API(FAIL)
 
-
-    /* Routine to get Pipeline information */
-
-
-    H5VL_object_t *vol_obj;
-    H5VL_dataset_get_args_t vol_cb_args;
-
-    vol_obj = H5VL_vol_object_verify(dset_id, H5I_DATASET);
-
-    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
-    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
-    H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
-
-    dcpl_id =  vol_cb_args.args.get_dcpl.dcpl_id;
-
-    dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
-
-    H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
-    /************************************/
-
-    /* Check arguments */
-    if (NULL == (dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(dset_id))))
-        HGOTO_ERROR(H5E_ID, H5E_NOTFOUND, FAIL, "Object for plist ID not found");
-    if (H5P_peek(dc_plist, H5O_CRT_PIPELINE_NAME, &dcpl_pline) < 0)
-        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't retrieve pipeline filter");
+    // /* Routine to get Pipeline information */
+    // H5VL_object_t *vol_obj;
+    // H5VL_dataset_get_args_t vol_cb_args;
+    //
+    // vol_obj = H5VL_vol_object_verify(dset_id, H5I_DATASET);
+    //
+    // vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    // vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+    // H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
+    //
+    // dcpl_id =  vol_cb_args.args.get_dcpl.dcpl_id;
+    //
+    // dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
+    //
+    // H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
+    // /************************************/
+    //
+    // /* Check arguments */
+    // if (NULL == (dc_plist = (H5P_genplist_t *)H5I_object(H5Dget_create_plist(dset_id))))
+    //     HGOTO_ERROR(H5E_ID, H5E_NOTFOUND, FAIL, "Object for plist ID not found");
+    // if (H5P_peek(dc_plist, H5O_CRT_PIPELINE_NAME, &dcpl_pline) < 0)
+    //     HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "can't retrieve pipeline filter");
 
     /* Sanity checks */
-    assert(dc_plist);
+    // assert(dc_plist);
 
-    if(dcpl_pline.nused > 0) //Filters in pipeline
-    {
-        for (size_t i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
-        {
-            if (!H5Zfilter_avail(dcpl_pline.filter[i].id))
-                HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
-        }
+    // if(dcpl_pline.nused > 0) //Filters in pipeline
+    // {
+    //     for (size_t i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
+    //     {
+    //         if (!H5Zfilter_avail(dcpl_pline.filter[i].id))
+    //             HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
+    //     }
 
         if(H5D__write_filter_parallel(&dset_id, dxpl_id, &buf, threads_count) < 0)
             HGOTO_ERROR(H5E_DATASET, H5E_WRITEERROR, FAIL, "can't write data using thread pool.");
-    }else
-    {
-        HGOTO_ERROR(H5E_PLIST, H5E_NOFILTER, FAIL, "No filters in pipeline.");
-    }
+    // }else
+    // {
+    //     HGOTO_ERROR(H5E_PLIST, H5E_NOFILTER, FAIL, "No filters in pipeline.");
+    // }
+
     done:
         FUNC_LEAVE_API(ret_value)
     }
@@ -1464,18 +1435,21 @@ H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t 
 
 
 /**
- * The general chunked, pre-filtered write function. For proof of concept, at this point  used for LZ4 compression only.
+ * The general chunked, pre-filtered write function. For proof of concept, at this point  used for selected filters only.
  * Can be generalized using Ḧ5D__assign_filter and passing info on which filter is to be used.
  *
- * @param dset_id
- * @param dxpl_id
- * @param buf
- * @param threads_count
- * @return
+ * @param dset_id Dataset ID
+ * @param dxpl_id Property List ID
+ * @param buf Array of buffers from memory to storage
+ * @param threads_count Number of threads to be used internally
+ *
+ * @return 0 (SUCCEED) if no error occured.
  */
 static herr_t
 H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf[], hsize_t threads_count){
+
     herr_t ret_value = SUCCEED;
+
     hssize_t dset_size;
     hid_t dcpl_id, fspace_id;
 
@@ -1497,14 +1471,24 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     pthread_cond_init(&q->wait, NULL);
 
     /*** Dataset information retrieval ***/
-    if ((fspace_id = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
-        HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
+    // if ((fspace_id = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
+    //     HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
+    if ((fspace_id = H5D__get_space_api_common(*dset_id, NULL, NULL)) < 0)
+        HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, H5I_INVALID_HID, "unable to synchronously get dataspace");
 
-    if ((dset_size = H5Sget_simple_extent_npoints(fspace_id)) < 0)
-        HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
+    //
+    // if ((dset_size = H5Sget_simple_extent_npoints(fspace_id)) < 0)
+    //     HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
+    /* Check args */
+    H5S_t *ds;
+    if (NULL == (ds = (H5S_t *)H5I_object_verify(fspace_id, H5I_DATASPACE)))
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataspace");
 
-    if ((H5Sget_simple_extent_dims(fspace_id, buf_dims, NULL)) < 0)
+    dset_size = (hssize_t)H5S_GET_EXTENT_NPOINTS(ds);
+
+    if (H5S_get_simple_extent_dims(ds, buf_dims, NULL) < 0)
         HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get dimension info.");
+
     /*#################################*/
 
     /*** Chunk information retrieval ***/
@@ -1605,204 +1589,6 @@ done:
     if (targs != NULL) free(targs);
     FUNC_LEAVE_NOAPI(ret_value);
 }
-
-
-// void* pool_function(void* thread_args)
-// {
-//     thread_arguments* targs = (thread_arguments*) thread_args;
-//     app_args* a_args = (app_args*) targs->application_args;
-//
-//     printf("Thread %lu ready.\n", targs->thread_number);
-//
-//     int* buf = (int*) a_args->buf;
-//     size_t chunk_no = targs->thread_number;
-//
-//     if (chunk_no > a_args->nchunks) //More threads than chunks. Skipping to next step.
-//     {
-//         targs->status = T_COMPRESSING;
-//     }
-//
-//
-//     const unsigned int cd_values[1] = {8*1024};
-//     size_t buf_size = a_args->chunk_size_bytes;
-//
-//     uint32_t filter = 0;
-//     size_t hchunk_offset[] = {0,0};
-//     unsigned offset_v;
-//     unsigned offset_h;
-//
-//     while (targs->status != T_DONE) //Looping until all tasks completed. Enables better OOM handling.
-//     {
-//         if (targs->status == T_CHUNKING)
-//         {
-//             t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
-//             chunk_info->chunk_no = chunk_no;
-//
-//             int* chunk;
-//             /*
-//              * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
-//              * queue empty. Failed chunk will be attempted on next CHUNKING mode.
-//              */
-//             if ((chunk = calloc(a_args->chunk_size, sizeof(int))) == NULL)
-//             { //OOM
-//                 targs->status = T_COMPRESSING;
-//                 continue;
-//             }
-//
-//             /*
-//              * Performs actual copy into chunk memory
-//              */
-//             if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
-//             {
-//                 memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
-//                     a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
-//             }else{
-//                 for (int i = 0; i < a_args->chunk_dims[0]; i++)
-//                 {
-//
-//                     memcpy(&chunk[i * a_args->chunk_dims[1]],
-//                     &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-//                         - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-//                         + i * a_args->dset_dims[1]],
-//                         a_args->chunk_dims[1] * sizeof(int));
-//                 }
-//             }
-//
-//             chunk_info->chunk = chunk;
-//             chunk_info->chunk_size_bytes = a_args->chunk_size;
-//
-//             queue_add(a_args->q, chunk_info);
-//
-//             /*
-//              * Advance n-threads further. Enables non locking asynchronous chunk creation.
-//              */
-//             if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
-//             {
-//                 targs->status = T_COMPRESSING;
-//             }
-//         }
-//
-//         if (targs->status == T_COMPRESSING)
-//         {
-//             if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
-//             {
-//                 //queue_add(a_args->q, NULL);
-//                 targs->status = T_DONE;
-//                 break;
-//             }
-//
-//             t_chunk_info* chunk_info = queue_get(a_args->q);
-//             if (chunk_info == NULL) //Not all elements have been added to queue, but still item is NULL. Go back to chunking.
-//             {
-//                 targs->status = T_CHUNKING;
-//                 continue;
-//             }
-//
-//             chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
-//             // a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
-//
-//             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
-//             offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
-//             hchunk_offset[0] = offset_v;
-//             hchunk_offset[1] = offset_h;
-//
-//             if (H5Dwrite_chunk(a_args->h5_dset_id, a_args->h5_dxpl_id, filter, hchunk_offset, chunk_info->chunk_size_bytes,
-//                 chunk_info->chunk) == FAIL)
-//             {
-//                 printf("Error writing\n");
-//                 break;
-//             }
-//
-//
-//             free(chunk_info->chunk);
-//
-//
-//     //HGOTO_ERROR(H5E_WRITEERROR, H5E_NONE_MINOR, FAIL, "Writing chunk to file failed.");
-//                                 //Need to free all chunks in a_args after failure
-//
-//             if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
-//             {
-//                 targs->status = T_CHUNKING;
-//             }
-//         }
-//     }
-//
-//     // chunking:
-//     // while (targs->status == T_CHUNKING)
-//     // {
-//     //     t_chunk_info* chunk_info = malloc(sizeof(*chunk_info));
-//     //     chunk_info->chunk_no = chunk_no;
-//     //
-//     //     int* chunk;
-//     //     /*
-//     //      * In case there is not enough memory available to allocate new chunks into heap, skip to compressing step until
-//     //      * queue empty. Failed chunk will be attempted on next CHUNKING mode.
-//     //      */
-//     //     if ((chunk = calloc(a_args->chunk_size, sizeof(int))) == NULL)
-//     //     {
-//     //         targs->status = T_COMPRESSING;
-//     //         break;
-//     //     }
-//     //
-//     //     /*
-//     //      * Performs actual copy into chunk memory
-//     //      */
-//     //     if (((chunk_no + 1) * a_args->chunk_size_bytes) > a_args->dset_size*4)
-//     //     {
-//     //         memcpy(chunk, &a_args->buf[chunk_no * a_args->chunk_size],
-//     //             a_args->chunk_size_bytes - ((chunk_no + 1) * a_args->chunk_size_bytes - a_args->dset_size*4));
-//     //     }else{
-//     //         for (int i = 0; i < a_args->chunk_dims[0]; i++)
-//     //         {
-//     //
-//     //             memcpy(&chunk[i * a_args->chunk_dims[1]],
-//     //             &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
-//     //                 - chunk_no%(a_args->dset_dims[1]/a_args->chunk_dims[1]) * a_args->chunk_dims[1] * (a_args->chunk_dims[0] - 1)
-//     //                 + i * a_args->dset_dims[1]],
-//     //                 a_args->chunk_dims[1] * sizeof(int));
-//     //         }
-//     //     }
-//     //
-//     //     chunk_info->chunk = chunk;
-//     //     chunk_info->chunk_size_bytes = a_args->chunk_size;
-//     //
-//     //     queue_add(a_args->q, chunk_info);
-//     //
-//     //     /*
-//     //      * Advance n-threads further. Enables non locking asynchronous chunk creation.
-//     //      */
-//     //     if ((chunk_no += a_args->nthreads) >= a_args->nchunks)
-//     //     {
-//     //         targs->status = T_COMPRESSING;
-//     //     }
-//     // }
-//     // const unsigned int cd_values[1] = {8*1024};
-//     // size_t buf_size = a_args->chunk_size_bytes;
-//
-//     // while (targs->status == T_COMPRESSING)
-//     // {
-//     //     if (a_args->q->elmts_added == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
-//     //     {
-//     //         queue_add(a_args->q, NULL);
-//     //         break;
-//     //     }else if (a_args->q->elmts_added < a_args->nchunks)//Not all elements yet chunked. Go back to finish up.
-//     //     {
-//     //         targs->status = T_CHUNKING;
-//     //         goto chunking;
-//     //     }
-//     //     t_chunk_info* chunk_info = queue_get(a_args->q);
-//     //     if (chunk_info == NULL)
-//     //     {
-//     //         break;
-//     //     }
-//     //
-//     //     chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, 1, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
-//     //     a_args->chunks[chunk_info->chunk_no] = chunk_info; //Fills provided array to sequentially write chunks to file
-//     // }
-//
-//     return 0;
-//    }
-
 
 /*-------------------------------------------------------------------------
  * Function:    H5Dwrite_async
