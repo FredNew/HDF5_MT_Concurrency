@@ -1457,6 +1457,18 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     queue* q = NULL;
 
     hsize_t buf_dims[H5S_MAX_RANK];
+    H5S_t *ds;
+
+    H5VL_object_t *vol_obj;
+    H5VL_dataset_get_args_t vol_cb_args;
+
+    hsize_t chunk_dims[H5S_MAX_RANK];
+    int chunk_rank;
+    hsize_t chunk_size = 0;
+
+    H5P_genplist_t *dc_plist = NULL;
+    H5O_pline_t dcpl_pline;
+    H5O_layout_t    layout;    /* Layout information */
 
     FUNC_ENTER_PACKAGE
 
@@ -1471,16 +1483,9 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     pthread_cond_init(&q->wait, NULL);
 
     /*** Dataset information retrieval ***/
-    // if ((fspace_id = H5Dget_space(*dset_id)) == H5I_INVALID_HID)
-    //     HGOTO_ERROR(H5E_DATASET, H5E_DATASPACE, FAIL, "Can't get dataspace id.");
     if ((fspace_id = H5D__get_space_api_common(*dset_id, NULL, NULL)) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, H5I_INVALID_HID, "unable to synchronously get dataspace");
 
-    //
-    // if ((dset_size = H5Sget_simple_extent_npoints(fspace_id)) < 0)
-    //     HGOTO_ERROR(H5E_DATASPACE, H5E_CANTGET, FAIL, "Can't get number of elements in dataspace.");
-    /* Check args */
-    H5S_t *ds;
     if (NULL == (ds = (H5S_t *)H5I_object_verify(fspace_id, H5I_DATASPACE)))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, FAIL, "not a dataspace");
 
@@ -1492,15 +1497,44 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     /*#################################*/
 
     /*** Chunk information retrieval ***/
-    if ((dcpl_id = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
-        HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
+    // if ((dcpl_id = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
+    //     HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
 
-    hsize_t chunk_dims[H5S_MAX_RANK];
-    int chunk_rank;
-    hsize_t chunk_size = 0;
+    if (NULL == (vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET)))
+        HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, H5I_INVALID_HID, "invalid dataset identifier");
 
-    if ((chunk_rank = H5Pget_chunk(dcpl_id, H5S_MAX_RANK, chunk_dims)) < 0)
-        HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+    /* Set up VOL callback arguments */
+    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+
+    /* Get the dataset creation property list */
+    if (H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL) < 0)
+        HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, H5I_INVALID_HID, "unable to get dataset creation properties");
+    dcpl_id = vol_cb_args.args.get_dcpl.dcpl_id;
+
+    /* Get the plist structure */
+    if (NULL == (dc_plist = H5P_object_verify(dcpl_id, H5P_DATASET_CREATE)))
+        HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID");
+
+    // if ((chunk_rank = H5Pget_chunk(dcpl_id, H5S_MAX_RANK, chunk_dims)) < 0)
+    //     HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
+
+    /* Peek at the layout property */
+    if (H5P_peek(dc_plist, H5D_CRT_LAYOUT_NAME, &layout) < 0)
+        HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "can't get layout");
+    if (H5D_CHUNKED != layout.type)
+        HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "not a chunked storage layout");
+
+    if (chunk_dims) {
+        unsigned u; /* Local index variable */
+
+        /* Get the dimension sizes */
+        for (u = 0; u < layout.u.chunk.ndims && u < (unsigned)H5S_MAX_RANK; u++)
+            chunk_dims[u] = layout.u.chunk.dim[u];
+    } /* end if */
+
+    /* Set the return value */
+    chunk_rank = (int)layout.u.chunk.ndims;
 
     if (chunk_rank > 0) chunk_size = chunk_dims[0];
 
@@ -1524,19 +1558,13 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     a_args.nchunks = ((hsize_t) dset_size) / chunk_size + ((hsize_t)dset_size%chunk_size? 1:0); //Last part to cover not full chunk
 
     /* Routine to get Pipeline information */
-    H5P_genplist_t *dc_plist = NULL;
-    H5O_pline_t dcpl_pline;
 
-    H5VL_object_t *vol_obj;
-    H5VL_dataset_get_args_t vol_cb_args;
-
-    vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET);
+    //vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET);
     //H5D_t *dset = (H5D_t*) vol_obj->data;
-    vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
-    vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
-    H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
+    // vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
+    // vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
+    // H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
 
-    dc_plist = (H5P_genplist_t *)H5I_object(dcpl_id);
 
     H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
     /************************************/
