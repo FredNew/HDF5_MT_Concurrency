@@ -57,6 +57,8 @@ src/.libs/
 test/.deps/
 test/.libs/
 .idea
+*.libs
+*.deps
 
 #
 *.Po

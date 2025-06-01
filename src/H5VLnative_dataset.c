@@ -392,7 +392,8 @@ void* H5VL__native_pool_function(void* thread_args)
     thread_arguments* targs = (thread_arguments*) thread_args;
     app_args* a_args = (app_args*) targs->application_args;
 
-    int* buf = (int*) a_args->buf;
+    const int* buf = (const int*) a_args->buf; //TODO: implement type conversion
+
     size_t chunk_no = targs->thread_number;
 
     if (chunk_no > a_args->nchunks) //More threads than chunks. Skipping to next step.
@@ -429,7 +430,7 @@ void* H5VL__native_pool_function(void* thread_args)
     size_t cd_nelmts = 0;
     const unsigned int *cd_values = NULL;
 
-    for (int i = 0; i < dcpl_pline.nused; ++i)
+    for (size_t i = 0; i < dcpl_pline.nused; ++i)
     {
         if (dcpl_pline.filter[i].id == a_args->h5z_filter->id) //Select correct cd_nelmts and values for filter set before
         {
@@ -443,8 +444,8 @@ void* H5VL__native_pool_function(void* thread_args)
 
     uint32_t filter = 0;
     size_t hchunk_offset[] = {0,0};
-    unsigned offset_v;
-    unsigned offset_h;
+    hsize_t offset_v;
+    hsize_t offset_h;
 
     while (targs->status != T_DONE) //Looping until all tasks completed. Enables better OOM handling.
     {
@@ -467,7 +468,7 @@ void* H5VL__native_pool_function(void* thread_args)
             /*
              * Performs actual copy into chunk memory
              */
-            for (int i = 0; i < a_args->chunk_dims[0]; i++)
+            for (hsize_t i = 0; i < a_args->chunk_dims[0]; i++)
             {
             memcpy(&chunk[i * a_args->chunk_dims[1]],
                 &buf[chunk_no * a_args->chunk_dims[1] * a_args->chunk_dims[0]
@@ -492,7 +493,7 @@ void* H5VL__native_pool_function(void* thread_args)
 
         if (targs->status == T_COMPRESSING)
         {
-            if (queue_get_elmts_added(a_args->q) == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
+            if (((hsize_t) queue_get_elmts_added(a_args->q)) == a_args->nchunks && a_args->q->head == NULL) //All chunks have been compressed. Breaking free.
             {
                 targs->status = T_DONE;
                 queue_add(a_args->q, NULL); //all elements written. Send NULL to cause cond_signal. broadcast better?
@@ -501,14 +502,15 @@ void* H5VL__native_pool_function(void* thread_args)
 
             t_chunk_info* chunk_info = queue_get(a_args->q);
 
-            chunk_info->chunk_size_bytes = (size_t) (H5Z_func_t)a_args->h5z_filter->filter(0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**) &chunk_info->chunk);
+            chunk_info->chunk_size_bytes = a_args->h5z_filter->filter(
+                0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**)&chunk_info->chunk);
 
             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
             offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];
             hchunk_offset[0] = offset_v;
             hchunk_offset[1] = offset_h;
 
-            if (H5D__chunk_direct_write(dset, filter, hchunk_offset, chunk_info->chunk_size_bytes, chunk_info->chunk) == FAIL){ //Using dset object directly.
+            if (H5D__chunk_direct_write(dset, filter, hchunk_offset, (uint32_t) chunk_info->chunk_size_bytes, chunk_info->chunk) == FAIL){ //Using dset object directly.
                 printf("Error writing\n");
                 break;
             }
@@ -516,7 +518,7 @@ void* H5VL__native_pool_function(void* thread_args)
             free(chunk_info->chunk);
             free(chunk_info);
 
-            if ((chunk_no < a_args->nchunks - 1) && (a_args->q->elmts_added < a_args->nchunks))//Not all elements yet chunked. Go back to finish up.
+            if ((chunk_no < a_args->nchunks - 1) /*&& (a_args->q->elmts_added < a_args->nchunks)*/)//Not all elements yet chunked. Go back to finish up.
             {
                 printf("%lu Going back to Chunking\n", chunk_no);
 

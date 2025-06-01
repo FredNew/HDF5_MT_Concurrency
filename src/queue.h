@@ -25,6 +25,6 @@ int queue_add(queue* q, void* item);
 
 void* queue_get(queue* q);
 
-int queue_get_elmts_added(queue* q);
+long int queue_get_elmts_added(queue* q);
 
 #endif

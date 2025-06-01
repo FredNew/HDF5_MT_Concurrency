@@ -1444,7 +1444,7 @@ H5Dwrite_filter_parallel(hid_t dset_id, hid_t dxpl_id, const void* buf, hsize_t 
 
     if(dcpl_pline.nused > 0) //Filters in pipeline
     {
-        for (int i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
+        for (size_t i = 0; i < dcpl_pline.nused; ++i) //Check all filters available
         {
             if (!H5Zfilter_avail(dcpl_pline.filter[i].id))
                 HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "filter not found.");
@@ -1520,7 +1520,7 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
 
     if (chunk_rank > 0) chunk_size = chunk_dims[0];
 
-    for (hsize_t i = 1; i < chunk_rank; i++)
+    for (int i = 1; i < chunk_rank; i++)
     {
         chunk_size *= chunk_dims[i];
     }
@@ -1537,7 +1537,7 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     a_args.dset_dims = buf_dims;
     a_args.chunk_size = chunk_size;
     a_args.chunk_size_bytes = chunk_size * sizeof(int);
-    a_args.nchunks = dset_size / chunk_size + (dset_size%chunk_size? 1:0); //Last part to cover not full chunk
+    a_args.nchunks = ((hsize_t) dset_size) / chunk_size + ((hsize_t)dset_size%chunk_size? 1:0); //Last part to cover not full chunk
 
     /* Routine to get Pipeline information */
     H5P_genplist_t *dc_plist = NULL;
@@ -1547,7 +1547,7 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     H5VL_dataset_get_args_t vol_cb_args;
 
     vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET);
-    H5D_t *dset = (H5D_t*) vol_obj->data;
+    //H5D_t *dset = (H5D_t*) vol_obj->data;
     vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
     vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
     H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
@@ -1558,7 +1558,7 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     /************************************/
 
     char *error;
-    H5Z_class2_t* h5z_symbol = NULL;
+    const H5Z_class2_t* h5z_symbol = NULL;
 
     const char* plugin_path = getenv("HDF5_PLUGIN_PATH");
 

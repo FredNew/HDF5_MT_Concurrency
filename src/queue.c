@@ -36,8 +36,8 @@ int queue_add(queue* q, void* item){
     return 1;
 }
 
-int queue_get_elmts_added(queue* q){
-  	int ret_val = -1;
+ssize_t queue_get_elmts_added(queue* q){
+  	ssize_t ret_val = -1;
 
   	pthread_mutex_lock(&q->lock);
   	ret_val = q->elmts_added;

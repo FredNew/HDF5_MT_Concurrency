@@ -1,5 +1,5 @@
 #! /bin/bash
-# Generated automatically by config.lt (hdf5) 1.14.5
+# Generated automatically by config.status (hdf5) 1.14.5
 # NOTE: Changes made to this file will be lost: look at ltmain.sh.
 
 # Provide generalized library-building support services.

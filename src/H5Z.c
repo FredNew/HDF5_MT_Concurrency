@@ -1776,7 +1776,7 @@ done:
  * @return
  */
 herr_t
-H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int filter_id)
+H5Z__assign_filter(const H5Z_class2_t** h5z_symbol, const char* plugin_path, const int filter_id)
 {
     herr_t ret_value = SUCCEED;
 
@@ -1784,6 +1784,8 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
 
     const char* filter_lib_name;
     const char* filter_symbol;
+
+    char* lib_path = NULL;
 
     switch (filter_id)
     {
@@ -1804,9 +1806,9 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
         default: HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
     }
 
-    const int lib_path_len = (int) strlen(filter_lib_name) + (int) strlen(plugin_path) + 1;
+    size_t lib_path_len = strlen(filter_lib_name) + strlen(plugin_path) + 1;
 
-    char* lib_path;
+
     if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
 
@@ -1817,15 +1819,15 @@ H5Z__assign_filter(H5Z_class2_t** h5z_symbol, const char* plugin_path, const int
     if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
 
-    free(lib_path);
-
     dlerror();
 
     *h5z_symbol = dlsym(handle, filter_symbol);
 
-    if (h5z_symbol == NULL)
+    if (*h5z_symbol == NULL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
 
     done:
+    if (lib_path) free(lib_path);
+
     FUNC_LEAVE_NOAPI(ret_value);
 }
