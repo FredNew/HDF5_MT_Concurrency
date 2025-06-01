@@ -1470,6 +1470,8 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     H5O_pline_t dcpl_pline;
     H5O_layout_t    layout;    /* Layout information */
 
+    const H5Z_class2_t** h5z_symbol = NULL;
+
     FUNC_ENTER_PACKAGE
 
     if ((q = malloc(sizeof(*q))) == NULL)
@@ -1497,9 +1499,6 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     /*#################################*/
 
     /*** Chunk information retrieval ***/
-    // if ((dcpl_id = H5Dget_create_plist(*dset_id)) == H5I_INVALID_HID)
-    //     HGOTO_ERROR(H5E_DATASET, H5E_PLIST, FAIL, "can't get dataset creation property list.");
-
     if (NULL == (vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET)))
         HGOTO_ERROR(H5E_ARGS, H5E_BADTYPE, H5I_INVALID_HID, "invalid dataset identifier");
 
@@ -1510,30 +1509,26 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     /* Get the dataset creation property list */
     if (H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL) < 0)
         HGOTO_ERROR(H5E_DATASET, H5E_CANTGET, H5I_INVALID_HID, "unable to get dataset creation properties");
+
     dcpl_id = vol_cb_args.args.get_dcpl.dcpl_id;
 
     /* Get the plist structure */
     if (NULL == (dc_plist = H5P_object_verify(dcpl_id, H5P_DATASET_CREATE)))
         HGOTO_ERROR(H5E_ID, H5E_BADID, FAIL, "can't find object for ID");
 
-    // if ((chunk_rank = H5Pget_chunk(dcpl_id, H5S_MAX_RANK, chunk_dims)) < 0)
-    //     HGOTO_ERROR(H5E_PLIST, H5E_CANTGET, FAIL, "Can't get chunk dimensions.");
-
     /* Peek at the layout property */
     if (H5P_peek(dc_plist, H5D_CRT_LAYOUT_NAME, &layout) < 0)
         HGOTO_ERROR(H5E_PLIST, H5E_BADVALUE, FAIL, "can't get layout");
+
     if (H5D_CHUNKED != layout.type)
         HGOTO_ERROR(H5E_ARGS, H5E_BADVALUE, FAIL, "not a chunked storage layout");
 
-    if (chunk_dims) {
-        unsigned u; /* Local index variable */
-
-        /* Get the dimension sizes */
-        for (u = 0; u < layout.u.chunk.ndims && u < (unsigned)H5S_MAX_RANK; u++)
-            chunk_dims[u] = layout.u.chunk.dim[u];
-    } /* end if */
-
-    /* Set the return value */
+    /*######################*/
+    unsigned u; /* Local index variable */
+    /* Get the dimension sizes */
+    for (u = 0; u < layout.u.chunk.ndims && u < (unsigned)H5S_MAX_RANK; u++)
+        chunk_dims[u] = layout.u.chunk.dim[u];
+    /*######################*/
     chunk_rank = (int)layout.u.chunk.ndims;
 
     if (chunk_rank > 0) chunk_size = chunk_dims[0];
@@ -1558,33 +1553,18 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
     a_args.nchunks = ((hsize_t) dset_size) / chunk_size + ((hsize_t)dset_size%chunk_size? 1:0); //Last part to cover not full chunk
 
     /* Routine to get Pipeline information */
-
-    //vol_obj = H5VL_vol_object_verify(*dset_id, H5I_DATASET);
-    //H5D_t *dset = (H5D_t*) vol_obj->data;
-    // vol_cb_args.op_type               = H5VL_DATASET_GET_DCPL;
-    // vol_cb_args.args.get_dcpl.dcpl_id = H5I_INVALID_HID;
-    // H5VL_dataset_get(vol_obj, &vol_cb_args, H5P_DATASET_XFER_DEFAULT, H5_REQUEST_NULL);
-
-
     H5P_peek(dc_plist,H5O_CRT_PIPELINE_NAME,&dcpl_pline);
     /************************************/
 
     char *error;
-    const H5Z_class2_t* h5z_symbol = NULL;
 
-    const char* plugin_path = getenv("HDF5_PLUGIN_PATH");
+    h5z_symbol = calloc(dcpl_pline.nused, sizeof(H5Z_class2_t*));
 
-    if (plugin_path == NULL) //Not set. Use std
-    {
-        plugin_path = "/usr/local/hdf5/lib/plugin";
-    }
-
-
-    if (H5Z__assign_filter(&h5z_symbol, plugin_path, dcpl_pline.filter[0].id) == FAIL)
+    if (H5Z__assign_filter(h5z_symbol, dcpl_pline, 'w') == FAIL)
         HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "Can't assign plugin symbol.");
 
-    if (h5z_symbol == NULL)
-        HGOTO_ERROR(H5E_ERROR, H5E_CANTGET, FAIL, "Can't get plugin symbol.");
+     if (h5z_symbol[0] == NULL)
+         HGOTO_ERROR(H5E_ERROR, H5E_CANTGET, FAIL, "Can't get plugin symbol.");
     a_args.h5z_filter = h5z_symbol;
 
     error = dlerror();
@@ -1613,6 +1593,7 @@ H5D__write_filter_parallel(const hid_t dset_id[], hid_t dxpl_id, const void *buf
 
 
 done:
+    if (h5z_symbol != NULL) free(h5z_symbol);
     if (q != NULL) free(q);
     if (targs != NULL) free(targs);
     FUNC_LEAVE_NOAPI(ret_value);

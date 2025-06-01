@@ -1766,68 +1766,109 @@ done:
     FUNC_LEAVE_NOAPI(ret_value)
 } /* end H5Z_get_filter_info() */
 
+
+herr_t
+H5Z__get_filter_lib_path(const char** filter_lib_name, const char** filter_symbol, H5Z_filter_t filter_id)
+{
+    herr_t ret_value = SUCCEED;
+
+    FUNC_ENTER_PACKAGE_NOERR
+
+    switch (filter_id){
+
+    case H5Z_FILTER_LZ4:
+        *filter_lib_name = "/libh5lz4.so.0";
+        *filter_symbol = "H5Z_LZ4";
+        break;
+
+    case H5Z_FILTER_ZSTD:
+        *filter_lib_name = "/libh5zstd.so.0";
+        *filter_symbol = "H5Z_ZSTD";
+        break;
+
+    // case H5Z_FILTER_DEFLATE: //Using internal filter in H5Zdeflate.c
+    //     *h5z_symbol = H5Z_DEFLATE;
+    //     HGOTO_DONE(ret_value);
+
+    default: HGOTO_DONE(FAIL); //HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
+    }
+
+    done:
+    FUNC_LEAVE_NOAPI(ret_value)
+}
+
 /**
  * Assigns a filter loaded from a dynamic library into the passed H5Z_class2_t struct.
  *
  * Only LZ4 is implemented, other HDF5 filters should have an identical plugin path as folder to choose library from.
  * @param h5z_symbol
- * @param plugin_path
- * @param filter_name
+
  * @return
  */
 herr_t
-H5Z__assign_filter(const H5Z_class2_t** h5z_symbol, const char* plugin_path, const int filter_id)
+H5Z__assign_filter(const H5Z_class2_t* h5z_symbol[], H5O_pline_t pipeline, const char mode)
 {
     herr_t ret_value = SUCCEED;
 
+    const char* filter_symbol = NULL;
+    const char* filter_lib_name = NULL;
+    char* lib_path = NULL;
+    void* handle;
+
     FUNC_ENTER_PACKAGE
 
-    const char* filter_lib_name;
-    const char* filter_symbol;
+    const char* plugin_path = getenv("HDF5_PLUGIN_PATH");
 
-    char* lib_path = NULL;
-
-    switch (filter_id)
+    if (plugin_path == NULL) //Not set. Use std
     {
-        case H5Z_FILTER_LZ4:
-            filter_lib_name = "/libh5lz4.so.0";
-            filter_symbol = "H5Z_LZ4";
-            break;
-
-        case H5Z_FILTER_ZSTD:
-            filter_lib_name = "/libh5zstd.so.0";
-            filter_symbol = "H5Z_ZSTD";
-            break;
-
-        case H5Z_FILTER_DEFLATE: //Using internal filter in H5Zdeflate.c
-            *h5z_symbol = H5Z_DEFLATE;
-            HGOTO_DONE(ret_value);
-
-        default: HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Selected filter not found.");
+        plugin_path = "/usr/local/hdf5/lib/plugin";
     }
 
-    size_t lib_path_len = strlen(filter_lib_name) + strlen(plugin_path) + 1;
+    if (mode == 'w')
+    {
+        for (size_t i = 0; i < pipeline.nused; ++i)
+        {
+            if (H5Z__get_filter_lib_path(&filter_lib_name, &filter_symbol, pipeline.filter[i].id) == FAIL)
+            {
+                if (pipeline.filter[i].id == H5Z_FILTER_DEFLATE)
+                {
+                    h5z_symbol[i] = H5Z_DEFLATE; //Using internal filter in H5Zdeflate.c
+                }else
+                {
+                    HGOTO_ERROR(H5E_PLUGIN, H5E_CANTGET, FAIL, "Unknown filter with id %d", pipeline.filter[i].id);
+                }
+            }else //Path of filter and symbol found.
+            {
+                size_t lib_path_len = strlen(filter_lib_name) + strlen(plugin_path) + 1;
 
+                if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
+                    HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
 
-    if ((lib_path = calloc(lib_path_len, sizeof(char))) == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTALLOC, FAIL, "can't allocate space for library path");
+                strcpy(lib_path, plugin_path);
+                strcat(lib_path, filter_lib_name);
 
-    strcpy(lib_path, plugin_path);
-    strcat(lib_path, filter_lib_name);
+                if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
+                    HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
 
-    void* handle;
-    if ((handle = dlopen(lib_path, RTLD_LAZY)) == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_CANTOPENOBJ, FAIL, "Can't open plugin object.");
+                dlerror();
 
-    dlerror();
+                h5z_symbol[i] = dlsym(handle, filter_symbol);
 
-    *h5z_symbol = dlsym(handle, filter_symbol);
+                if (h5z_symbol[i] == NULL)
+                    HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
 
-    if (*h5z_symbol == NULL)
-        HGOTO_ERROR(H5E_PLUGIN, H5E_NOTFOUND, FAIL, "Unable to load plugin symbol.");
+                free(lib_path);
+                lib_path = NULL;
+            }
+        }
+    }
 
     done:
-    if (lib_path) free(lib_path);
+    if (ret_value == FAIL)
+    {
+        if (lib_path != NULL)
+            free(lib_path);
+    }
 
     FUNC_LEAVE_NOAPI(ret_value);
 }

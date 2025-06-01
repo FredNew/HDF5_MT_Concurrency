@@ -430,14 +430,14 @@ void* H5VL__native_pool_function(void* thread_args)
     size_t cd_nelmts = 0;
     const unsigned int *cd_values = NULL;
 
-    for (size_t i = 0; i < dcpl_pline.nused; ++i)
-    {
-        if (dcpl_pline.filter[i].id == a_args->h5z_filter->id) //Select correct cd_nelmts and values for filter set before
-        {
-            cd_nelmts = dcpl_pline.filter->cd_nelmts;
-            cd_values = dcpl_pline.filter->cd_values;
-        }
-    }
+    // for (size_t i = 0; i < dcpl_pline.nused; ++i)
+    // {
+    //     if (dcpl_pline.filter[i].id == a_args->h5z_filter->id) //Select correct cd_nelmts and values for filter set before
+    //     {
+    //         cd_nelmts = dcpl_pline.filter->cd_nelmts;
+    //         cd_values = dcpl_pline.filter->cd_values;
+    //     }
+    // }
 
 
     size_t buf_size = a_args->chunk_size_bytes;
@@ -478,7 +478,7 @@ void* H5VL__native_pool_function(void* thread_args)
             }
 
             chunk_info->chunk = chunk;
-            chunk_info->chunk_size_bytes = a_args->chunk_size;
+            chunk_info->chunk_size_bytes = a_args->chunk_size_bytes;
 
             queue_add(a_args->q, chunk_info);
 
@@ -502,8 +502,15 @@ void* H5VL__native_pool_function(void* thread_args)
 
             t_chunk_info* chunk_info = queue_get(a_args->q);
 
-            chunk_info->chunk_size_bytes = a_args->h5z_filter->filter(
-                0, cd_nelmts, cd_values, a_args->chunk_size_bytes, &buf_size, (void**)&chunk_info->chunk);
+            for (size_t i = 0; i < dcpl_pline.nused; ++i)
+            {
+                cd_nelmts = dcpl_pline.filter[i].cd_nelmts;
+                cd_values = dcpl_pline.filter[i].cd_values;
+
+                chunk_info->chunk_size_bytes = a_args->h5z_filter[i]->filter(
+             0, cd_nelmts, cd_values, chunk_info->chunk_size_bytes, &buf_size, (void**)&chunk_info->chunk);
+            }
+
 
             offset_v = ((chunk_info->chunk_no * a_args->chunk_dims[1]) / a_args->dset_dims[1]) * a_args->chunk_dims[0];
             offset_h = (chunk_info->chunk_no * a_args->chunk_dims[1]) %a_args->dset_dims[1];

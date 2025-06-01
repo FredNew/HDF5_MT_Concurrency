@@ -102,6 +102,8 @@ H5_DLL herr_t            H5Z_xform_eval(H5Z_data_xform_t *data_xform_prop, void 
 H5_DLL bool              H5Z_xform_noop(const H5Z_data_xform_t *data_xform_prop);
 H5_DLL const char       *H5Z_xform_extract_xform_str(const H5Z_data_xform_t *data_xform_prop);
 
-H5_DLL herr_t H5Z__assign_filter(const H5Z_class2_t** h5z_symbol, const char* plugin_path, const int filter_id);
+/*Added by Frederick Neu, UHH */
+H5_DLL herr_t H5Z__get_filter_lib_path(const char** filter_lib_name, const char** filter_symbol, H5Z_filter_t filter_id);
+H5_DLL herr_t H5Z__assign_filter(const H5Z_class2_t* h5z_symbol[], const struct H5O_pline_t pipeline, const char mode);
 
 #endif
