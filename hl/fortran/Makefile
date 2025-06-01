@@ -430,7 +430,7 @@ am__relativize = \
     dir1=`echo "$$dir1" | sed -e "$$sed_rest"`; \
   done; \
   reldir="$$dir2"
-ACLOCAL = ${SHELL} '/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing' aclocal-1.16
+ACLOCAL = ${SHELL} '/home/fred/CLionProjects/HDF5_MT_Concurrency/bin/missing' aclocal-1.16
 ADD_PARALLEL_FILES = no
 AMTAR = $${TAR-tar}
 
@@ -440,7 +440,7 @@ AMTAR = $${TAR-tar}
 # instead of CFLAGS, as CFLAGS is reserved solely for the user to define.
 # This applies to FCFLAGS, CXXFLAGS, CPPFLAGS, and LDFLAGS as well.
 AM_CFLAGS =   -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wbad-function-cast -Wcast-align -Wformat -Wimplicit-function-declaration -Wint-to-pointer-cast -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpacked -Wpointer-sign -Wpointer-to-int-cast -Wredundant-decls -Wstrict-prototypes -Wswitch -Wunused-but-set-variable -Wunused-variable -Wunused-function -Wunused-parameter -Wincompatible-pointer-types -Wint-conversion -Wshadow -Wrestrict -Wcast-function-type -Wmaybe-uninitialized -Wcast-align=strict -Wno-aggregate-return -Wno-inline -Wno-missing-format-attribute -Wno-missing-noreturn -Wno-overlength-strings -Wno-jump-misses-init -Wstrict-overflow=2 -Wno-suggest-attribute=const -Wno-suggest-attribute=noreturn -Wno-suggest-attribute=pure -Wno-suggest-attribute=format -Wno-suggest-attribute=cold -Wno-suggest-attribute=malloc -O3
-AM_CPPFLAGS =  -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L   -DNDEBUG -UH5_DEBUG_API -I/home/fred/CLionProjects/HDF5_parallel_LZ4/src/H5FDsubfiling
+AM_CPPFLAGS =  -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L   -DNDEBUG -UH5_DEBUG_API -I/home/fred/CLionProjects/HDF5_MT_Concurrency/src/H5FDsubfiling
 AM_CXXFLAGS =    -std=c++11 -Wall -Wcast-qual -Wconversion -Wctor-dtor-privacy -Weffc++ -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsign-promo -Wundef -Wwrite-strings -pedantic -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Wopenmp-simd -Warray-bounds=2 -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wno-deprecated-copy -fstdarg-opt -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wcast-align -Wmissing-declarations -Wpacked -Wredundant-decls -Wswitch -Wunused-but-set-variable -Wunused-function -Wunused-variable -Wunused-parameter -Wshadow -O3
 AM_DEFAULT_VERBOSITY = 0
 AM_FCFLAGS =   -std=f2008  -Waliasing -Wall -Wcharacter-truncation -Wextra -Wimplicit-interface -Wsurprising -Wunderflow -pedantic -Wintrinsics-std -Wimplicit-procedure -Wreal-q-constant -Wfunction-elimination -Wrealloc-lhs -Wrealloc-lhs-all -Wno-c-binding-type -Winteger-division -Wfrontend-loop-interchange  -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wno-unused-dummy-argument -Wno-array-temporaries -O3
@@ -451,9 +451,9 @@ AM_LDFLAGS =
 AR = ar
 AR_FLAGS = cr
 ASSERTS = no
-AUTOCONF = ${SHELL} '/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing' autoconf
-AUTOHEADER = ${SHELL} '/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing' autoheader
-AUTOMAKE = ${SHELL} '/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing' automake-1.16
+AUTOCONF = ${SHELL} '/home/fred/CLionProjects/HDF5_MT_Concurrency/bin/missing' autoconf
+AUTOHEADER = ${SHELL} '/home/fred/CLionProjects/HDF5_MT_Concurrency/bin/missing' autoheader
+AUTOMAKE = ${SHELL} '/home/fred/CLionProjects/HDF5_MT_Concurrency/bin/missing' automake-1.16
 AWK = mawk
 BUILD_MODE = production
 BYTESEX = little-endian
@@ -462,10 +462,10 @@ CCDEPMODE = depmode=gcc3
 CC_VERSION = /usr/bin/gcc
 CFLAGS = 
 CLANG_SANITIZE_CHECKS = none
-CONFIG_DATE = Mon Apr 14 23:53:07 CEST 2025
+CONFIG_DATE = Sun Jun  1 13:38:56 CEST 2025
 CONFIG_MODE = 
 CONFIG_USER = fred@frexedo
-CPPFLAGS = -g
+CPPFLAGS = 
 CSCOPE = cscope
 CTAGS = ctags
 CXX = no
@@ -567,7 +567,7 @@ H5DWALK_LDFLAGS =
 H5DWALK_LIBS = 
 H5_CFLAGS =  -std=c99  -Wall -Wcast-qual -Wconversion -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wshadow -Wundef -Wwrite-strings -pedantic -Wno-c++-compat -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wno-unsuffixed-float-constants -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Warray-bounds=2 -Wc99-c11-compat -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wc11-c2x-compat -fstdarg-opt -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wbad-function-cast -Wcast-align -Wformat -Wimplicit-function-declaration -Wint-to-pointer-cast -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wold-style-definition -Wpacked -Wpointer-sign -Wpointer-to-int-cast -Wredundant-decls -Wstrict-prototypes -Wswitch -Wunused-but-set-variable -Wunused-variable -Wunused-function -Wunused-parameter -Wincompatible-pointer-types -Wint-conversion -Wshadow -Wrestrict -Wcast-function-type -Wmaybe-uninitialized -Wcast-align=strict -Wno-aggregate-return -Wno-inline -Wno-missing-format-attribute -Wno-missing-noreturn -Wno-overlength-strings -Wno-jump-misses-init -Wstrict-overflow=2 -Wno-suggest-attribute=const -Wno-suggest-attribute=noreturn -Wno-suggest-attribute=pure -Wno-suggest-attribute=format -Wno-suggest-attribute=cold -Wno-suggest-attribute=malloc -O3
 H5_CLASSPATH = 
-H5_CPPFLAGS = -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L   -DNDEBUG -UH5_DEBUG_API -I/home/fred/CLionProjects/HDF5_parallel_LZ4/src/H5FDsubfiling
+H5_CPPFLAGS = -D_GNU_SOURCE -D_POSIX_C_SOURCE=200809L   -DNDEBUG -UH5_DEBUG_API -I/home/fred/CLionProjects/HDF5_MT_Concurrency/src/H5FDsubfiling
 H5_CXXFLAGS =   -std=c++11 -Wall -Wcast-qual -Wconversion -Wctor-dtor-privacy -Weffc++ -Wextra -Wfloat-equal -Wformat=2 -Winit-self -Winvalid-pch -Wmissing-include-dirs -Wnon-virtual-dtor -Wold-style-cast -Woverloaded-virtual -Wreorder -Wshadow -Wsign-promo -Wundef -Wwrite-strings -pedantic -Wlarger-than=2560 -Wlogical-op -Wframe-larger-than=16384 -Wpacked-bitfield-compat -Wsync-nand -Wdouble-promotion -Wtrampolines -Wstack-usage=8192 -Wmaybe-uninitialized -Wdate-time -Wopenmp-simd -Warray-bounds=2 -Wduplicated-cond -Whsa -Wnormalized -Wnull-dereference -Wunused-const-variable -Walloca -Walloc-zero -Wduplicated-branches -Wformat-overflow=2 -Wformat-truncation=1 -Wattribute-alias -Wshift-overflow=2 -Wattribute-alias=2 -Wmissing-profile -Wno-deprecated-copy -fstdarg-opt -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wcast-align -Wmissing-declarations -Wpacked -Wredundant-decls -Wswitch -Wunused-but-set-variable -Wunused-function -Wunused-variable -Wunused-parameter -Wshadow -O3
 H5_FCFLAGS =  -std=f2008  -Waliasing -Wall -Wcharacter-truncation -Wextra -Wimplicit-interface -Wsurprising -Wunderflow -pedantic -Wintrinsics-std -Wimplicit-procedure -Wreal-q-constant -Wfunction-elimination -Wrealloc-lhs -Wrealloc-lhs-all -Wno-c-binding-type -Winteger-division -Wfrontend-loop-interchange  -fdiagnostics-urls=never -fno-diagnostics-color -s  -Wno-unused-dummy-argument -Wno-array-temporaries -O3
 H5_FORTRAN_SHARED = no
@@ -637,7 +637,7 @@ LTLIBOBJS =
 LT_STATIC_EXEC = 
 LT_SYS_LIBRARY_PATH = 
 MAINT = #
-MAKEINFO = ${SHELL} '/home/fred/CLionProjects/HDF5_parallel_LZ4/bin/missing' makeinfo
+MAKEINFO = ${SHELL} '/home/fred/CLionProjects/HDF5_MT_Concurrency/bin/missing' makeinfo
 MANIFEST_TOOL = :
 MAP_API = no
 MIRROR_VFD = no
@@ -679,7 +679,7 @@ PATH_SEPARATOR = :
 PREADWRITE = yes
 PROFILING = no
 RANLIB = ranlib
-ROOT = /home/fred/CLionProjects/HDF5_parallel_LZ4
+ROOT = /home/fred/CLionProjects/HDF5_MT_Concurrency
 ROS3_VFD = no
 RUNPARALLEL = 
 RUNSERIAL = 
@@ -703,7 +703,7 @@ THREADSAFE = no
 TIME = time
 TR = /usr/bin/tr
 TRACE_API = no
-UNAME_INFO = Linux frexedo 6.11.0-109019-tuxedo #19~24.04.1tux2 SMP PREEMPT_DYNAMIC Mon Feb 17 23:08:54 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
+UNAME_INFO = Linux frexedo 6.11.0-116025-tuxedo #25~24.04.1tux1 SMP PREEMPT_DYNAMIC Thu May 15 20:01:15 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux
 USE_FILE_LOCKING = 
 USE_FILTER_DEFLATE = yes
 USE_FILTER_SZIP = no
@@ -711,10 +711,10 @@ USINGMEMCHECKER = no
 VERSION = 1.14.5
 WORDS_BIGENDIAN = no
 _ACJNI_JAVAC = 
-abs_builddir = /home/fred/CLionProjects/HDF5_parallel_LZ4/hl/fortran
-abs_srcdir = /home/fred/CLionProjects/HDF5_parallel_LZ4/hl/fortran
-abs_top_builddir = /home/fred/CLionProjects/HDF5_parallel_LZ4
-abs_top_srcdir = /home/fred/CLionProjects/HDF5_parallel_LZ4
+abs_builddir = /home/fred/CLionProjects/HDF5_MT_Concurrency/hl/fortran
+abs_srcdir = /home/fred/CLionProjects/HDF5_MT_Concurrency/hl/fortran
+abs_top_builddir = /home/fred/CLionProjects/HDF5_MT_Concurrency
+abs_top_srcdir = /home/fred/CLionProjects/HDF5_MT_Concurrency
 ac_ct_AR = 
 ac_ct_CC = gcc
 ac_ct_CXX = 
@@ -752,7 +752,7 @@ host_vendor = pc
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /home/fred/CLionProjects/HDF5_parallel_LZ4/bin/install-sh
+install_sh = ${SHELL} /home/fred/CLionProjects/HDF5_MT_Concurrency/bin/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -761,7 +761,7 @@ mandir = ${datarootdir}/man
 mkdir_p = $(MKDIR_P)
 oldincludedir = /usr/include
 pdfdir = ${docdir}
-prefix = /home/fred/parallel_lz4_hdf5
+prefix = /home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5
 program_transform_name = s,x,x,
 psdir = ${docdir}
 runstatedir = ${localstatedir}/run

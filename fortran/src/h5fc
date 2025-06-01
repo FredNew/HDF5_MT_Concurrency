@@ -21,7 +21,7 @@
 ## then modify them accordingly to represent the new paths.               ##
 ##                                                                        ##
 ############################################################################
-prefix="/home/fred/parallel_lz4_hdf5"
+prefix="/home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5"
 exec_prefix="${prefix}"
 libdir="${exec_prefix}/lib"
 includedir="${prefix}/include"

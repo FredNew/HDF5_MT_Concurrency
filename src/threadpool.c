@@ -20,7 +20,7 @@ size_t get_thread_count(void){
     size_t nthreads = 1;
 
     int env_idx = 0;
-    int tmp_add;
+    size_t tmp_add;
     while(getenv("H5_NTHREADS") != NULL && getenv("H5_NTHREADS")[env_idx]) { //string of characters terminating with \0
          if (env_idx == 0) { //set initial
             nthreads = 0;

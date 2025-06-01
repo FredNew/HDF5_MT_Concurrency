@@ -12,7 +12,7 @@
 #
 # Tests for the h5watch tool
 #
-utils_testdir=/home/fred/CLionProjects/HDF5_parallel_LZ4/utils/test
+utils_testdir=/home/fred/CLionProjects/HDF5_MT_Concurrency/utils/test
 
 # Check to see if the VFD specified by the HDF5_DRIVER environment variable
 # supports SWMR.

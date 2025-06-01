@@ -52,11 +52,10 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
-/bin/
-/src/.deps/
-/src/.libs/
-/test/.deps/
-/test/.libs/
+src/.deps/
+src/.libs/
+test/.deps/
+test/.libs/
 
 
 #

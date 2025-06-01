@@ -17,7 +17,7 @@ old_library='libhdf5_hl.a'
 inherited_linker_flags=''
 
 # Libraries that this one depends upon.
-dependency_libs=' /home/fred/parallel_lz4_hdf5/lib/libhdf5.la -lz -ldl -lm'
+dependency_libs=' /home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5/lib/libhdf5.la -lz -ldl -lm'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
@@ -38,4 +38,4 @@ dlopen=''
 dlpreopen=''
 
 # Directory that this library needs to be installed in:
-libdir='/home/fred/parallel_lz4_hdf5/lib'
+libdir='/home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5/lib'

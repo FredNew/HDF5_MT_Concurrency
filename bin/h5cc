@@ -23,7 +23,7 @@
 ## then modify them accordingly to represent the new paths.               ##
 ##                                                                        ##
 ############################################################################
-prefix="/home/fred/parallel_lz4_hdf5"
+prefix="/home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5"
 exec_prefix="${prefix}"
 libdir="${exec_prefix}/lib"
 includedir="${prefix}/include"
@@ -88,7 +88,7 @@ CLINKERBASE="gcc"
 # from the hdf5 build. The order of the flags is intended to give precedence
 # to the user's flags.
 H5BLD_CFLAGS=" "
-H5BLD_CPPFLAGS=" -g"
+H5BLD_CPPFLAGS=" "
 H5BLD_LDFLAGS=" "
 H5BLD_LIBS="-lz -ldl -lm "
 
