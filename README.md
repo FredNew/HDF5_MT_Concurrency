@@ -5,4 +5,11 @@ A pool of POSIX threads handles chunking, filtering and writing data in parallel
 
 A new API function is created to handle the new request, namely "H5Dwrite_filter_parallel".
 
-For full description of the base library, see [README](README_HDF5.md) 
+For full description of the base library, see [README](README_HDF5.md)
+
+
+# Current limitations
+
+- Writing data only
+- Two dimensional dataspaces
+- Type conversion (Limited to 32bit LE int)
