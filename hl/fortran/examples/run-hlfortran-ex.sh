@@ -32,7 +32,7 @@ EXIT_FAILURE=1
 
 # Where the tool is installed.
 # default is relative path to installed location of the tools
-prefix="${prefix:-/home/fred/CLionProjects/HDF5_MT_Concurrency/hdf5}"
+prefix="${prefix:-/home/fred/HDFGroup/HDF5}"
 PARALLEL=no             # Am I in parallel mode?
 AR="ar"
 RANLIB="ranlib"

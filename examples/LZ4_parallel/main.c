@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "../../src/H5Ppublic.h"
+
 #define H5Z_FILTER_LZ4 32004
 
 int main(int argc, char* argv[]){
@@ -15,8 +17,8 @@ int main(int argc, char* argv[]){
     hsize_t dims[rank];
     hsize_t chunk_dims[rank];
 
-    dims[0] = 4*16*1024;
-    dims[1] = 4*3*1024;
+    dims[0] = 4*1024;
+    dims[1] = 4*1024;
 
     chunk_dims[0] = 1024; //down
     chunk_dims[1] = 1024; //right
@@ -40,6 +42,8 @@ int main(int argc, char* argv[]){
     }else{
         printf("Filter %d not found. Not applied.\n", H5Z_FILTER_LZ4);
     }
+
+    H5Pset_deflate(dcpl_id, 3);
 
     fspace_id = H5Screate_simple(rank, dims, NULL);
     dset_id = H5Dcreate(file_id, "LZ4 parallel", H5T_NATIVE_INT, fspace_id, H5P_DEFAULT, dcpl_id, H5P_DEFAULT);
