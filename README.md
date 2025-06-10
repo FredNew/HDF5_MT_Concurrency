@@ -10,6 +10,7 @@ For full description of the base library, see [README](README_HDF5.md)
 
 # Current limitations
 
+- Autotools build only
 - Writing data only
 - Two dimensional dataspaces
 - Type conversion (Limited to 32bit LE int)
